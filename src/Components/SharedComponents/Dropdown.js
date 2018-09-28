@@ -17,7 +17,6 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    // const { options } = this.props;
     const { listOpen } = this.state;
     return (
       <div
