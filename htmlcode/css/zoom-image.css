@@ -1,0 +1,39 @@
+/* zoom image */
+.zoom-image{
+	position: relative;
+	margin: 0;
+	background-size: cover;
+	cursor: crosshair;
+}
+.zoom-image > figure{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: 0;
+	background-repeat: no-repeat;
+	opacity: 0;
+	-o-transition: opacity 200ms ease-out;
+	-moz-transition: opacity 200ms ease-out;
+	-webkit-transition: opacity 200ms ease-out;
+	transition: opacity 200ms ease-out;
+}
+.zoom-image > figure:hover{
+	opacity: 1;
+}
+
+
+#shoe1 .zoom-image,  #shoe1 .zoom-image > figure { 
+	background-image: url(../img/shoe1.jpg );
+}
+#shoe2 .zoom-image,  #shoe2 .zoom-image > figure { 
+	background-image: url(../img/shoe2.jpg );
+}
+#shoe3 .zoom-image,  #shoe3 .zoom-image > figure { 
+	background-image: url(../img/shoe3.jpg );
+}
+.zoom-image {
+    width: 85%;
+    height: 387px;
+}
