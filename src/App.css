@@ -370,10 +370,10 @@ margin-left: 10px;
   left: 0px;
   right: 0;
   background: #fff;
-  width: 99.92%;
+  /* width: 99.92%; */
+  width: 100%;
   top: 94%;
   padding: 40px;
-  /* margin: 0 auto; */
   display: none;
   transition: 0.6s;
   border: 1px solid #eae1e1;
@@ -686,7 +686,7 @@ display: block;
 .data-table1 ul li{
   vertical-align: middle;
   border: none;
-  font-size: 30px;
+  font-size: 24px;
   color: #000;
   font-weight: 700;
   padding: 0;
@@ -1938,3 +1938,17 @@ height: 73px;
 
 }
 
+/* override css */
+.custom-select1, .custom-select {
+  outline: none
+}
+
+.data-table.overlay, .subscription__extended-menu li, .drophead, .cursor__pointer {
+  cursor: pointer;
+}
+
+.subscription__extended-menu li a {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+}
