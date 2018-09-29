@@ -10,7 +10,7 @@ class App extends Component {
   state = { content, userName: "Abhinay" };
 
   componentDidMount() {
-    console.log("make an api call to get all subscriptions");
+    console.log(">>------> Abhinay <------<<");
   }
 
   render() {
