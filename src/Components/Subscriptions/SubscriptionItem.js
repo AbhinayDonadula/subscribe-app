@@ -9,6 +9,8 @@ class SubscriptionItem extends React.Component {
     viewDetailsOpen: false,
     showSaveUpdateConf: false,
     openExtendedMenu: false,
+    showFreqSuccessMsg: false,
+    showQuantitySuccessMsg: false,
     frequencySelected: "",
     quantitySelected: 1
   };
@@ -23,7 +25,7 @@ class SubscriptionItem extends React.Component {
     this.setState(({ frequencySelected }) => ({
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
-      showSaveUpdateConf: true
+      showFreqUpdateSaveConf: frequencySelected !== selected
     }));
   };
 
@@ -43,13 +45,26 @@ class SubscriptionItem extends React.Component {
   };
 
   handleSaveUpdate = () => {
-    this.setState(() => ({ showSaveUpdateConf: false }));
+    // console.log(this.state.showFreqUpdateSaveConf);
+    this.setState(
+      ({ showFreqUpdateSaveConf }) => ({
+        showFreqUpdateSaveConf: false,
+        showFreqSuccessMsg: showFreqUpdateSaveConf
+      }),
+      () => {
+        window.setTimeout(() => {
+          this.setState(() => ({
+            showFreqSuccessMsg: false
+          }));
+        }, 2000);
+      }
+    );
   };
 
   handleCancelSave = () => {
-    this.setState(({ prevFrequencySelected }) => ({
-      showSaveUpdateConf: false,
-      frequencySelected: prevFrequencySelected
+    this.setState(() => ({
+      showFreqUpdateSaveConf: false
+      // frequencySelected: prevFrequencySelected
     }));
   };
 
@@ -68,16 +83,24 @@ class SubscriptionItem extends React.Component {
               }}
             >
               {/* Success message */}
-              <div className="succ_Div">
-                <div className="media">
-                  <div className="media-left">
-                    <i className="fa fa-check-circle" aria-hidden="true" />
-                  </div>
-                  <div className="media-body">
-                    <p>your frequecy changes have been successfully updated.</p>
+              {(this.state.showFreqSuccessMsg ||
+                this.state.showQuantitySuccessMsg) && (
+                <div className="succ_Div" style={{ display: "block" }}>
+                  <div className="media">
+                    <div className="media-left">
+                      <i className="fa fa-check-circle" aria-hidden="true" />
+                    </div>
+                    <div className="media-body">
+                      <p>
+                        {this.state.showQuantitySuccessMsg &&
+                          "your quantity changes have been successfully updated."}
+                        {this.state.showFreqSuccessMsg &&
+                          "your frequency changes have been successfully updated."}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               {/* each item */}
               <ul className="list-unstyled list-inline main_ul">
                 <li>
@@ -177,10 +200,16 @@ class SubscriptionItem extends React.Component {
             )}
 
             {/* Save/Update confirmation  */}
-            {this.state.showSaveUpdateConf && (
+            {(this.state.showFreqUpdateSaveConf ||
+              this.state.showQtyUpdateSaveConf) && (
               <div className="show_Div show">
                 <ul className="list-inline list-unstyled">
-                  <li>Save/Update frequency changes?</li>
+                  <li>
+                    {this.state.showFreqUpdateSaveConf &&
+                      `Save/Update frequency changes?`}
+                    {this.state.showQtyUpdateSaveConf &&
+                      `Save/Update quantity changes?`}
+                  </li>
                   <li>
                     <a className="btn btn_sv" onClick={this.handleSaveUpdate}>
                       {appData.content.SaveUpdate}

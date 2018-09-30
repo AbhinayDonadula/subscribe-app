@@ -880,14 +880,15 @@ display: none !important;
 .succ_Div {
   background: #57a60f;
   padding: 10px 25px;
-  width: 42%;
+  width: 50%;
   text-align: center;
   border-radius: 5px;
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
-  bottom: 18px;
+  /* bottom: 18px; */
+  bottom: 33%;
   display: none;
   z-index: 999;
 }
