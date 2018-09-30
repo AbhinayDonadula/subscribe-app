@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 class Dropdown extends React.Component {
   state = {
     listOpen: false,
-    selected: ""
+    selected: this.props.selected
   };
 
   handleSelected = event => {

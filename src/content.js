@@ -33,6 +33,8 @@ export default {
     EditMemberNumber: "Edit member number",
     AddMyMobileNumber: "Add my mobile number"
   },
+  SaveUpdate: "Save/Update",
+  CancelSaveUpdate: "No, Cancel",
   ShowOptions: [
     {
       id: 0,

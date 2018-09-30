@@ -7,17 +7,24 @@ import SubscriptionDetails from "./Details/SubscriptionDetails";
 class SubscriptionItem extends React.Component {
   state = {
     viewDetailsOpen: false,
+    showSaveUpdateConf: false,
     openExtendedMenu: false,
     frequencySelected: "",
     quantitySelected: 1
   };
 
   handleViewDetails = () => {
-    this.setState({ viewDetailsOpen: !this.state.viewDetailsOpen });
+    this.setState(({ viewDetailsOpen }) => ({
+      viewDetailsOpen: !viewDetailsOpen
+    }));
   };
 
   handleFrequencyDropDown = selected => {
-    this.setState({ frequencySelected: selected });
+    this.setState(({ frequencySelected }) => ({
+      prevFrequencySelected: frequencySelected,
+      frequencySelected: selected,
+      showSaveUpdateConf: true
+    }));
   };
 
   handleQuantityDropDown = selected => {
@@ -33,6 +40,17 @@ class SubscriptionItem extends React.Component {
       openExtendedMenu: false,
       selectedExtendedMenu: event.target.getAttribute("data-value")
     });
+  };
+
+  handleSaveUpdate = () => {
+    this.setState(() => ({ showSaveUpdateConf: false }));
+  };
+
+  handleCancelSave = () => {
+    this.setState(({ prevFrequencySelected }) => ({
+      showSaveUpdateConf: false,
+      frequencySelected: prevFrequencySelected
+    }));
   };
 
   render() {
@@ -72,7 +90,7 @@ class SubscriptionItem extends React.Component {
                 <li>
                   <span className="main_txt">
                     HK Anderson Peanut Butter-Filled <br /> Pretzel Nuggets, 24
-                    Oz Tub{" "}
+                    Oz Tub
                   </span>
                   <br />
                   <TextLink
@@ -85,7 +103,7 @@ class SubscriptionItem extends React.Component {
                   />
                 </li>
                 <li className="d-mob">
-                  <label>STATUS </label> <br />{" "}
+                  <label>STATUS </label> <br />
                   <span className="pad_span">Delivery by: 07/05/18 </span>
                 </li>
                 <li className="d-mob">
@@ -159,15 +177,19 @@ class SubscriptionItem extends React.Component {
             )}
 
             {/* Save/Update confirmation  */}
-            {this.state.test && (
-              <div className="show_Div">
+            {this.state.showSaveUpdateConf && (
+              <div className="show_Div show">
                 <ul className="list-inline list-unstyled">
-                  <li>save/update frequency changes?</li>
+                  <li>Save/Update frequency changes?</li>
                   <li>
-                    <a className="btn btn_sv">Save/Update</a>
+                    <a className="btn btn_sv" onClick={this.handleSaveUpdate}>
+                      {appData.content.SaveUpdate}
+                    </a>
                   </li>
                   <li>
-                    <a className="btn btn_cncl">No, Cancel</a>
+                    <a className="btn btn_cncl" onClick={this.handleCancelSave}>
+                      {appData.content.CancelSaveUpdate}
+                    </a>
                   </li>
                 </ul>
               </div>
