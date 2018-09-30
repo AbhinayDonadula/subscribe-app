@@ -7,7 +7,7 @@ import "./App.css";
 import Subscriptions from "./Components/Subscriptions/Subscriptions";
 
 class App extends Component {
-  state = { content, userName: "Abhinay" };
+  state = { content, userName: "Abhinay", isMobile: window.innerWidth <= 750 };
 
   componentDidMount() {
     console.log(">>------> Abhinay <------<<");

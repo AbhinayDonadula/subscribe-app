@@ -3,11 +3,15 @@ import AppContext from "../../Context/AppContext";
 
 class BillingInfoSection extends React.Component {
   state = {
-    show: true
+    show: false,
+    isMobile: window.innerWidth <= 750
   };
 
   toggleShowHide = () => {
-    this.setState(({ show }) => ({ show: !show }));
+    this.setState(({ show }) => ({
+      show: !show,
+      isMobile: window.innerWidth <= 750
+    }));
   };
 
   render() {
@@ -20,17 +24,19 @@ class BillingInfoSection extends React.Component {
               role="presentation"
               onClick={this.toggleShowHide}
             >
-              {appData.content.BillingInfoSectionHeader}
+              {appData.content.BillingSection.BillingInfoSectionHeader}
               <img src="img/down.jpg" className="img-resp down_img1" alt="" />
             </h3>
-            {this.state.show && (
+            {(this.state.show || !this.state.isMobile) && (
               <div className="bill_Div show">
                 <p className="pay_txt">
-                  <label>{appData.content.NextScheduledPayment}</label> Jul 13,
-                  2018
+                  <label>
+                    {appData.content.BillingSection.NextScheduledPayment}
+                  </label>{" "}
+                  Jul 13, 2018
                 </p>
                 <a href="" className="view_txt d-block d-md-none d-lg-none">
-                  View all billing histtory{" "}
+                  {appData.content.BillingSection.ViewAllBillingHistory}
                   <i className="fa fa-angle-right" aria-hidden="true" />
                 </a>
                 <div className="pos_rel">
@@ -42,12 +48,18 @@ class BillingInfoSection extends React.Component {
                     >
                       <thead>
                         <tr>
-                          <th>{appData.content.InvoiceDate}</th>
-                          <th>{appData.content.InvoiceNumber}</th>
-                          <th>{appData.content.PaymentMethod}</th>
-                          <th>{appData.content.ServicePeriod}</th>
+                          <th>{appData.content.BillingSection.InvoiceDate}</th>
+                          <th>
+                            {appData.content.BillingSection.InvoiceNumber}
+                          </th>
+                          <th>
+                            {appData.content.BillingSection.PaymentMethod}
+                          </th>
+                          <th>
+                            {appData.content.BillingSection.ServicePeriod}
+                          </th>
                           <th className="zui-sticky-col mob">
-                            {appData.content.TaxAndTotal}
+                            {appData.content.BillingSection.TaxAndTotal}
                           </th>
                         </tr>
                       </thead>
@@ -98,7 +110,7 @@ class BillingInfoSection extends React.Component {
                     >
                       <thead>
                         <tr>
-                          <th>TAX &amp; TOTAL</th>
+                          <th>{appData.content.BillingSection.TaxAndTotal}</th>
                         </tr>
                       </thead>
                       <tbody>

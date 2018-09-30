@@ -16,13 +16,6 @@ export default {
   ContractNumber: "Contract #",
   DownloadSectionHeader: "Download Available for Service!",
   DownloadServiceButton: "Download for service",
-  BillingInfoSectionHeader: "Billing Information",
-  NextScheduledPayment: "Next Scheduled Payment : ",
-  InvoiceDate: "INVOICE DATE",
-  InvoiceNumber: "INVOICE #",
-  PaymentMethod: "PAYMENT METHOD",
-  ServicePeriod: "SERVICE PERIOD",
-  TaxAndTotal: "TAX & TOTAL",
   PaymentSection: {
     PaymentMethod: "PAYMENT METHOD",
     ContactEmail: " CONTACT EMAIL",
@@ -32,6 +25,16 @@ export default {
     EditContactEmail: "Edit contact email",
     EditMemberNumber: "Edit member number",
     AddMyMobileNumber: "Add my mobile number"
+  },
+  BillingSection: {
+    InvoiceDate: "INVOICE DATE",
+    InvoiceNumber: "INVOICE #",
+    PaymentMethod: "PAYMENT METHOD",
+    ServicePeriod: "SERVICE PERIOD",
+    TaxAndTotal: "TAX & TOTAL",
+    ViewAllBillingHistory: "View all billing history",
+    BillingInfoSectionHeader: "Billing Information",
+    NextScheduledPayment: "Next Scheduled Payment : "
   },
   SaveUpdate: "Save/Update",
   CancelSaveUpdate: "No, Cancel",

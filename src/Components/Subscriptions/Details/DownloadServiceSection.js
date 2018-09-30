@@ -3,12 +3,14 @@ import AppContext from "../../Context/AppContext";
 
 class DownloadServiceSection extends React.Component {
   state = {
-    showDownloadDetailsMobile: true
+    showDownloadDetailsMobile: false,
+    isMobile: window.innerWidth <= 750
   };
 
   showDownloadDetailsSection = () => {
     this.setState(({ showDownloadDetailsMobile }) => ({
-      showDownloadDetailsMobile: !showDownloadDetailsMobile
+      showDownloadDetailsMobile: !showDownloadDetailsMobile,
+      isMobile: window.innerWidth <= 750
     }));
   };
 
@@ -23,9 +25,9 @@ class DownloadServiceSection extends React.Component {
               onClick={this.showDownloadDetailsSection}
             >
               {appData.content.DownloadSectionHeader}
-              <img src="img/down.jpg" className="img-resp down_img1" alt="" />
+              <img src="./img/down.jpg" className="img-resp down_img1" alt="" />
             </h3>
-            {this.state.showDownloadDetailsMobile && (
+            {(this.state.showDownloadDetailsMobile || !this.state.isMobile) && (
               <div className="dnload_div show">
                 <p className="dn_txt">
                   Please download the following agent: Unlimited On Demand
@@ -37,6 +39,7 @@ class DownloadServiceSection extends React.Component {
                 </button>
               </div>
             )}
+            <hr />
           </React.Fragment>
         )}
       </AppContext.Consumer>

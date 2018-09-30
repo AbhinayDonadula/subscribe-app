@@ -3,12 +3,14 @@ import AppContext from "../../Context/AppContext";
 
 class DetailsSection extends React.Component {
   state = {
-    showSubDetailsMobile: true
+    showSubDetailsMobile: false,
+    isMobile: window.innerWidth <= 750
   };
 
   showSubDetailsSection = () => {
     this.setState(({ showSubDetailsMobile }) => ({
-      showSubDetailsMobile: !showSubDetailsMobile
+      showSubDetailsMobile: !showSubDetailsMobile,
+      isMobile: window.innerWidth <= 750
     }));
   };
 
@@ -26,8 +28,12 @@ class DetailsSection extends React.Component {
               <img src="img/down.jpg" className="img-resp down_img1" alt="" />
             </h3>
             <hr className="d-block d-md-none d-lg-none" />
-            {this.state.showSubDetailsMobile && (
-              <ul className="list-inline list-unstyled list_price show">
+            {(this.state.showSubDetailsMobile || !this.state.isMobile) && (
+              <ul
+                className={`list-inline list-unstyled list_price ${
+                  this.state.isMobile ? "show" : ""
+                }`}
+              >
                 <li className="list-inline-item">
                   <div className="total_box">
                     <h3>{appData.content.TotalPrice}</h3>
@@ -74,6 +80,7 @@ class DetailsSection extends React.Component {
                 </li>
               </ul>
             )}
+            <div className="space30 d-none d-md-block d-lg-block" />
           </React.Fragment>
         )}
       </AppContext.Consumer>

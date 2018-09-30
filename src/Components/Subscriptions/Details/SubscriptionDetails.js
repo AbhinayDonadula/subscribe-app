@@ -29,7 +29,6 @@ class SubscriptionDetails extends React.Component {
                 <li>
                   <label>{appData.content.Frequency}</label>
                   <Dropdown
-                    frequencyDropDown
                     options={appData.content.FrequencyOptions}
                     updateParentState={this.handleFrequencyDropDown}
                   />
@@ -37,11 +36,8 @@ class SubscriptionDetails extends React.Component {
               </ul>
             </div>
             <DetailsSection />
-            <div className="space30 d-none d-md-block d-lg-block" />
             <DownloadServiceSection />
-            <hr />
             <BillingInfoSection />
-            <div className="space20" />
             <PaymentSection />
           </div>
         )}
