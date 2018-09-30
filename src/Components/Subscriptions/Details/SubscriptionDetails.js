@@ -36,11 +36,6 @@ class SubscriptionDetails extends React.Component {
                 </li>
               </ul>
             </div>
-            <h3 className="head_txt sub_txt">
-              {appData.content.SubscriptionDetails}
-              <img src="img/down.jpg" className="img-resp down_img1" alt="" />
-            </h3>
-            <hr className="d-block d-md-none d-lg-none" />
             <DetailsSection />
             <div className="space30 d-none d-md-block d-lg-block" />
             <DownloadServiceSection />

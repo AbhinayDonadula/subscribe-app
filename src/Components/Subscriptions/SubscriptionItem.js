@@ -45,7 +45,6 @@ class SubscriptionItem extends React.Component {
   };
 
   handleSaveUpdate = () => {
-    // console.log(this.state.showFreqUpdateSaveConf);
     this.setState(
       ({ showFreqUpdateSaveConf }) => ({
         showFreqUpdateSaveConf: false,
