@@ -3,7 +3,7 @@ import AppContext from "../../Context/AppContext";
 
 class DetailsSection extends React.Component {
   state = {
-    showSubDetailsMobile: false
+    showSubDetailsMobile: true
   };
 
   showSubDetailsSection = () => {

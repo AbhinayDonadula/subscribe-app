@@ -3,7 +3,7 @@ import AppContext from "../../Context/AppContext";
 
 class DownloadServiceSection extends React.Component {
   state = {
-    showDownloadDetailsMobile: false
+    showDownloadDetailsMobile: true
   };
 
   showDownloadDetailsSection = () => {
