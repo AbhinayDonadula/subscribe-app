@@ -158,6 +158,20 @@ class SubscriptionItem extends React.Component {
               </div>
             )}
 
+            {/* Save/Update confirmation  */}
+            {this.state.test && (
+              <div className="show_Div">
+                <ul className="list-inline list-unstyled">
+                  <li>save/update frequency changes?</li>
+                  <li>
+                    <a className="btn btn_sv">Save/Update</a>
+                  </li>
+                  <li>
+                    <a className="btn btn_cncl">No, Cancel</a>
+                  </li>
+                </ul>
+              </div>
+            )}
             {/* Subscription Details Section */}
             {this.state.viewDetailsOpen && <SubscriptionDetails />}
           </React.Fragment>
