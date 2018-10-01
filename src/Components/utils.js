@@ -1,4 +1,9 @@
-const formatDate = () => "test";
-const print = () => "test";
+export const setTokenCookie = (name, value) => {
+  const date = new Date();
+  date.setTime(date.getTime() + 540 * 1000);
+  const expires = `; expires= ${date.toGMTString()}`;
+  document.cookie = `${name} = ${value}${expires}; path=/`;
+};
 
-export { formatDate, print };
+export const getTokenFromCookie = () =>
+  document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
