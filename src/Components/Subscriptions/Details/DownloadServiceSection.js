@@ -34,7 +34,10 @@ class DownloadServiceSection extends React.Component {
                   Technical Support Tune Ups.
                 </p>
                 <button type="button" className="btn btn_dnload">
-                  <img src="img/download.jpg" alt="" />
+                  <img
+                    src="https://officedepot.scene7.com/is/image/officedepot/Download_icon_White?fmt=png-alpha"
+                    alt=""
+                  />
                   {appData.content.DownloadServiceButton}
                 </button>
               </div>

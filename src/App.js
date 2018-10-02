@@ -6,19 +6,26 @@ import content from "./content";
 import AppContext from "./Components/Context/AppContext";
 import "./App.css";
 import Subscriptions from "./Components/Subscriptions/Subscriptions";
+import Loader from "./Components/SharedComponents/Loader";
+import { beautifyGetSubListResponse } from "./Components/utils";
 // import { getTokenFromCookie } from "./Components/utils";
 
 class App extends Component {
-  state = { content, userName: "Abhinay", isMobile: window.innerWidth <= 750 };
+  state = {
+    content,
+    userName: "Abhinay",
+    isMobile: window.innerWidth <= 750,
+    initialAppLoading: true
+  };
 
   componentDidMount() {
-    console.log(">>------> Abhinay <------<<");
     this.getSubscriptionsList();
   }
 
   getSubscriptionsList = async () => {
     const axiosInstance = axios.create({
-      baseURL: "http://localhost:3004/getSubscriptionDetailsListResponse"
+      baseURL:
+        "https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034"
     });
 
     const token = "abhinay";
@@ -36,11 +43,22 @@ class App extends Component {
       }
     }
 
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    // axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    axiosInstance.defaults.headers.common.Authorization = `Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg0NDY4NDZ9.kt-N9-mjTIYR_R3YmY6-IlLeQ2hjFjvl5SvaQsTF9PJAnysQRA6uDEECHsGkEDjZ9K37958U8HoaV0MOhID6ig`;
     try {
-      const response = await axiosInstance.get();
-      console.log("success", response);
+      const {
+        data: { getSubscriptionDetailsListResponse }
+      } = await axiosInstance.get();
+      const subscriptions = beautifyGetSubListResponse(
+        getSubscriptionDetailsListResponse
+      );
+      this.setState({
+        initialAppLoading: false,
+        userName: getSubscriptionDetailsListResponse.customer.fullName,
+        subscriptions
+      });
     } catch (error) {
+      this.setState({ initialAppLoading: false });
       console.error("error", error);
     }
   };
@@ -48,11 +66,15 @@ class App extends Component {
   render() {
     return (
       <AppContext.Provider value={{ ...this.state }}>
-        <div className="app-container">
-          <Header />
-          <Notifications />
-          <Subscriptions />
-        </div>
+        {this.state.initialAppLoading ? (
+          <Loader />
+        ) : (
+          <div className="app-container">
+            <Header />
+            <Notifications />
+            <Subscriptions />
+          </div>
+        )}
       </AppContext.Provider>
     );
   }
