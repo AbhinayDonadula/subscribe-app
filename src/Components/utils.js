@@ -25,16 +25,16 @@ export const beautifyGetSubListResponse = response => {
     const header = { ..._contract.contractHeader };
     const contractLines = _contract.contractLines || [];
     contractLines.forEach(contractLine => {
+      // use below to skip cancelled
+      // (contractLine.status === "Active" ||
+      //   contractLine.status === "Under amendment" ||
+      //   contractLine.status === "Pending signature" ||
+      //   contractLine.status === "Pending approval" ||
+      //   contractLine.status === "Sent for signature" ||
+      //   contractLine.status === "Hold")
+
       // skip BS(Bussiness-Select) contracts
-      if (
-        contractLine.serviceType !== "BS" &&
-        (contractLine.status === "Active" ||
-          contractLine.status === "Under amendment" ||
-          contractLine.status === "Pending signature" ||
-          contractLine.status === "Pending approval" ||
-          contractLine.status === "Sent for signature" ||
-          contractLine.status === "Hold")
-      ) {
+      if (contractLine.serviceType !== "BS") {
         subscriptions.push(
           Object.assign({
             ...header,
@@ -49,11 +49,17 @@ export const beautifyGetSubListResponse = response => {
   return subscriptions;
 };
 
-export const getSubscriptionImg = sku =>
-  "https://officedepot.scene7.com/is/image/officedepot/sku-image-SKU".replace(
+export const getSubscriptionImg = (sku, isSubCancelled) => {
+  let imgUrl = "https://officedepot.scene7.com/is/image/officedepot/sku-image-SKU".replace(
     "SKU",
     sku || "9204711"
   );
+  if (isSubCancelled) {
+    imgUrl = `${imgUrl}?op_colorize=cccccc`;
+  }
+
+  return imgUrl;
+};
 
 export const getImageBySKU = itemNum => {
   if (itemNum === "5628175" || itemNum === "932208") {

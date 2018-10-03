@@ -24,8 +24,7 @@ class App extends Component {
 
   getSubscriptionsList = async () => {
     const axiosInstance = axios.create({
-      baseURL:
-        "https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034"
+      baseURL: content.apiUrls.getSubList
     });
 
     const token = "abhinay";
@@ -44,7 +43,7 @@ class App extends Component {
     }
 
     // axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    axiosInstance.defaults.headers.common.Authorization = `Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg0NDY4NDZ9.kt-N9-mjTIYR_R3YmY6-IlLeQ2hjFjvl5SvaQsTF9PJAnysQRA6uDEECHsGkEDjZ9K37958U8HoaV0MOhID6ig`;
+    axiosInstance.defaults.headers.common.Authorization = content.apiUrls.token;
     try {
       const {
         data: { getSubscriptionDetailsListResponse }

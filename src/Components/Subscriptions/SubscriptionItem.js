@@ -5,6 +5,7 @@ import TextLink from "../SharedComponents/TextLink";
 import SubscriptionDetails from "./Details/SubscriptionDetails";
 import SubscriptionContext from "../Context/SubscriptionContext";
 import { getSubscriptionImg, getFrequency, getImageBySKU } from "../utils";
+import Img from "../SharedComponents/Img";
 
 class SubscriptionItem extends React.Component {
   state = {
@@ -75,7 +76,8 @@ class SubscriptionItem extends React.Component {
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
-              this.subscription = subscription;
+              const { closeDate = "" } = subscription;
+              const isSubCancelled = closeDate.length > 0;
               return (
                 <React.Fragment>
                   <div
@@ -113,19 +115,13 @@ class SubscriptionItem extends React.Component {
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
                         {subscription.vendorNumber === "01242135" ? (
-                          <img
-                            className="img-responsive center-block services__img"
-                            src={getImageBySKU(subscription.itemNumber)}
-                            alt=""
-                          />
+                          <Img src={getImageBySKU(subscription.itemNumber)} />
                         ) : (
-                          <img
-                            alt=""
+                          <Img
                             src={`${getSubscriptionImg(
-                              subscription.itemNumber
+                              subscription.itemNumber,
+                              isSubCancelled
                             )}`}
-                            // src="img/table1.jpg"
-                            className="img-responsive center-block services__img"
                           />
                         )}
                       </li>
@@ -157,9 +153,9 @@ class SubscriptionItem extends React.Component {
                           {subscription.quantity}
                         </span>
                         {/* <Dropdown
-                          options={appData.content.QuantityOptions}
-                          updateParentState={this.handleQuantityDropDown}
-                        /> */}
+                            options={appData.content.QuantityOptions}
+                            updateParentState={this.handleQuantityDropDown}
+                          /> */}
                       </li>
                       <li className="d-mob">
                         <label>{appData.content.FrequencyLabel}</label>
@@ -168,17 +164,17 @@ class SubscriptionItem extends React.Component {
                           {getFrequency(subscription.billingFrequency)}
                         </span>
                         {/* <Dropdown
-                          frequencyDropDown
-                          options={appData.content.FrequencyOptions}
-                          updateParentState={this.handleFrequencyDropDown}
-                        /> */}
+                            frequencyDropDown
+                            options={appData.content.FrequencyOptions}
+                            updateParentState={this.handleFrequencyDropDown}
+                          /> */}
                       </li>
                       {/* 
-                    This is used when Notifications are implemented
-                      <li className="org_bg">
-                          <img src="img/correct2.jpg" />
-                      </li> 
-                  */}
+                      This is used when Notifications are implemented
+                        <li className="org_bg">
+                            <img src="img/correct2.jpg" />
+                        </li> 
+                    */}
                       <li
                         className="cursor__pointer"
                         onClick={this.handleExtendedMenu}

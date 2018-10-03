@@ -1,4 +1,14 @@
 export default {
+  apiUrls: {
+    token:
+      "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg1NzIyNDd9.W4KgeT4987c-KygqdqsmzfTlDHeXyKreO0u52tyY9m6c_eAI5sqkjZ0uj6ZRXT2K93qabuSnehA44ek80cwdFw",
+    getSubList:
+      "https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034",
+    getEmailForDownloadService:
+      "https://subscription-ui-sqm.odplabs.com/dev/accounts/contractId",
+    getBillingHistory:
+      "https://staging.odplabs.com/services/subscription-billing-history/eaiapi/subscriptions/getBillingHistory?contractNumber="
+  },
   AppTitle: "Subscriptions Manager",
   RecentNotificationsHeader: "Recent Notifications",
   ViewAllSubscriptions: "View All Subscriptions",

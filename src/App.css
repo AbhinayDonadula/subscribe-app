@@ -2041,8 +2041,8 @@ height: 73px;
 }
 
 .services__img {
-  width: 60%;
-  height: 60px;
+  width: 70%;
+  height: 70px;
 }
 
 .margin__left-25 {
@@ -2051,4 +2051,8 @@ height: 73px;
 
 .margin__left-10 {
   margin-left: 10px;
+}
+ 
+.dnload__txt {
+  color: #fff
 }
