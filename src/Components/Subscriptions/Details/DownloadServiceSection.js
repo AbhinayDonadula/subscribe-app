@@ -1,7 +1,7 @@
 import React from "react";
-import axios from "axios";
 import AppContext from "../../Context/AppContext";
 import SubscriptionContext from "../../Context/SubscriptionContext";
+import { FireFetch } from "../../utils";
 
 class DownloadServiceSection extends React.Component {
   state = {
@@ -12,39 +12,22 @@ class DownloadServiceSection extends React.Component {
   };
 
   componentDidMount() {
-    const axiosInstance = axios.create({ baseURL: this.apiUrl });
-
-    const token = "abhinay";
-    // const token = getTokenFromCookie();
-    if (token && !token.length > 0) {
-      // const axiosJWTInstance = axios.create({
-      //   baseURL: "/json/jwtSubscription.do"
-      // });
-      // axiosJWTInstance.defaults.headers.common.credentials = "same-origin";
-      // try {
-      //   const response = await axiosJWTInstance.get();
-      //   console.log("success", response);
-      // } catch (error) {
-      //   console.error("error", error);
-      // }
-    }
-
-    // axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    axiosInstance.defaults.headers.common.Authorization = this.bearerToken;
-    axiosInstance
-      .get()
-      .then(resp => {
-        if (resp.status === 200) {
-          this.setState(({ downloadLink }) => ({
-            downloadLink: downloadLink + resp.data.emailAddress
-          }));
-        }
-        return new Error(resp);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    FireFetch(this.apiUrl, this.handleSuccess, this.handleFailure);
   }
+
+  handleSuccess = response => {
+    console.log("ASI call success for download section", response);
+    this.setState(({ downloadLink }) => ({
+      downloadLink: downloadLink + response.data.emailAddress
+    }));
+  };
+
+  handleFailure = (error, isJWTFailed) => {
+    if (error) {
+      console.log("JWT failed in download section", error.status, isJWTFailed);
+    }
+    console.log(error);
+  };
 
   showDownloadDetailsSection = () => {
     this.setState(({ showDownloadDetailsMobile }) => ({
@@ -59,7 +42,6 @@ class DownloadServiceSection extends React.Component {
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
-              this.bearerToken = appData.content.apiUrls.token;
               this.apiUrl = appData.content.apiUrls.getEmailForDownloadService.replace(
                 "contractId",
                 subscription.contractId

@@ -111,19 +111,20 @@ class SubscriptionItem extends React.Component {
                         </div>
                       </div>
                     )}
+
                     {/* each item */}
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
-                        {subscription.vendorNumber === "01242135" ? (
-                          <Img src={getImageBySKU(subscription.itemNumber)} />
-                        ) : (
-                          <Img
-                            src={`${getSubscriptionImg(
-                              subscription.itemNumber,
-                              isSubCancelled
-                            )}`}
-                          />
-                        )}
+                        <Img
+                          src={
+                            subscription.vendorNumber === "01242135"
+                              ? getImageBySKU(subscription.itemNumber)
+                              : getSubscriptionImg(
+                                  subscription.itemNumber,
+                                  isSubCancelled
+                                )
+                          }
+                        />
                       </li>
                       <li>
                         <span className="main_txt">

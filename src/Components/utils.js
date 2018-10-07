@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const setTokenCookie = (name, value) => {
   const date = new Date();
   date.setTime(date.getTime() + 540 * 1000);
@@ -106,3 +108,53 @@ export const formatPrice = price => `$${parseFloat(price).toFixed(2)}`;
 
 export const getContractNumber = (contractId = "N/A", lineNumber = "N/A") =>
   `${contractId}-${lineNumber}`;
+
+export const FireFetch = async (url, handleSuccess, handleError) => {
+  const axiosInstance = axios.create({ baseURL: url });
+  // const tokenFromCookie = document.cookie.replace(
+  //   /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
+  //   "$1"
+  // );
+  // if (!tokenFromCookie.length) {
+  //   const axiosJWTInstance = axios.create({
+  //     baseURL: "/json/jwtSubscription.do"
+  //   });
+  //   // axiosJWTInstance.defaults.headers.common.credentials = "same-origin";
+  //   try {
+  //     const response = await axiosJWTInstance.get();
+  //     axiosInstance.defaults.headers.common.Authorization = response;
+  //   } catch (error) {
+  //     const { response } = JSON.parse(JSON.stringify(error));
+  //     const isJWTfailed = true;
+
+  //     handleError(response, isJWTfailed);
+  //   }
+  // } else {
+  //   axiosInstance.defaults.headers.common.Authorization = tokenFromCookie;
+  // }
+
+  axiosInstance.defaults.headers.common.Authorization =
+    "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg5NTQzOTN9.1cOF92MjAfyqyVg4kHUBZj3LeMcL5bUbPlcLq14coq_8zYEWTkRK79XjvIZRJUMmpTrlmFINqmRZmi3I6tsQvw";
+
+  // api call
+  try {
+    const response = await axiosInstance.get();
+    handleSuccess(response);
+  } catch (error) {
+    const { response } = JSON.parse(JSON.stringify(error));
+    const isJWTfailed = false;
+    if (!response) {
+      handleError({ status: 401 }, isJWTfailed);
+    } else {
+      handleError(response, isJWTfailed);
+    }
+  }
+  return false;
+};
+
+export const getStatusFromError = err => {
+  const {
+    response: { status }
+  } = JSON.parse(JSON.stringify(err));
+  return status;
+};

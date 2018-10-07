@@ -1,7 +1,7 @@
 export default {
   apiUrls: {
     token:
-      "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg1NzIyNDd9.W4KgeT4987c-KygqdqsmzfTlDHeXyKreO0u52tyY9m6c_eAI5sqkjZ0uj6ZRXT2K93qabuSnehA44ek80cwdFw",
+      "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg5NDc2ODF9.naS0Zc2JS5jcTJx1g6hSEEuAyyL0eayZArX5daxji8i5InWMW9R8u0pe--Fi2209FgS3KxCVkabupBnnzM4H-w",
     getSubList:
       "https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034",
     getEmailForDownloadService:

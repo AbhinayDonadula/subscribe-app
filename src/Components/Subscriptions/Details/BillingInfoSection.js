@@ -1,8 +1,8 @@
 import React from "react";
 import AppContext from "../../Context/AppContext";
 import SubscriptionContext from "../../Context/SubscriptionContext";
-import getBillingHistory from "../../../apiCalls/getBillingHistory";
 import Img from "../../SharedComponents/Img";
+import { FireFetch } from "../../utils";
 
 class BillingInfoSection extends React.Component {
   state = {
@@ -11,17 +11,24 @@ class BillingInfoSection extends React.Component {
     billingHistory: null
   };
 
-  async componentDidMount() {
-    try {
-      const result = await getBillingHistory(this.bearerToken);
-      console.log(result);
-      this.setState({
-        billingHistory: result.data.billingHistoryResponse.billingHistoryRecord
-      });
-    } catch (e) {
-      this.setState({ billingHistory: [], billingHistoryError: e });
-    }
+  componentDidMount() {
+    FireFetch(this.billingHistoryUrl, this.handleSuccess, this.handleFailure);
   }
+
+  handleSuccess = response => {
+    console.log("billing history success", response);
+    this.setState({
+      billingHistory: response.data.billingHistoryResponse.billingHistoryRecord
+    });
+  };
+
+  handleFailure = (error, isJWTFailed) => {
+    if (isJWTFailed) {
+      console.log("JWT failed in billing section", error.status);
+    }
+    console.log(error);
+    this.setState({ billingHistory: [], billingHistoryError: error });
+  };
 
   toggleShowHide = () => {
     this.setState(({ show }) => ({
@@ -39,7 +46,6 @@ class BillingInfoSection extends React.Component {
               this.billingHistoryUrl =
                 appData.content.apiUrls.getBillingHistory +
                 subscription.contractId;
-              this.bearerToken = appData.content.apiUrls.token;
               return (
                 <React.Fragment>
                   <h3
