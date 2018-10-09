@@ -23,10 +23,11 @@ class DownloadServiceSection extends React.Component {
   };
 
   handleFailure = (error, isJWTFailed) => {
-    if (error) {
-      console.log("JWT failed in download section", error.status, isJWTFailed);
+    if (isJWTFailed) {
+      console.log("JWT failed in download section", error.status, error);
+    } else {
+      console.log("Download Section Error", error);
     }
-    console.log(error);
   };
 
   showDownloadDetailsSection = () => {
@@ -64,8 +65,8 @@ class DownloadServiceSection extends React.Component {
                     !this.state.isMobile) && (
                     <div className="dnload_div show">
                       <p className="dn_txt">
-                        Please download the following agent: Unlimited On Demand
-                        Technical Support Tune Ups.
+                        Please download the following agent:{" "}
+                        {subscription.itemDescription}
                       </p>
                       <a className="dnload__txt" href={this.state.downloadLink}>
                         <button type="button" className="btn btn_dnload">

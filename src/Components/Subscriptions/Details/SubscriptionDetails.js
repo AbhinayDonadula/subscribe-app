@@ -1,11 +1,12 @@
 import React from "react";
 import AppContext from "../../Context/AppContext";
-import Dropdown from "../../SharedComponents/Dropdown";
+// import Dropdown from "../../SharedComponents/Dropdown";
 import DetailsSection from "./DetailsSection";
 import DownloadServiceSection from "./DownloadServiceSection";
 import BillingInfoSection from "./BillingInfoSection";
 import PaymentSection from "./PaymentSection";
 import SubscriptionContext from "../../Context/SubscriptionContext";
+import { formatDate } from "../../utils";
 
 class SubscriptionDetails extends React.Component {
   state = {};
@@ -43,18 +44,20 @@ class SubscriptionDetails extends React.Component {
                   <div className="d-block d-md-none d-lg-none status_box">
                     <ul className="list-unstyled">
                       <li>
-                        <label>STATUS </label> Subscribed until:08/03/19{" "}
+                        <label>STATUS </label> Subscribed until:{" "}
+                        {formatDate(subscription.endDate)}
                       </li>
                       <li>
-                        <label>{appData.content.Quantity}</label> 1
+                        <label>{appData.content.Quantity}</label>{" "}
+                        {subscription.quantity}
                       </li>
-                      <li>
+                      {/* <li>
                         <label>{appData.content.Frequency}</label>
                         <Dropdown
                           options={appData.content.FrequencyOptions}
                           updateParentState={this.handleFrequencyDropDown}
                         />
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <DetailsSection />

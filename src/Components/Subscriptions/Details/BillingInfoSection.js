@@ -2,7 +2,7 @@ import React from "react";
 import AppContext from "../../Context/AppContext";
 import SubscriptionContext from "../../Context/SubscriptionContext";
 import Img from "../../SharedComponents/Img";
-import { FireFetch } from "../../utils";
+import { FireFetch, formatDate } from "../../utils";
 
 class BillingInfoSection extends React.Component {
   state = {
@@ -38,6 +38,10 @@ class BillingInfoSection extends React.Component {
   };
 
   render() {
+    const { billingHistory, billingHistoryError } = this.state;
+    const showBillingTable =
+      (billingHistory && billingHistory.length === 0) ||
+      billingHistory === null;
     return (
       <AppContext.Consumer>
         {appData => (
@@ -62,12 +66,18 @@ class BillingInfoSection extends React.Component {
                   </h3>
                   {(this.state.show || !this.state.isMobile) && (
                     <div className="bill_Div show">
-                      <p className="pay_txt">
-                        <label>
-                          {appData.content.BillingSection.NextScheduledPayment}
-                        </label>{" "}
-                        Jul 13, 2018
-                      </p>
+                      {!showBillingTable ? (
+                        <p className="pay_txt">
+                          <label>
+                            {
+                              appData.content.BillingSection
+                                .NextScheduledPayment
+                            }
+                          </label>{" "}
+                          {formatDate(subscription.nextBillingDate)}
+                        </p>
+                      ) : null}
+
                       <a
                         href=""
                         className="view_txt d-block d-md-none d-lg-none"
@@ -75,7 +85,10 @@ class BillingInfoSection extends React.Component {
                         {appData.content.BillingSection.ViewAllBillingHistory}
                         <i className="fa fa-angle-right" aria-hidden="true" />
                       </a>
-                      <div className="pos_rel">
+                      <div
+                        className="pos_rel"
+                        style={{ height: !showBillingTable ? 207 : "auto" }}
+                      >
                         <div className="clearfix" />
                         <div className="table-responsive zui-scroller">
                           <table
@@ -102,16 +115,14 @@ class BillingInfoSection extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {(this.state.billingHistory &&
-                                this.state.billingHistory.length === 0) ||
-                              this.state.billingHistory === null ? (
+                              {showBillingTable ? (
                                 <tr>
                                   <td />
                                   <td />
                                   <td>
-                                    {this.state.billingHistory &&
-                                    this.state.billingHistory.length === 0 ? (
-                                      this.state.billingHistoryError ? (
+                                    {billingHistory &&
+                                    billingHistory.length === 0 ? (
+                                      billingHistoryError ? (
                                         "Billing History unvailable"
                                       ) : (
                                         "Your first recurring bill has not been generated"
@@ -169,7 +180,10 @@ class BillingInfoSection extends React.Component {
                           </table>
                         </div>
 
-                        <div className="fix d-mob1">
+                        <div
+                          className="fix d-mob1"
+                          style={{ height: !showBillingTable ? 226 : "auto" }}
+                        >
                           <table
                             className="table table2 table-striped zui-table"
                             id="invoice_table"
@@ -183,20 +197,24 @@ class BillingInfoSection extends React.Component {
                             </thead>
                             <tbody>
                               <tr>
-                                <td>$15</td>
+                                <td>{!showBillingTable ? "$15" : "N/A"}</td>
                               </tr>
-                              <tr>
-                                <td>$15</td>
-                              </tr>
-                              <tr>
-                                <td>$15</td>
-                              </tr>
-                              <tr>
-                                <td>$15</td>
-                              </tr>
-                              <tr>
-                                <td>$15</td>
-                              </tr>
+                              {!showBillingTable ? (
+                                <React.Fragment>
+                                  <tr>
+                                    <td>$15</td>
+                                  </tr>
+                                  <tr>
+                                    <td>$15</td>
+                                  </tr>
+                                  <tr>
+                                    <td>$15</td>
+                                  </tr>
+                                  <tr>
+                                    <td>$15</td>
+                                  </tr>
+                                </React.Fragment>
+                              ) : null}
                             </tbody>
                           </table>
                         </div>

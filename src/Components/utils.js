@@ -134,7 +134,7 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   // }
 
   axiosInstance.defaults.headers.common.Authorization =
-    "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzg5NTQzOTN9.1cOF92MjAfyqyVg4kHUBZj3LeMcL5bUbPlcLq14coq_8zYEWTkRK79XjvIZRJUMmpTrlmFINqmRZmi3I6tsQvw";
+    "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1MzkwMzMwNzZ9.Jw2AhFMMcRTt1FztxLK7deyFMEdUmzKIyfKlbf7n11qzJjW3VySWVLbWE1Tf1KLXvwsruraUFtXz-z0GvdmJXw";
 
   // api call
   try {

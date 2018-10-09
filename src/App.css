@@ -630,7 +630,7 @@ display: block;
   vertical-align: middle;
 }
 .data-table ul li:nth-child(4){
-  width: 12%;
+  width: 15%;
 }
 .data-table ul li .view_txt {
   margin-left: 0px;
@@ -648,10 +648,10 @@ display: block;
   list-style: none;
 }
 .data-table ul li:first-child {
-  width: 12%;
+  width: 15%;
 }
 .data-table ul li:nth-child(2) {
-  width: 31%;
+  width: 35%;
 }
 .data-table ul li:nth-child(3){
   width: 223px;
@@ -2041,8 +2041,8 @@ height: 73px;
 }
 
 .services__img {
-  width: 70%;
-  height: 70px;
+  width: 60%;
+  height: 60px;
 }
 
 .margin__left-25 {

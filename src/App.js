@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.css";
 import Header from "./Components/Header/Header";
 import Notifications from "./Components/Notifications/Notifications";
 import content from "./content";
@@ -42,9 +43,9 @@ class App extends Component {
   };
 
   getSubscriptionsList = async () => {
-    // params(url, token, success, failure), get subscriptions list
     FireFetch(
-      content.apiUrls.getSubList,
+      // content.apiUrls.getSubList,
+      "http://localhost:3004/data",
       this.handleSuccess,
       this.handleFailure
     );

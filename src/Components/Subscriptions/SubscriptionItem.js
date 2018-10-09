@@ -10,12 +10,12 @@ import Img from "../SharedComponents/Img";
 class SubscriptionItem extends React.Component {
   state = {
     viewDetailsOpen: false,
-    showSaveUpdateConf: false,
+    // showSaveUpdateConf: false,
     openExtendedMenu: false,
     showFreqSuccessMsg: false,
-    showQuantitySuccessMsg: false,
-    frequencySelected: "",
-    quantitySelected: 1
+    showQuantitySuccessMsg: false
+    // frequencySelected: "",
+    // quantitySelected: 1
   };
 
   handleViewDetails = () => {
@@ -32,18 +32,20 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleQuantityDropDown = selected => {
-    this.setState({ quantitySelected: Number(selected) });
-  };
+  // handleQuantityDropDown = selected => {
+  //   this.setState({ quantitySelected: Number(selected) });
+  // };
 
   handleExtendedMenu = () => {
-    this.setState({ openExtendedMenu: !this.state.openExtendedMenu });
+    this.setState(({ openExtendedMenu }) => ({
+      openExtendedMenu: !openExtendedMenu
+    }));
   };
 
-  handleExtendeMenuSelection = event => {
+  handleExtendeMenuSelection = () => {
     this.setState({
-      openExtendedMenu: false,
-      selectedExtendedMenu: event.target.getAttribute("data-value")
+      openExtendedMenu: false
+      // selectedExtendedMenu: event.target.getAttribute("data-value")
     });
   };
 
@@ -71,6 +73,14 @@ class SubscriptionItem extends React.Component {
   };
 
   render() {
+    const {
+      openExtendedMenu,
+      showFreqSuccessMsg,
+      showFreqUpdateSaveConf,
+      showQtyUpdateSaveConf,
+      showQuantitySuccessMsg,
+      viewDetailsOpen
+    } = this.state;
     return (
       <AppContext.Consumer>
         {appData => (
@@ -78,20 +88,20 @@ class SubscriptionItem extends React.Component {
             {subscription => {
               const { closeDate = "" } = subscription;
               const isSubCancelled = closeDate.length > 0;
+
               return (
                 <React.Fragment>
                   <div
                     className={`data-table ${
-                      this.state.openExtendedMenu ? "overlay" : ""
+                      openExtendedMenu ? "overlay" : ""
                     }`}
                     onClick={() => {
-                      if (this.state.openExtendedMenu)
+                      if (openExtendedMenu)
                         this.setState({ openExtendedMenu: false });
                     }}
                   >
                     {/* Success message */}
-                    {(this.state.showFreqSuccessMsg ||
-                      this.state.showQuantitySuccessMsg) && (
+                    {(showFreqSuccessMsg || showQuantitySuccessMsg) && (
                       <div className="succ_Div" style={{ display: "block" }}>
                         <div className="media">
                           <div className="media-left">
@@ -102,10 +112,12 @@ class SubscriptionItem extends React.Component {
                           </div>
                           <div className="media-body">
                             <p>
-                              {this.state.showQuantitySuccessMsg &&
-                                "your quantity changes have been successfully updated."}
-                              {this.state.showFreqSuccessMsg &&
-                                "your frequency changes have been successfully updated."}
+                              {showQuantitySuccessMsg
+                                ? "your quantity changes have been successfully updated."
+                                : null}
+                              {showFreqSuccessMsg
+                                ? "your frequency changes have been successfully updated."
+                                : null}
                             </p>
                           </div>
                         </div>
@@ -136,9 +148,7 @@ class SubscriptionItem extends React.Component {
                         <br />
                         <TextLink
                           label={`${
-                            this.state.viewDetailsOpen
-                              ? "Close Details"
-                              : "View Details"
+                            viewDetailsOpen ? "Close Details" : "View Details"
                           }`}
                           handleClick={this.handleViewDetails}
                         />
@@ -170,11 +180,11 @@ class SubscriptionItem extends React.Component {
                             updateParentState={this.handleFrequencyDropDown}
                           /> */}
                       </li>
-                      {/* 
+                      {/*
                       This is used when Notifications are implemented
                         <li className="org_bg">
                             <img src="img/correct2.jpg" />
-                        </li> 
+                        </li>
                     */}
                       <li
                         className="cursor__pointer"
@@ -189,7 +199,7 @@ class SubscriptionItem extends React.Component {
                   </div>
 
                   {/* Extended Menu */}
-                  {this.state.openExtendedMenu && (
+                  {openExtendedMenu && (
                     <div className="dropdown_div" style={{ display: "block" }}>
                       <ul className="list-inline list-unstyled">
                         <li>
@@ -228,14 +238,13 @@ class SubscriptionItem extends React.Component {
                   )}
 
                   {/* Save/Update confirmation  */}
-                  {(this.state.showFreqUpdateSaveConf ||
-                    this.state.showQtyUpdateSaveConf) && (
+                  {(showFreqUpdateSaveConf || showQtyUpdateSaveConf) && (
                     <div className="show_Div show">
                       <ul className="list-inline list-unstyled">
                         <li>
-                          {this.state.showFreqUpdateSaveConf &&
+                          {showFreqUpdateSaveConf &&
                             `Save/Update frequency changes?`}
-                          {this.state.showQtyUpdateSaveConf &&
+                          {showQtyUpdateSaveConf &&
                             `Save/Update quantity changes?`}
                         </li>
                         <li>
@@ -258,7 +267,7 @@ class SubscriptionItem extends React.Component {
                     </div>
                   )}
                   {/* Subscription Details Section */}
-                  {this.state.viewDetailsOpen && <SubscriptionDetails />}
+                  {viewDetailsOpen && <SubscriptionDetails />}
                 </React.Fragment>
               );
             }}
