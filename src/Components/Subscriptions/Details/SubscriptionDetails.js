@@ -45,8 +45,8 @@ class SubscriptionDetails extends React.Component {
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
-              // console.log(subscription);
               this.subscription = subscription;
+              console.log(subscription);
               const {
                 status = "",
                 serviceType = "SS",

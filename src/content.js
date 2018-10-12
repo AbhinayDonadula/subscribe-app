@@ -1,4 +1,5 @@
 export default {
+  // json-server --port 3004 --routes D:\Dev\subscribe-app\src\apiCalls\fakeData\routes.json D:\Dev\subscribe-app\src\apiCalls\fakeData\subscriptions\Services_Items.json
   apiUrls: {
     token:
       "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1MzkxMTg1OTF9.6NDm4eYbjOJPgJ1xCNhj66sTTLK33kYCIdLv_U_8L-tKUIbKsHVkIi3YRHuUvylPssR6w6bT4Xorc8UNPmS4JQ",

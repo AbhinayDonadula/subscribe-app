@@ -1,4 +1,5 @@
 import axios from "axios";
+import datefns from "date-fns";
 
 export const setTokenCookie = (name, value) => {
   const date = new Date();
@@ -42,7 +43,8 @@ export const beautifyGetSubListResponse = response => {
             ...header,
             ...contractLine,
             ...response.customer,
-            reactKeyId: index + 1
+            reactKeyId: index + 1,
+            sortDate: datefns.format(contractLine.startDate, "MM/DD/YYYY")
           })
         );
       }
@@ -164,10 +166,10 @@ export const getStatusFromError = err => {
 };
 
 export const formatPhoneNumber = phoneNumberString => {
-  const cleaned = (`${  phoneNumberString}`).replace(/\D/g, "");
+  const cleaned = `${phoneNumberString}`.replace(/\D/g, "");
   const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
   if (match) {
-    return `(${  match[1]  }) ${  match[2]  }-${  match[3]}`;
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
   }
   return null;
 };

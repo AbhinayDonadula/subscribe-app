@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import "../node_modules/font-awesome/css/font-awesome.min.css";
 import Header from "./Components/Header/Header";
 import Notifications from "./Components/Notifications/Notifications";
 import content from "./content";
@@ -32,12 +33,18 @@ class App extends Component {
       itemDescription: item.Desc,
       billingFrequency: item.Freq,
       quantity: item.QtyOrd,
-      status: item.Status
+      status: item.Status,
+      sortDate: item.NextDlvDt
     }));
     console.log(beautifiedItems);
+    const itemsAndServices = [...beautifiedItems, ...this.state.subscriptions];
+    const sortedByDate = itemsAndServices.sort(
+      (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+    );
+    console.log(sortedByDate);
     this.setState({
       initialAppLoading: false,
-      subscriptionsAndItems: [...beautifiedItems, ...this.state.subscriptions]
+      subscriptionsAndItems: sortedByDate
     });
   };
 
