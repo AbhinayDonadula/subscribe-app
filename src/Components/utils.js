@@ -95,8 +95,11 @@ export const getImageBySKU = itemNum => {
 };
 
 export const getFrequency = frequency => {
-  if (frequency === "MON") {
+  if (frequency === "MON" || frequency === "M") {
     return "Monthly";
+  }
+  if (frequency === "W") {
+    return "Weekly";
   }
   if (frequency === "YR") {
     return "Annually";
@@ -140,6 +143,7 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   try {
     const response = await axiosInstance.get();
     handleSuccess(response);
+    return response;
   } catch (error) {
     const { response } = JSON.parse(JSON.stringify(error));
     const isJWTfailed = false;
@@ -148,8 +152,8 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
     } else {
       handleError(response, isJWTfailed);
     }
+    return error;
   }
-  return false;
 };
 
 export const getStatusFromError = err => {
@@ -157,4 +161,13 @@ export const getStatusFromError = err => {
     response: { status }
   } = JSON.parse(JSON.stringify(err));
   return status;
+};
+
+export const formatPhoneNumber = phoneNumberString => {
+  const cleaned = (`${  phoneNumberString}`).replace(/\D/g, "");
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return `(${  match[1]  }) ${  match[2]  }-${  match[3]}`;
+  }
+  return null;
 };

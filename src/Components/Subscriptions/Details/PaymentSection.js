@@ -1,6 +1,7 @@
 import React from "react";
 import AppContext from "../../Context/AppContext";
 import SubscriptionContext from "../../Context/SubscriptionContext";
+import { formatPhoneNumber } from "../../utils";
 
 class PaymentSection extends React.Component {
   editPayment = event => {
@@ -70,9 +71,11 @@ class PaymentSection extends React.Component {
                             </a>
                           </td>
                           <td>
-                            <a href="" className="test_txt">
-                              TESTIongnamehere@OFFICEDEPOT.COM
-                            </a>
+                            <span className="test_txt">
+                              {this.props.itemInfo
+                                ? this.props.itemInfo.Email
+                                : "N/A"}
+                            </span>
                             <br />
                             <a
                               href=""
@@ -94,8 +97,15 @@ class PaymentSection extends React.Component {
                             </a>
                           </td>
                           <td>
-                            Get Notifications sent to
-                            <br /> your mobile! <br />
+                            {this.props.itemInfo ? (
+                              formatPhoneNumber(this.props.itemInfo.PhoneNo)
+                            ) : (
+                              <React.Fragment>
+                                Get Notifications sent to
+                                <br /> your mobile! <br />
+                              </React.Fragment>
+                            )}
+
                             <a
                               href=""
                               onClick={this.addMobileNumber}

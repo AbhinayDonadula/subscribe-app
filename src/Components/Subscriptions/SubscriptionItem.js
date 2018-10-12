@@ -129,17 +129,19 @@ class SubscriptionItem extends React.Component {
                       <li>
                         <Img
                           src={
-                            subscription.vendorNumber === "01242135"
-                              ? getImageBySKU(subscription.itemNumber)
-                              : getSubscriptionImg(
-                                  subscription.itemNumber,
-                                  isSubCancelled
-                                )
+                            subscription.isItem
+                              ? "https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$"
+                              : subscription.vendorNumber === "01242135"
+                                ? getImageBySKU(subscription.itemNumber)
+                                : getSubscriptionImg(
+                                    subscription.itemNumber,
+                                    isSubCancelled
+                                  )
                           }
                         />
                       </li>
                       <li>
-                        <span className="main_txt">
+                        <span className="main_txt desc">
                           {subscription.itemDescription &&
                           subscription.itemDescription.length > 0
                             ? subscription.itemDescription
@@ -161,7 +163,7 @@ class SubscriptionItem extends React.Component {
                         <label>{appData.content.Quantity}</label>
                         <br />
                         <span className="pad_span margin__left-25">
-                          {subscription.quantity}
+                          {subscription.quantity.replace(/^0+/, "")}
                         </span>
                         {/* <Dropdown
                             options={appData.content.QuantityOptions}

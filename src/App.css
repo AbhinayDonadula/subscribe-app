@@ -492,7 +492,7 @@ border: none;
   border: 0;
 }
 .table2>tbody>tr>td:last-child,.table2 th:last-child{
-text-align: center;
+/* text-align: center; */
 }
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #fbfbfd;
@@ -2055,4 +2055,7 @@ height: 73px;
  
 .dnload__txt {
   color: #fff
+}
+.main_txt.desc {
+  padding-right: 20px;
 }

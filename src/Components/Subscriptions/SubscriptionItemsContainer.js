@@ -9,66 +9,66 @@ class SubscriptionItemsContainer extends React.Component {
   render() {
     return (
       <AppContext.Consumer>
-        {appData => {
-          console.log(appData.subscriptions);
-          return (
-            <div className="row">
-              <div className="col-md-12">
-                {appData.subscriptions
-                  ? appData.subscriptions.map(eachSubscription => (
-                      <div
-                        className="sub_div"
-                        key={
-                          eachSubscription.reactKeyId +
-                          eachSubscription.lineNumber
-                        }
+        {appData => (
+          <div className="row">
+            <div className="col-md-12">
+              {appData.subscriptions
+                ? appData.subscriptionsAndItems.map(eachSubscription => (
+                    // console.log(eachSubscription);
+                    <div
+                      className="sub_div"
+                      key={
+                        eachSubscription.RecordKey
+                          ? eachSubscription.RecordKey
+                          : eachSubscription.reactKeyId +
+                            eachSubscription.lineNumber
+                      }
+                    >
+                      <SubscriptionContext.Provider
+                        value={{ ...eachSubscription }}
                       >
-                        <SubscriptionContext.Provider
-                          value={{ ...eachSubscription }}
-                        >
-                          <SubscriptionItem />
-                        </SubscriptionContext.Provider>
-                      </div>
-                    ))
-                  : [
-                      <div className="sub_div" key="abcd">
                         <SubscriptionItem />
-                      </div>,
-                      <div className="sub_div" key="def">
-                        <SubscriptionItem />
-                      </div>
-                    ]}
-                <div className="data-table data-table1">
-                  <ul className="list-unstyled list-inline">
-                    <li>
-                      <img
-                        alt=""
-                        src="img/add.jpg"
-                        className="img-responsive center-block"
-                      />
-                    </li>
+                      </SubscriptionContext.Provider>
+                    </div>
+                  ))
+                : [
+                    <div className="sub_div" key="abcd">
+                      <SubscriptionItem />
+                    </div>,
+                    <div className="sub_div" key="def">
+                      <SubscriptionItem />
+                    </div>
+                  ]}
+              <div className="data-table data-table1">
+                <ul className="list-unstyled list-inline">
+                  <li>
+                    <img
+                      alt=""
+                      src="img/add.jpg"
+                      className="img-responsive center-block"
+                    />
+                  </li>
 
-                    <li>
-                      Finally, e-mail campaigns <br /> that dont suck.
-                    </li>
-                    <li>
-                      <button type="button" className="btn btn_plan">
-                        Awesome Plans &amp; Pricing
-                      </button>
-                    </li>
-                    <li>
-                      <img
-                        alt=""
-                        src="img/final.jpg"
-                        className="img-resp final_img"
-                      />
-                    </li>
-                  </ul>
-                </div>
+                  <li>
+                    Finally, e-mail campaigns <br /> that dont suck.
+                  </li>
+                  <li>
+                    <button type="button" className="btn btn_plan">
+                      Awesome Plans &amp; Pricing
+                    </button>
+                  </li>
+                  <li>
+                    <img
+                      alt=""
+                      src="img/final.jpg"
+                      className="img-resp final_img"
+                    />
+                  </li>
+                </ul>
               </div>
             </div>
-          );
-        }}
+          </div>
+        )}
       </AppContext.Consumer>
     );
   }

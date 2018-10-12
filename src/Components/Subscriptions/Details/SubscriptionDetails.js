@@ -6,10 +6,34 @@ import DownloadServiceSection from "./DownloadServiceSection";
 import BillingInfoSection from "./BillingInfoSection";
 import PaymentSection from "./PaymentSection";
 import SubscriptionContext from "../../Context/SubscriptionContext";
-import { formatDate } from "../../utils";
+import { formatDate, FireFetch } from "../../utils";
 
 class SubscriptionDetails extends React.Component {
-  state = {};
+  state = {
+    itemInfo: null
+  };
+
+  componentDidMount() {
+    if (this.subscription.isItem) {
+      FireFetch(
+        // content.apiUrls.getSubList,
+        "http://localhost:3004/getItemInfo",
+        this.handleGetItemInfoSuccess,
+        this.handleGetItemInfoFailure
+      );
+    }
+  }
+
+  handleGetItemInfoSuccess = response => {
+    console.log(response.data.responseObject.jsonObjectResponse);
+    this.setState({
+      itemInfo: response.data.responseObject.jsonObjectResponse
+    });
+  };
+
+  handleGetItemInfoErr = error => {
+    console.log(error);
+  };
 
   handleFrequencyDropDown = selected => {
     this.setState({ frequencySelected: selected });
@@ -21,12 +45,14 @@ class SubscriptionDetails extends React.Component {
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
-              console.log(subscription);
+              // console.log(subscription);
+              this.subscription = subscription;
               const {
                 status = "",
                 serviceType = "SS",
                 billingFrequency,
-                vendorNumber
+                vendorNumber,
+                isItem
               } = subscription;
 
               // show billing section only only for SS type and Monthly frequency
@@ -35,6 +61,7 @@ class SubscriptionDetails extends React.Component {
 
               // show/hide download section
               const showDownloadSection =
+                !isItem &&
                 status.toLowerCase() !== "closed" &&
                 vendorNumber !== "01242135" &&
                 (serviceType === "SS" && vendorNumber !== "01306234");
@@ -49,7 +76,7 @@ class SubscriptionDetails extends React.Component {
                       </li>
                       <li>
                         <label>{appData.content.Quantity}</label>{" "}
-                        {subscription.quantity}
+                        {subscription.quantity.replace(/^0+/, "")}
                       </li>
                       {/* <li>
                         <label>{appData.content.Frequency}</label>
@@ -60,11 +87,10 @@ class SubscriptionDetails extends React.Component {
                       </li> */}
                     </ul>
                   </div>
-                  <DetailsSection />
+                  <DetailsSection itemInfo={this.state.itemInfo} />
                   {showDownloadSection ? <DownloadServiceSection /> : null}
                   {showBillingSection ? <BillingInfoSection /> : null}
-                  {/* {true ? <BillingInfoSection /> : null} */}
-                  <PaymentSection />
+                  <PaymentSection itemInfo={this.state.itemInfo} />
                 </div>
               );
             }}
