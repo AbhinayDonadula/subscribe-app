@@ -21,7 +21,10 @@ class Header extends React.Component {
     return (
       <AppContext.Consumer>
         {appData => (
-          <section className="heading_sec">
+          <section
+            className="heading_sec"
+            style={{ marginBottom: appData.enableNotifications ? 90 : 0 }}
+          >
             <div className="container-fluid">
               <div className="row">
                 <div className="col-sm-12">

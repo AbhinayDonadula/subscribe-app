@@ -16,6 +16,7 @@ class App extends Component {
     userName: "John Doe",
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
+    enableNotifications: true,
     subscriptions: null,
     subscriptionsAndItems: []
   };
@@ -36,12 +37,12 @@ class App extends Component {
       status: item.Status,
       sortDate: item.NextDlvDt
     }));
-    console.log(beautifiedItems);
+    // console.log(beautifiedItems);
     const itemsAndServices = [...beautifiedItems, ...this.state.subscriptions];
     const sortedByDate = itemsAndServices.sort(
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
-    console.log(sortedByDate);
+    // console.log(sortedByDate);
     this.setState({
       initialAppLoading: false,
       subscriptionsAndItems: sortedByDate
@@ -106,7 +107,7 @@ class App extends Component {
         ) : (
           <div className="app-container">
             <Header />
-            <Notifications />
+            {this.state.enableNotifications ? <Notifications /> : null}
             <Subscriptions />
           </div>
         )}
