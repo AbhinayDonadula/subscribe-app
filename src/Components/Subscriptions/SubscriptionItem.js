@@ -15,9 +15,17 @@ class SubscriptionItem extends React.Component {
     showFreqSuccessMsg: false,
     showQtySuccessMsg: false,
     frequencySelected: "",
+    prevFrequencySelected: "",
     quantitySelected: 1,
     prevQuantitySelected: 1
   };
+
+  componentDidMount() {
+    this.setState({
+      frequencySelected: getFrequency(this.subscription.billingFrequency),
+      prevFrequencySelected: getFrequency(this.subscription.billingFrequency)
+    });
+  }
 
   handleViewDetails = () => {
     this.setState(({ viewDetailsOpen }) => ({
@@ -34,7 +42,6 @@ class SubscriptionItem extends React.Component {
   };
 
   handleQuantityDropDown = selected => {
-    // this.setState({ quantitySelected: Number(selected) });
     this.setState(({ quantitySelected }) => ({
       prevQuantitySelected: quantitySelected,
       quantitySelected: Number(selected),
@@ -96,9 +103,10 @@ class SubscriptionItem extends React.Component {
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
+              this.subscription = subscription;
               const { closeDate = "" } = subscription;
               const isSubCancelled = closeDate.length > 0;
-
+              console.log(subscription);
               return (
                 <React.Fragment>
                   <div
@@ -188,6 +196,9 @@ class SubscriptionItem extends React.Component {
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}
                             updateParentState={this.handleFrequencyDropDown}
+                            selected={getFrequency(
+                              subscription.billingFrequency
+                            )}
                           />
                         ) : (
                           <span className="pad_span margin__left-10">

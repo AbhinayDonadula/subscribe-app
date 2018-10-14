@@ -98,6 +98,26 @@ export default {
       id: 2,
       title: "Every Other Week",
       value: "Every Other Week"
+    },
+    {
+      id: 3,
+      title: "Monthly",
+      value: "Monthly"
+    },
+    {
+      id: 4,
+      title: "Every 3 Weeks",
+      value: "Every 3 Weeks"
+    },
+    {
+      id: 5,
+      title: "Quarterly",
+      value: "Quarterly"
+    },
+    {
+      id: 6,
+      title: "Every 6 Months",
+      value: "Every 6 Months"
     }
   ],
   QuantityOptions: [
