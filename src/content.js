@@ -118,7 +118,7 @@ export default {
     }
   ],
   ExtendedMenuOptions: [
-    { id: 1, label: "Go To Order History" }
-    // { id: 2, label: "Cancel Subscription" }
+    { id: 1, label: "Go To Order History" },
+    { id: 2, label: "Cancel Subscription" }
   ]
 };

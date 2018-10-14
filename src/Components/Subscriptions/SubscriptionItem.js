@@ -236,18 +236,23 @@ class SubscriptionItem extends React.Component {
                             <div className="dropbody">
                               <ul className="list-unstyled subscription__extended-menu">
                                 {appData.content.ExtendedMenuOptions.map(
-                                  each => (
-                                    <li key={each.id}>
-                                      <a
-                                        data-value={each.label}
-                                        onClick={
-                                          this.handleExtendeMenuSelection
-                                        }
-                                      >
-                                        {each.label}
-                                      </a>
-                                    </li>
-                                  )
+                                  each => {
+                                    if (each.id === 2 && !subscription.isItem) {
+                                      return undefined;
+                                    }
+                                    return (
+                                      <li key={each.id}>
+                                        <a
+                                          data-value={each.label}
+                                          onClick={
+                                            this.handleExtendeMenuSelection
+                                          }
+                                        >
+                                          {each.label}
+                                        </a>
+                                      </li>
+                                    );
+                                  }
                                 )}
                               </ul>
                             </div>
