@@ -1,7 +1,7 @@
 import React from "react";
 import AppContext from "../Context/AppContext";
 import TextLink from "../SharedComponents/TextLink";
-// import Dropdown from "../SharedComponents/Dropdown";
+import Dropdown from "../SharedComponents/Dropdown";
 import SubscriptionDetails from "./Details/SubscriptionDetails";
 import SubscriptionContext from "../Context/SubscriptionContext";
 import { getSubscriptionImg, getFrequency, getImageBySKU } from "../utils";
@@ -10,12 +10,13 @@ import Img from "../SharedComponents/Img";
 class SubscriptionItem extends React.Component {
   state = {
     viewDetailsOpen: false,
-    // showSaveUpdateConf: false,
+    showSaveUpdateConf: false,
     openExtendedMenu: false,
     showFreqSuccessMsg: false,
-    showQuantitySuccessMsg: false
-    // frequencySelected: "",
-    // quantitySelected: 1
+    showQtySuccessMsg: false,
+    frequencySelected: "",
+    quantitySelected: 1,
+    prevQuantitySelected: 1
   };
 
   handleViewDetails = () => {
@@ -32,9 +33,14 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  // handleQuantityDropDown = selected => {
-  //   this.setState({ quantitySelected: Number(selected) });
-  // };
+  handleQuantityDropDown = selected => {
+    // this.setState({ quantitySelected: Number(selected) });
+    this.setState(({ quantitySelected }) => ({
+      prevQuantitySelected: quantitySelected,
+      quantitySelected: Number(selected),
+      showQtyUpdateSaveConf: quantitySelected !== selected
+    }));
+  };
 
   handleExtendedMenu = () => {
     this.setState(({ openExtendedMenu }) => ({
@@ -42,23 +48,26 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleExtendeMenuSelection = () => {
+  handleExtendeMenuSelection = event => {
     this.setState({
-      openExtendedMenu: false
-      // selectedExtendedMenu: event.target.getAttribute("data-value")
+      openExtendedMenu: false,
+      selectedExtendedMenu: event.target.getAttribute("data-value")
     });
   };
 
   handleSaveUpdate = () => {
     this.setState(
-      ({ showFreqUpdateSaveConf }) => ({
+      ({ showFreqUpdateSaveConf, showQtyUpdateSaveConf }) => ({
         showFreqUpdateSaveConf: false,
-        showFreqSuccessMsg: showFreqUpdateSaveConf
+        showQtyUpdateSaveConf: false,
+        showFreqSuccessMsg: showFreqUpdateSaveConf,
+        showQtySuccessMsg: showQtyUpdateSaveConf
       }),
       () => {
         window.setTimeout(() => {
           this.setState(() => ({
-            showFreqSuccessMsg: false
+            showFreqSuccessMsg: false,
+            showQtySuccessMsg: false
           }));
         }, 2000);
       }
@@ -66,9 +75,10 @@ class SubscriptionItem extends React.Component {
   };
 
   handleCancelSave = () => {
-    this.setState(() => ({
-      showFreqUpdateSaveConf: false
-      // frequencySelected: prevFrequencySelected
+    this.setState(({ prevFrequencySelected }) => ({
+      showFreqUpdateSaveConf: false,
+      showQtyUpdateSaveConf: false,
+      frequencySelected: prevFrequencySelected
     }));
   };
 
@@ -78,7 +88,7 @@ class SubscriptionItem extends React.Component {
       showFreqSuccessMsg,
       showFreqUpdateSaveConf,
       showQtyUpdateSaveConf,
-      showQuantitySuccessMsg,
+      showQtySuccessMsg,
       viewDetailsOpen
     } = this.state;
     return (
@@ -101,7 +111,7 @@ class SubscriptionItem extends React.Component {
                     }}
                   >
                     {/* Success message */}
-                    {(showFreqSuccessMsg || showQuantitySuccessMsg) && (
+                    {(showFreqSuccessMsg || showQtySuccessMsg) && (
                       <div className="succ_Div" style={{ display: "block" }}>
                         <div className="media">
                           <div className="media-left">
@@ -112,7 +122,7 @@ class SubscriptionItem extends React.Component {
                           </div>
                           <div className="media-body">
                             <p>
-                              {showQuantitySuccessMsg
+                              {showQtySuccessMsg
                                 ? "your quantity changes have been successfully updated."
                                 : null}
                               {showFreqSuccessMsg
@@ -166,21 +176,27 @@ class SubscriptionItem extends React.Component {
                           {subscription.quantity.replace(/^0+/, "")}
                         </span>
                         {/* <Dropdown
-                            options={appData.content.QuantityOptions}
-                            updateParentState={this.handleQuantityDropDown}
-                          /> */}
+                          options={appData.content.QuantityOptions}
+                          updateParentState={this.handleQuantityDropDown}
+                        /> */}
                       </li>
                       <li className="d-mob">
                         <label>{appData.content.FrequencyLabel}</label>
                         <br />
-                        <span className="pad_span margin__left-10">
-                          {getFrequency(subscription.billingFrequency)}
-                        </span>
-                        {/* <Dropdown
+                        {subscription.isItem ? (
+                          <Dropdown
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}
                             updateParentState={this.handleFrequencyDropDown}
-                          /> */}
+                          />
+                        ) : (
+                          <span className="pad_span margin__left-10">
+                            {getFrequency(subscription.billingFrequency)}
+                          </span>
+                        )}
+                        {/* <span className="pad_span margin__left-10">
+                          {getFrequency(subscription.billingFrequency)}
+                        </span> */}
                       </li>
                       {/*
                       This is used when Notifications are implemented
@@ -212,7 +228,9 @@ class SubscriptionItem extends React.Component {
                                 onClick={this.handleExtendeMenuSelection}
                                 role="presentation"
                               >
-                                {appData.content.SkipNextDelivery}
+                                {subscription.isItem
+                                  ? appData.content.SkipNextDelivery
+                                  : "Cancel Subscription"}
                               </p>
                             </div>
                             <div className="dropbody">

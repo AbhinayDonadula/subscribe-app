@@ -1105,7 +1105,8 @@ left: 0;
        font-size: 14px;
   }
   .custom-select1 .select-selected:after {
-      right: 18%;
+      /* right: 18%; */
+      right: 0%;
   }
   .custom-select1 .select-selected.select-arrow-active:after {
       right: 8%;

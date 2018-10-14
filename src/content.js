@@ -118,8 +118,7 @@ export default {
     }
   ],
   ExtendedMenuOptions: [
-    { id: 1, label: "Go To Order History" },
-    { id: 3, label: "Rate This Product" },
-    { id: 4, label: "Cancel Subscription" }
+    { id: 1, label: "Go To Order History" }
+    // { id: 2, label: "Cancel Subscription" }
   ]
 };
