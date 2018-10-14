@@ -4,7 +4,12 @@ import TextLink from "../SharedComponents/TextLink";
 import Dropdown from "../SharedComponents/Dropdown";
 import SubscriptionDetails from "./Details/SubscriptionDetails";
 import SubscriptionContext from "../Context/SubscriptionContext";
-import { getSubscriptionImg, getFrequency, getImageBySKU } from "../utils";
+import {
+  getSubscriptionImg,
+  getFrequency,
+  getImageBySKU,
+  formatStatus
+} from "../utils";
 import Img from "../SharedComponents/Img";
 
 class SubscriptionItem extends React.Component {
@@ -106,7 +111,7 @@ class SubscriptionItem extends React.Component {
               this.subscription = subscription;
               const { closeDate = "" } = subscription;
               const isSubCancelled = closeDate.length > 0;
-              console.log(subscription);
+              // console.log(subscription);
               return (
                 <React.Fragment>
                   <div
@@ -175,7 +180,9 @@ class SubscriptionItem extends React.Component {
                       </li>
                       <li className="d-mob">
                         <label>STATUS </label> <br />
-                        <span className="pad_span">{subscription.status}</span>
+                        <span className="pad_span">
+                          {formatStatus(subscription.status)}
+                        </span>
                       </li>
                       <li className="d-mob">
                         <label>{appData.content.Quantity}</label>

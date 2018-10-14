@@ -9,7 +9,7 @@ class Img extends React.Component {
         src={this.props.src}
         className={`img-responsive center-block ${
           this.props.spinner ? "" : "services__img"
-        }`}
+        } ${this.props.appLoader ? "app__loader-img" : ""}`}
       />
     );
   }
@@ -17,11 +17,13 @@ class Img extends React.Component {
 
 Img.propTypes = {
   src: PropTypes.string.isRequired,
-  spinner: PropTypes.bool
+  spinner: PropTypes.bool,
+  appLoader: PropTypes.bool
 };
 
 Img.defaultProps = {
-  spinner: false
+  spinner: false,
+  appLoader: false
 };
 
 export default Img;

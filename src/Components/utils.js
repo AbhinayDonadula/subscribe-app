@@ -173,3 +173,14 @@ export const formatPhoneNumber = phoneNumberString => {
   }
   return null;
 };
+
+export const formatStatus = status => {
+  if (status === "A") {
+    return "Active";
+  }
+  if (status === "C") {
+    return "Cancelled";
+  }
+
+  return status;
+};

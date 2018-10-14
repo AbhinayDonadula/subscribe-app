@@ -7,7 +7,6 @@ import content from "./content";
 import AppContext from "./Components/Context/AppContext";
 import "./App.css";
 import Subscriptions from "./Components/Subscriptions/Subscriptions";
-import Loader from "./Components/SharedComponents/Loader";
 import { beautifyGetSubListResponse, FireFetch } from "./Components/utils";
 
 class App extends Component {
@@ -18,7 +17,7 @@ class App extends Component {
     initialAppLoading: true,
     enableNotifications: true,
     subscriptions: null,
-    subscriptionsAndItems: []
+    subscriptionsAndItems: null
   };
 
   componentDidMount() {
@@ -26,23 +25,7 @@ class App extends Component {
   }
 
   handleGetItemsListSuccess = response => {
-    const itemsList =
-      response.data.responseObject.jsonObjectResponse.GetSubListDetail;
-    const beautifiedItems = Object.values(itemsList).map(item => ({
-      ...item,
-      isItem: true,
-      itemDescription: item.Desc,
-      billingFrequency: item.Freq,
-      quantity: item.QtyOrd,
-      status: item.Status,
-      sortDate: item.NextDlvDt
-    }));
-    // console.log(beautifiedItems);
-    const itemsAndServices = [...beautifiedItems, ...this.state.subscriptions];
-    const sortedByDate = itemsAndServices.sort(
-      (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-    );
-    // console.log(sortedByDate);
+    const sortedByDate = this.sortItemsAndSubs(response);
     this.setState({
       initialAppLoading: false,
       subscriptionsAndItems: sortedByDate
@@ -64,7 +47,7 @@ class App extends Component {
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
         subscriptions,
-        subscriptionsAndItems: subscriptions
+        subscriptionsAndItems: null
       },
       () => {
         FireFetch(
@@ -99,18 +82,52 @@ class App extends Component {
     );
   };
 
+  handleAllFilter = selected => {
+    console.log(selected);
+    this.setState({ initialAppLoading: true }, () => {
+      window.setTimeout(() => {
+        this.setState({ initialAppLoading: false });
+      }, 1000);
+    });
+  };
+
+  handleSortFilter = selected => {
+    console.log(selected);
+  };
+
+  sortItemsAndSubs(response) {
+    const itemsList =
+      response.data.responseObject.jsonObjectResponse.GetSubListDetail;
+    const beautifiedItems = Object.values(itemsList).map(item => ({
+      ...item,
+      isItem: true,
+      itemDescription: item.Desc,
+      billingFrequency: item.Freq,
+      quantity: item.QtyOrd,
+      status: item.Status,
+      sortDate: item.NextDlvDt
+    }));
+    const itemsAndServices = [...beautifiedItems, ...this.state.subscriptions];
+    const sortedByDate = itemsAndServices.sort(
+      (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+    );
+    return sortedByDate;
+  }
+
   render() {
     return (
-      <AppContext.Provider value={{ ...this.state }}>
-        {this.state.initialAppLoading ? (
-          <Loader />
-        ) : (
-          <div className="app-container">
-            <Header />
-            {this.state.enableNotifications ? <Notifications /> : null}
-            <Subscriptions />
-          </div>
-        )}
+      <AppContext.Provider
+        value={{
+          ...this.state,
+          handleAllFilter: this.handleAllFilter,
+          handleSortFilter: this.handleSortFilter
+        }}
+      >
+        <div className="app-container">
+          <Header />
+          {this.state.enableNotifications ? <Notifications /> : null}
+          <Subscriptions />
+        </div>
       </AppContext.Provider>
     );
   }

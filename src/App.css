@@ -582,7 +582,15 @@ border: 0;
   /*box-shadow: 0 0px 4px 0 rgba(0,0,0,0.1), 0 1px 6px 0 rgba(0,0,0,0.17);*/
 }
 
+.app__loader-img {
+  height: 5%;
+}
 
+div.app__loader {
+  /* height: 100vh; */
+  display: flex;
+  align-items: center;
+}
 
 .fix{
 display: none;
@@ -2059,4 +2067,22 @@ height: 73px;
 }
 .main_txt.desc {
   padding-right: 20px;
+}
+
+/* modal */
+#spinner-modal {
+  width: 100%;
+  position: fixed;
+  top: 50%;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+  opacity: 0.5;
 }

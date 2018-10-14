@@ -1,12 +1,13 @@
 import React from "react";
 import AppContext from "../../Context/AppContext";
-// import Dropdown from "../../SharedComponents/Dropdown";
+import Dropdown from "../../SharedComponents/Dropdown";
 import DetailsSection from "./DetailsSection";
 import DownloadServiceSection from "./DownloadServiceSection";
 import BillingInfoSection from "./BillingInfoSection";
 import PaymentSection from "./PaymentSection";
 import SubscriptionContext from "../../Context/SubscriptionContext";
 import { formatDate, FireFetch } from "../../utils";
+import Img from "../../SharedComponents/Img";
 
 class SubscriptionDetails extends React.Component {
   state = {
@@ -25,9 +26,13 @@ class SubscriptionDetails extends React.Component {
   }
 
   handleGetItemInfoSuccess = response => {
-    console.log(response.data.responseObject.jsonObjectResponse);
+    console.log(
+      "get item info success",
+      response.data.responseObject.jsonObjectResponse
+    );
     this.setState({
       itemInfo: response.data.responseObject.jsonObjectResponse
+      // itemInfo: null
     });
   };
 
@@ -78,19 +83,28 @@ class SubscriptionDetails extends React.Component {
                         <label>{appData.content.Quantity}</label>{" "}
                         {subscription.quantity.replace(/^0+/, "")}
                       </li>
-                      {/* <li>
+                      <li>
                         <label>{appData.content.Frequency}</label>
                         <Dropdown
                           options={appData.content.FrequencyOptions}
                           updateParentState={this.handleFrequencyDropDown}
                         />
-                      </li> */}
+                      </li>
                     </ul>
                   </div>
-                  <DetailsSection itemInfo={this.state.itemInfo} />
-                  {showDownloadSection ? <DownloadServiceSection /> : null}
-                  {showBillingSection ? <BillingInfoSection /> : null}
-                  <PaymentSection itemInfo={this.state.itemInfo} />
+                  {this.state.itemInfo || !subscription.isItem ? (
+                    <React.Fragment>
+                      <DetailsSection itemInfo={this.state.itemInfo} />
+                      {showDownloadSection ? <DownloadServiceSection /> : null}
+                      {showBillingSection ? <BillingInfoSection /> : null}
+                      <PaymentSection itemInfo={this.state.itemInfo} />
+                    </React.Fragment>
+                  ) : (
+                    <Img
+                      spinner
+                      src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
+                    />
+                  )}
                 </div>
               );
             }}

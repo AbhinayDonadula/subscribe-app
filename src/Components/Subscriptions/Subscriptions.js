@@ -1,5 +1,5 @@
 import React from "react";
-import SubscriptionFilters from "./SubscriptionFilters";
+// import SubscriptionFilters from "./SubscriptionFilters";
 import SubscriptionItemsContainer from "./SubscriptionItemsContainer";
 
 class Subscriptions extends React.Component {
@@ -7,8 +7,8 @@ class Subscriptions extends React.Component {
     return (
       <section className="detail_sec">
         <div className="container-fluid">
-          <SubscriptionFilters />
-          <div className="space50" />
+          {/* <SubscriptionFilters />
+          <div className="space50" /> */}
           <SubscriptionItemsContainer />
         </div>
       </section>
