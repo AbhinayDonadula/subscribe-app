@@ -32,6 +32,7 @@ class Dropdown extends React.Component {
     return (
       <div
         className={`custom-select ${frequencyDropDown ? "custom-select1" : ""}`}
+        onClick={this.toggleList}
         onKeyPress={this.toggleList}
         role="button"
         tabIndex={0}
@@ -49,6 +50,7 @@ class Dropdown extends React.Component {
               key={each.id}
               data-value={each.value}
               onKeyPress={this.handleSelected}
+              onClick={this.handleSelected}
               role="button"
               tabIndex={0}
             >

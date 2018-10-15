@@ -31,7 +31,8 @@ class SubscriptionItem extends React.Component {
     });
   }
 
-  handleViewDetails = () => {
+  handleViewDetails = event => {
+    event.preventDefault();
     this.setState(({ viewDetailsOpen }) => ({
       viewDetailsOpen: !viewDetailsOpen
     }));
@@ -133,6 +134,10 @@ class SubscriptionItem extends React.Component {
                       if (openExtendedMenu)
                         this.setState({ openExtendedMenu: false });
                     }}
+                    onClick={() => {
+                      if (openExtendedMenu)
+                        this.setState({ openExtendedMenu: false });
+                    }}
                     role="button"
                     tabIndex={0}
                   >
@@ -193,24 +198,24 @@ class SubscriptionItem extends React.Component {
                         />
                       </li>
                       <li className="d-mob">
-                        <span>STATUS </span> <br />
-                        <span className="pad_span">
+                        <label>STATUS </label> <br />
+                        <label className="pad_span">
                           {formatStatus(subscription.status)}
-                        </span>
+                        </label>
                       </li>
                       <li className="d-mob">
-                        <span>{appData.content.Quantity}</span>
+                        <label>{appData.content.Quantity}</label>
                         <br />
-                        <span className="pad_span margin__left-25">
+                        <label className="pad_span margin__left-25">
                           {subscription.quantity.replace(/^0+/, "")}
-                        </span>
+                        </label>
                         {/* <Dropdown
                           options={appData.content.QuantityOptions}
                           updateParentState={this.handleQuantityDropDown}
                         /> */}
                       </li>
                       <li className="d-mob">
-                        <span>{appData.content.FrequencyLabel}</span>
+                        <label>{appData.content.FrequencyLabel}</label>
                         <br />
                         {subscription.isItem ? (
                           <Dropdown

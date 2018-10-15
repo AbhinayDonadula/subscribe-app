@@ -16,7 +16,7 @@ class NotificationBar extends React.Component {
                 <ul className="list-inline list-unstyled mb-0">
                   <li className="list-inline-item">
                     JUN <br />
-                    <span>04</span>
+                    <label>04</label>
                   </li>
                   <li className="list-inline-item">
                     Thank you for your recent auto-payment of $19.99 for Monthly

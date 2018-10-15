@@ -8,8 +8,9 @@ class TextLink extends React.Component {
     const { label, handleClick } = this.props;
     return (
       <a
+        href="/"
         className="view_txt opn_box"
-        onKeyPress={handleClick}
+        onClick={handleClick}
         tabIndex={0}
         role="button"
       >

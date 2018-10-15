@@ -77,15 +77,15 @@ class SubscriptionDetails extends React.Component {
                   <div className="d-block d-md-none d-lg-none status_box">
                     <ul className="list-unstyled">
                       <li>
-                        <span>STATUS </span> Subscribed until:{" "}
+                        <label>STATUS </label> Subscribed until:{" "}
                         {formatDate(subscription.endDate)}
                       </li>
                       <li>
-                        <span>{appData.content.Quantity}</span>{" "}
+                        <label>{appData.content.Quantity}</label>{" "}
                         {subscription.quantity.replace(/^0+/, "")}
                       </li>
                       <li>
-                        <span>{appData.content.Frequency}</span>
+                        <label>{appData.content.Frequency}</label>
                         <Dropdown
                           options={appData.content.FrequencyOptions}
                           updateParentState={this.handleFrequencyDropDown}
