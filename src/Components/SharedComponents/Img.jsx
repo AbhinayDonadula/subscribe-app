@@ -1,15 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class Img extends React.Component {
+  state = {};
+
   render() {
+    const { src, spinner, appLoader } = this.props;
     return (
       <img
         alt=""
-        src={this.props.src}
+        src={src}
         className={`img-responsive center-block ${
-          this.props.spinner ? "" : "services__img"
-        } ${this.props.appLoader ? "app__loader-img" : ""}`}
+          spinner ? '' : 'services__img'
+        } ${appLoader ? 'app__loader-img' : ''}`}
       />
     );
   }

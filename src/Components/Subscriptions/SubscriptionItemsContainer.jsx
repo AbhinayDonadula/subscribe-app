@@ -1,9 +1,9 @@
-import React from "react";
-import AppContext from "../Context/AppContext";
-import SubscriptionItem from "./SubscriptionItem";
-import SubscriptionContext from "../Context/SubscriptionContext";
-import SubscriptionFilters from "./SubscriptionFilters";
-import SpinnerPortal from "../SharedComponents/SpinnerPortal";
+import React from 'react';
+import AppContext from '../Context/AppContext';
+import SubscriptionItem from './SubscriptionItem';
+import SubscriptionContext from '../Context/SubscriptionContext';
+import SubscriptionFilters from './SubscriptionFilters';
+import SpinnerPortal from '../SharedComponents/SpinnerPortal';
 
 class SubscriptionItemsContainer extends React.Component {
   state = {};

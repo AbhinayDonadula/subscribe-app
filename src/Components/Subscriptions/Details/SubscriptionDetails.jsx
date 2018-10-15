@@ -1,13 +1,13 @@
-import React from "react";
-import AppContext from "../../Context/AppContext";
-import Dropdown from "../../SharedComponents/Dropdown";
-import DetailsSection from "./DetailsSection";
-import DownloadServiceSection from "./DownloadServiceSection";
-import BillingInfoSection from "./BillingInfoSection";
-import PaymentSection from "./PaymentSection";
-import SubscriptionContext from "../../Context/SubscriptionContext";
-import { formatDate, FireFetch } from "../../utils";
-import Img from "../../SharedComponents/Img";
+import React from 'react';
+import AppContext from '../../Context/AppContext';
+import Dropdown from '../../SharedComponents/Dropdown';
+import DetailsSection from './DetailsSection';
+import DownloadServiceSection from './DownloadServiceSection';
+import BillingInfoSection from './BillingInfoSection';
+import PaymentSection from './PaymentSection';
+import SubscriptionContext from '../../Context/SubscriptionContext';
+import { formatDate, FireFetch } from '../../utils';
+import Img from '../../SharedComponents/Img';
 
 class SubscriptionDetails extends React.Component {
   state = {
@@ -18,7 +18,7 @@ class SubscriptionDetails extends React.Component {
     if (this.subscription.isItem) {
       FireFetch(
         // content.apiUrls.getSubList,
-        "http://localhost:3004/getItemInfo",
+        'http://localhost:3004/getItemInfo',
         this.handleGetItemInfoSuccess,
         this.handleGetItemInfoFailure
       );
@@ -27,7 +27,7 @@ class SubscriptionDetails extends React.Component {
 
   handleGetItemInfoSuccess = response => {
     console.log(
-      "get item info success",
+      'get item info success',
       response.data.responseObject.jsonObjectResponse
     );
     this.setState({
@@ -54,8 +54,8 @@ class SubscriptionDetails extends React.Component {
               this.subscription = subscription;
               // console.log(subscription);
               const {
-                status = "",
-                serviceType = "SS",
+                status = '',
+                serviceType = 'SS',
                 billingFrequency,
                 vendorNumber,
                 isItem
@@ -63,26 +63,26 @@ class SubscriptionDetails extends React.Component {
 
               // show billing section only only for SS type and Monthly frequency
               const showBillingSection =
-                serviceType === "SS" && billingFrequency === "MON";
+                serviceType === 'SS' && billingFrequency === 'MON';
 
               // show/hide download section
               const showDownloadSection =
                 !isItem &&
-                status.toLowerCase() !== "closed" &&
-                vendorNumber !== "01242135" &&
-                (serviceType === "SS" && vendorNumber !== "01306234");
+                status.toLowerCase() !== 'closed' &&
+                vendorNumber !== '01242135' &&
+                (serviceType === 'SS' && vendorNumber !== '01306234');
 
               return (
-                <div className="expand_box" style={{ display: "block" }}>
+                <div className="expand_box" style={{ display: 'block' }}>
                   <div className="d-block d-md-none d-lg-none status_box">
                     <ul className="list-unstyled">
                       <li>
-                        <label>STATUS </label> Subscribed until:{" "}
+                        <label>STATUS </label> Subscribed until:{' '}
                         {formatDate(subscription.endDate)}
                       </li>
                       <li>
-                        <label>{appData.content.Quantity}</label>{" "}
-                        {subscription.quantity.replace(/^0+/, "")}
+                        <label>{appData.content.Quantity}</label>{' '}
+                        {subscription.quantity.replace(/^0+/, '')}
                       </li>
                       <li>
                         <label>{appData.content.Frequency}</label>

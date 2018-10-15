@@ -1,6 +1,6 @@
-import React from "react";
-import SubscriptionItemsContainer from "./SubscriptionItemsContainer";
-import AppContext from "../Context/AppContext";
+import React from 'react';
+import SubscriptionItemsContainer from './SubscriptionItemsContainer';
+import AppContext from '../Context/AppContext';
 
 class Subscriptions extends React.Component {
   state = {};
@@ -12,7 +12,7 @@ class Subscriptions extends React.Component {
           <section
             className="detail_sec"
             style={{
-              padding: appData.enableNotifications ? "60px 0" : "30px 0"
+              padding: appData.enableNotifications ? '60px 0' : '30px 0'
             }}
           >
             <div className="container-fluid">

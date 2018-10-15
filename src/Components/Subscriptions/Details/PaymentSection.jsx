@@ -1,36 +1,38 @@
-import React from "react";
-import AppContext from "../../Context/AppContext";
-import SubscriptionContext from "../../Context/SubscriptionContext";
-import { formatPhoneNumber } from "../../utils";
+import React from 'react';
+import PropTypes from 'prop-types';
+import AppContext from '../../Context/AppContext';
+import SubscriptionContext from '../../Context/SubscriptionContext';
+import { formatPhoneNumber } from '../../utils';
 
 class PaymentSection extends React.Component {
   editPayment = event => {
     event.preventDefault();
-    console.log("editPayment");
+    console.log('editPayment');
   };
 
   editContactEmail = event => {
     event.preventDefault();
-    console.log("editContactEmail");
+    console.log('editContactEmail');
   };
 
   editMemberNumber = event => {
     event.preventDefault();
-    console.log("editMemberNumber");
+    console.log('editMemberNumber');
   };
 
   addMobileNumber = event => {
     event.preventDefault();
-    console.log("addMobileNumber");
+    console.log('addMobileNumber');
   };
 
   render() {
+    const { itemInfo } = this.props;
     return (
       <AppContext.Consumer>
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
-              const { loyaltyMember = "N/A" } = subscription;
+              const { loyaltyMember = 'N/A' } = subscription;
               return (
                 <React.Fragment>
                   <div className="table-responsive d-mob">
@@ -48,7 +50,7 @@ class PaymentSection extends React.Component {
                             {appData.content.PaymentSection.RewardsMemberNumber}
                           </th>
                           <th>
-                            {appData.content.PaymentSection.SignUpTextUpdates}{" "}
+                            {appData.content.PaymentSection.SignUpTextUpdates}{' '}
                           </th>
                         </tr>
                       </thead>
@@ -63,7 +65,7 @@ class PaymentSection extends React.Component {
                             VISA - xxxxxx
                             <br />
                             <a
-                              href=""
+                              href="/"
                               onClick={this.editPayment}
                               className="edit_txt"
                             >
@@ -72,13 +74,11 @@ class PaymentSection extends React.Component {
                           </td>
                           <td>
                             <span className="test_txt">
-                              {this.props.itemInfo
-                                ? this.props.itemInfo.Email
-                                : "N/A"}
+                              {itemInfo ? itemInfo.Email : 'N/A'}
                             </span>
                             <br />
                             <a
-                              href=""
+                              href="/"
                               onClick={this.editContactEmail}
                               className="edit_txt"
                             >
@@ -89,7 +89,7 @@ class PaymentSection extends React.Component {
                             <a className="test_txt">{loyaltyMember}</a>
                             <br />
                             <a
-                              href=""
+                              href="/"
                               onClick={this.editMemberNumber}
                               className="edit_txt"
                             >
@@ -97,8 +97,8 @@ class PaymentSection extends React.Component {
                             </a>
                           </td>
                           <td>
-                            {this.props.itemInfo ? (
-                              formatPhoneNumber(this.props.itemInfo.PhoneNo)
+                            {itemInfo ? (
+                              formatPhoneNumber(itemInfo.PhoneNo)
                             ) : (
                               <React.Fragment>
                                 Get Notifications sent to
@@ -107,7 +107,7 @@ class PaymentSection extends React.Component {
                             )}
 
                             <a
-                              href=""
+                              href="/"
                               onClick={this.addMobileNumber}
                               className="edit_txt"
                             >
@@ -133,7 +133,7 @@ class PaymentSection extends React.Component {
                       </li>
                       <li>
                         <a
-                          href=""
+                          href="/"
                           onClick={this.editPayment}
                           className="edit_txt"
                         >
@@ -145,7 +145,7 @@ class PaymentSection extends React.Component {
                     <ul className="list-unstyled">
                       <li>
                         <a
-                          href=""
+                          href="/"
                           onClick={this.editContactEmail}
                           className="test_txt"
                         >
@@ -154,7 +154,7 @@ class PaymentSection extends React.Component {
                       </li>
                       <li>
                         <a
-                          href=""
+                          href="/"
                           onClick={this.editContactEmail}
                           className="edit_txt"
                         >
@@ -166,7 +166,7 @@ class PaymentSection extends React.Component {
                     <ul className="list-unstyled">
                       <li>
                         <a
-                          href=""
+                          href="/"
                           onClick={this.editMemberNumber}
                           className="test_txt"
                         >
@@ -175,7 +175,7 @@ class PaymentSection extends React.Component {
                       </li>
                       <li>
                         <a
-                          href=""
+                          href="/"
                           onClick={this.editMemberNumber}
                           className="edit_txt"
                         >
@@ -193,5 +193,8 @@ class PaymentSection extends React.Component {
     );
   }
 }
+PaymentSection.propTypes = {
+  itemInfo: PropTypes.object.isRequired
+};
 
 export default PaymentSection;

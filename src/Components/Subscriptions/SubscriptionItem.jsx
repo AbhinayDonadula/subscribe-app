@@ -1,17 +1,17 @@
 /* eslint-disable */
-import React from "react";
-import AppContext from "../Context/AppContext";
-import TextLink from "../SharedComponents/TextLink";
-import Dropdown from "../SharedComponents/Dropdown";
-import SubscriptionDetails from "./Details/SubscriptionDetails";
-import SubscriptionContext from "../Context/SubscriptionContext";
+import React from 'react';
+import AppContext from '../Context/AppContext';
+import TextLink from '../SharedComponents/TextLink';
+import Dropdown from '../SharedComponents/Dropdown';
+import SubscriptionDetails from './Details/SubscriptionDetails';
+import SubscriptionContext from '../Context/SubscriptionContext';
 import {
   getSubscriptionImg,
   getFrequency,
   getImageBySKU,
   formatStatus
-} from "../utils";
-import Img from "../SharedComponents/Img";
+} from '../utils';
+import Img from '../SharedComponents/Img';
 
 class SubscriptionItem extends React.Component {
   state = {
@@ -19,8 +19,8 @@ class SubscriptionItem extends React.Component {
     openExtendedMenu: false,
     showFreqSuccessMsg: false,
     showQtySuccessMsg: false,
-    frequencySelected: "",
-    prevFrequencySelected: "",
+    frequencySelected: '',
+    prevFrequencySelected: '',
     quantitySelected: 1,
     prevQuantitySelected: 1
   };
@@ -64,7 +64,7 @@ class SubscriptionItem extends React.Component {
   handleExtendeMenuSelection = event => {
     this.setState({
       openExtendedMenu: false,
-      selectedExtendedMenu: event.target.getAttribute("data-value")
+      selectedExtendedMenu: event.target.getAttribute('data-value')
     });
   };
 
@@ -122,14 +122,14 @@ class SubscriptionItem extends React.Component {
           <SubscriptionContext.Consumer>
             {subscription => {
               this.subscription = subscription;
-              const { closeDate = "" } = subscription;
+              const { closeDate = '' } = subscription;
               this.isSubCancelled = closeDate.length > 0;
               // console.log(subscription);
               return (
                 <React.Fragment>
                   <div
                     className={`data-table ${
-                      openExtendedMenu ? "overlay" : ""
+                      openExtendedMenu ? 'overlay' : ''
                     }`}
                     onKeyPress={() => {
                       if (openExtendedMenu)
@@ -144,7 +144,7 @@ class SubscriptionItem extends React.Component {
                   >
                     {/* Success message */}
                     {(showFreqSuccessMsg || showQtySuccessMsg) && (
-                      <div className="succ_Div" style={{ display: "block" }}>
+                      <div className="succ_Div" style={{ display: 'block' }}>
                         <div className="media">
                           <div className="media-left">
                             <i
@@ -155,10 +155,10 @@ class SubscriptionItem extends React.Component {
                           <div className="media-body">
                             <p>
                               {showQtySuccessMsg
-                                ? "your quantity changes have been successfully updated."
+                                ? 'your quantity changes have been successfully updated.'
                                 : null}
                               {showFreqSuccessMsg
-                                ? "your frequency changes have been successfully updated."
+                                ? 'your frequency changes have been successfully updated.'
                                 : null}
                             </p>
                           </div>
@@ -173,8 +173,8 @@ class SubscriptionItem extends React.Component {
                           // src={subscriptionImage}
                           src={
                             subscription.isItem
-                              ? "https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$"
-                              : subscription.vendorNumber === "01242135"
+                              ? 'https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$'
+                              : subscription.vendorNumber === '01242135'
                                 ? getImageBySKU(subscription.itemNumber)
                                 : getSubscriptionImg(
                                     subscription.itemNumber,
@@ -188,12 +188,12 @@ class SubscriptionItem extends React.Component {
                           {subscription.itemDescription &&
                           subscription.itemDescription.length > 0
                             ? subscription.itemDescription
-                            : "N/A"}
+                            : 'N/A'}
                         </span>
                         <br />
                         <TextLink
                           label={`${
-                            viewDetailsOpen ? "Close Details" : "View Details"
+                            viewDetailsOpen ? 'Close Details' : 'View Details'
                           }`}
                           handleClick={this.handleViewDetails}
                         />
@@ -208,7 +208,7 @@ class SubscriptionItem extends React.Component {
                         <label>{appData.content.Quantity}</label>
                         <br />
                         <label className="pad_span margin__left-25">
-                          {subscription.quantity.replace(/^0+/, "")}
+                          {subscription.quantity.replace(/^0+/, '')}
                         </label>
                         {/* <Dropdown
                           options={appData.content.QuantityOptions}
@@ -256,7 +256,7 @@ class SubscriptionItem extends React.Component {
 
                   {/* Extended Menu */}
                   {openExtendedMenu && (
-                    <div className="dropdown_div" style={{ display: "block" }}>
+                    <div className="dropdown_div" style={{ display: 'block' }}>
                       <ul className="list-inline list-unstyled">
                         <li>
                           <div className="dropbox">
@@ -268,7 +268,7 @@ class SubscriptionItem extends React.Component {
                               >
                                 {subscription.isItem
                                   ? appData.content.SkipNextDelivery
-                                  : "Cancel Subscription"}
+                                  : 'Cancel Subscription'}
                               </p>
                             </div>
                             <div className="dropbody">
