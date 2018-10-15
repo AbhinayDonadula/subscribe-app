@@ -1,19 +1,26 @@
 import React from "react";
-// import SubscriptionFilters from "./SubscriptionFilters";
 import SubscriptionItemsContainer from "./SubscriptionItemsContainer";
+import AppContext from "../Context/AppContext";
 
 class Subscriptions extends React.Component {
   state = {};
 
   render() {
     return (
-      <section className="detail_sec">
-        <div className="container-fluid">
-          {/* <SubscriptionFilters />
-          <div className="space50" /> */}
-          <SubscriptionItemsContainer />
-        </div>
-      </section>
+      <AppContext.Consumer>
+        {appData => (
+          <section
+            className="detail_sec"
+            style={{
+              padding: appData.enableNotifications ? "60px 0" : "30px 0"
+            }}
+          >
+            <div className="container-fluid">
+              <SubscriptionItemsContainer />
+            </div>
+          </section>
+        )}
+      </AppContext.Consumer>
     );
   }
 }
