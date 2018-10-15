@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import AppContext from "../../Context/AppContext";
 import SubscriptionContext from "../../Context/SubscriptionContext";
@@ -17,8 +18,9 @@ class BillingInfoSection extends React.Component {
 
   componentDidMount() {
     FireFetch(
-      // this.billingHistoryUrl,
-      "http://localhost:3004/billingHistory",
+      this.localAPI
+        ? "http://localhost:3004/billingHistory"
+        : this.billingHistoryUrl,
       this.handleSuccess,
       this.handleFailure
     );
@@ -49,6 +51,8 @@ class BillingInfoSection extends React.Component {
       (billingHistory && billingHistory.length === 0) ||
       billingHistory === null;
 
+    const { isMobile, show } = this.state;
+
     return (
       <AppContext.Consumer>
         {appData => (
@@ -57,6 +61,7 @@ class BillingInfoSection extends React.Component {
               this.billingHistoryUrl =
                 appData.content.apiUrls.getBillingHistory +
                 subscription.contractId;
+              this.localAPI = appData.localAPI;
               return (
                 <React.Fragment>
                   <h3
@@ -71,7 +76,7 @@ class BillingInfoSection extends React.Component {
                       alt=""
                     />
                   </h3>
-                  {(this.state.show || !this.state.isMobile) && (
+                  {(show || !isMobile) && (
                     <div className="bill_Div show">
                       {!showBillingTable ? (
                         <p className="pay_txt">
