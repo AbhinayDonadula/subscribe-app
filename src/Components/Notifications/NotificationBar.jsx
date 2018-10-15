@@ -1,6 +1,8 @@
 import React from "react";
 
 class NotificationBar extends React.Component {
+  state = {};
+
   render() {
     return (
       <div className="notif_box">

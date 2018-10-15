@@ -4,12 +4,19 @@ import PropTypes from "prop-types";
 class Dropdown extends React.Component {
   state = {
     listOpen: false,
-    selected: this.props.selected
+    selected: ""
   };
 
+  componentDidMount() {
+    const { selected } = this.props;
+    this.setState({ selected });
+  }
+
   handleSelected = event => {
+    const { updateParentState } = this.props;
+    const { selected } = this.state;
     this.setState({ selected: event.target.getAttribute("data-value") }, () => {
-      this.props.updateParentState(this.state.selected);
+      updateParentState(selected);
     });
   };
 
@@ -20,12 +27,12 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const { frequencyDropDown } = this.props;
-    const { listOpen } = this.state;
+    const { frequencyDropDown, options } = this.props;
+    const { listOpen, selected } = this.state;
     return (
       <div
         className={`custom-select ${frequencyDropDown ? "custom-select1" : ""}`}
-        onClick={this.toggleList}
+        onKeyPress={this.toggleList}
         role="button"
         tabIndex={0}
       >
@@ -34,16 +41,16 @@ class Dropdown extends React.Component {
             !listOpen ? "" : "select-arrow-active"
           }`}
         >
-          {this.state.selected && this.state.selected.length
-            ? this.state.selected
-            : this.props.options[0].title}
+          {selected && selected.length ? selected : options[0].title}
         </div>
         <div className={`select-items ${!listOpen ? "select-hide" : ""}`}>
-          {this.props.options.map(each => (
+          {options.map(each => (
             <div
               key={each.id}
               data-value={each.value}
-              onClick={this.handleSelected}
+              onKeyPress={this.handleSelected}
+              role="button"
+              tabIndex={0}
             >
               {each.title}
             </div>
@@ -63,11 +70,13 @@ Dropdown.propTypes = {
       title: PropTypes.string.isRequired
     })
   ).isRequired,
-  updateParentState: PropTypes.func.isRequired
+  updateParentState: PropTypes.func.isRequired,
+  selected: PropTypes.string
 };
 
 Dropdown.defaultProps = {
-  frequencyDropDown: false
+  frequencyDropDown: false,
+  selected: ""
 };
 
 export default Dropdown;

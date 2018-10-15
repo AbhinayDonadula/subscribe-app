@@ -3,6 +3,8 @@ import Nugget from "./Nugget";
 import AppContext from "../Context/AppContext";
 
 class NotificationNugget extends React.Component {
+  state = {};
+
   render() {
     return (
       <AppContext.Consumer>

@@ -3,6 +3,8 @@ import React from "react";
 import SubscriptionItemsContainer from "./SubscriptionItemsContainer";
 
 class Subscriptions extends React.Component {
+  state = {};
+
   render() {
     return (
       <section className="detail_sec">

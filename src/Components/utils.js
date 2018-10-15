@@ -232,7 +232,7 @@ export const beautifyBillingHistoryResponse = (response, lineNumber) => {
   list.sort((prev, next) => new Date(next.date) - new Date(prev.date));
   let digestedResponse = { items: [] };
   if (records.length > 0) {
-    const invoice = records[0].invoice;
+    const { invoice } = records[0];
     if (invoice) {
       digestedResponse = Object.assign(digestedResponse, {
         orderNumber: invoice.orderNumber,

@@ -3,6 +3,8 @@ import AppContext from "../Context/AppContext";
 import NotificationBar from "./NotificationBar";
 
 class RecentNotifications extends React.Component {
+  state = {};
+
   render() {
     return (
       <AppContext.Consumer>

@@ -14,6 +14,8 @@ class Nugget extends React.Component {
     subHeading: "Active Subscriptions"
   };
 
+  state = {};
+
   render() {
     const { heading, subHeading, viewLink } = this.props;
     return (

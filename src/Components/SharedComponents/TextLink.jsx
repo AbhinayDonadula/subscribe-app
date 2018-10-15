@@ -7,7 +7,12 @@ class TextLink extends React.Component {
   render() {
     const { label, handleClick } = this.props;
     return (
-      <a className="view_txt opn_box" onClick={handleClick}>
+      <a
+        className="view_txt opn_box"
+        onKeyPress={handleClick}
+        tabIndex={0}
+        role="button"
+      >
         <span className="view-txt">
           {label}
           <i className="fa fa-angle-down" />

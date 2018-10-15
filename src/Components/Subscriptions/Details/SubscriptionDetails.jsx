@@ -45,6 +45,7 @@ class SubscriptionDetails extends React.Component {
   };
 
   render() {
+    const { itemInfo } = this.state;
     return (
       <AppContext.Consumer>
         {appData => (
@@ -76,15 +77,15 @@ class SubscriptionDetails extends React.Component {
                   <div className="d-block d-md-none d-lg-none status_box">
                     <ul className="list-unstyled">
                       <li>
-                        <label>STATUS </label> Subscribed until:{" "}
+                        <span>STATUS </span> Subscribed until:{" "}
                         {formatDate(subscription.endDate)}
                       </li>
                       <li>
-                        <label>{appData.content.Quantity}</label>{" "}
+                        <span>{appData.content.Quantity}</span>{" "}
                         {subscription.quantity.replace(/^0+/, "")}
                       </li>
                       <li>
-                        <label>{appData.content.Frequency}</label>
+                        <span>{appData.content.Frequency}</span>
                         <Dropdown
                           options={appData.content.FrequencyOptions}
                           updateParentState={this.handleFrequencyDropDown}
@@ -92,12 +93,12 @@ class SubscriptionDetails extends React.Component {
                       </li>
                     </ul>
                   </div>
-                  {this.state.itemInfo || !subscription.isItem ? (
+                  {itemInfo || !subscription.isItem ? (
                     <React.Fragment>
-                      <DetailsSection itemInfo={this.state.itemInfo} />
+                      <DetailsSection itemInfo={itemInfo} />
                       {showDownloadSection ? <DownloadServiceSection /> : null}
                       {showBillingSection ? <BillingInfoSection /> : null}
-                      <PaymentSection itemInfo={this.state.itemInfo} />
+                      <PaymentSection itemInfo={itemInfo} />
                     </React.Fragment>
                   ) : (
                     <Img

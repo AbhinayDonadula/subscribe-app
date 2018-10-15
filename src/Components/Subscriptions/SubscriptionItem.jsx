@@ -15,7 +15,6 @@ import Img from "../SharedComponents/Img";
 class SubscriptionItem extends React.Component {
   state = {
     viewDetailsOpen: false,
-    showSaveUpdateConf: false,
     openExtendedMenu: false,
     showFreqSuccessMsg: false,
     showQtySuccessMsg: false,
@@ -95,6 +94,7 @@ class SubscriptionItem extends React.Component {
   };
 
   render() {
+    // const { subscription: sub, isSubCancelled } = this;
     const {
       openExtendedMenu,
       showFreqSuccessMsg,
@@ -103,6 +103,17 @@ class SubscriptionItem extends React.Component {
       showQtySuccessMsg,
       viewDetailsOpen
     } = this.state;
+
+    // let subscriptionImage = "";
+    // if (sub.isItem) {
+    //   subscriptionImage =
+    //     "https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$";
+    // } else if (sub.vendorNumber === "01242135") {
+    //   subscriptionImage = getImageBySKU(sub.itemNumber);
+    // } else {
+    //   subscriptionImage = getSubscriptionImg(sub.itemNumber, isSubCancelled);
+    // }
+
     return (
       <AppContext.Consumer>
         {appData => (
@@ -110,7 +121,7 @@ class SubscriptionItem extends React.Component {
             {subscription => {
               this.subscription = subscription;
               const { closeDate = "" } = subscription;
-              const isSubCancelled = closeDate.length > 0;
+              this.isSubCancelled = closeDate.length > 0;
               // console.log(subscription);
               return (
                 <React.Fragment>
@@ -118,10 +129,12 @@ class SubscriptionItem extends React.Component {
                     className={`data-table ${
                       openExtendedMenu ? "overlay" : ""
                     }`}
-                    onClick={() => {
+                    onKeyPress={() => {
                       if (openExtendedMenu)
                         this.setState({ openExtendedMenu: false });
                     }}
+                    role="button"
+                    tabIndex={0}
                   >
                     {/* Success message */}
                     {(showFreqSuccessMsg || showQtySuccessMsg) && (
@@ -151,6 +164,7 @@ class SubscriptionItem extends React.Component {
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
                         <Img
+                          // src={subscriptionImage}
                           src={
                             subscription.isItem
                               ? "https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$"
@@ -158,7 +172,7 @@ class SubscriptionItem extends React.Component {
                                 ? getImageBySKU(subscription.itemNumber)
                                 : getSubscriptionImg(
                                     subscription.itemNumber,
-                                    isSubCancelled
+                                    this.isSubCancelled
                                   )
                           }
                         />
@@ -179,13 +193,13 @@ class SubscriptionItem extends React.Component {
                         />
                       </li>
                       <li className="d-mob">
-                        <label>STATUS </label> <br />
+                        <span>STATUS </span> <br />
                         <span className="pad_span">
                           {formatStatus(subscription.status)}
                         </span>
                       </li>
                       <li className="d-mob">
-                        <label>{appData.content.Quantity}</label>
+                        <span>{appData.content.Quantity}</span>
                         <br />
                         <span className="pad_span margin__left-25">
                           {subscription.quantity.replace(/^0+/, "")}
@@ -196,7 +210,7 @@ class SubscriptionItem extends React.Component {
                         /> */}
                       </li>
                       <li className="d-mob">
-                        <label>{appData.content.FrequencyLabel}</label>
+                        <span>{appData.content.FrequencyLabel}</span>
                         <br />
                         {subscription.isItem ? (
                           <Dropdown
@@ -261,8 +275,10 @@ class SubscriptionItem extends React.Component {
                                     return (
                                       <li key={each.id}>
                                         <a
+                                          role="button"
+                                          tabIndex={0}
                                           data-value={each.label}
-                                          onClick={
+                                          onKeyPress={
                                             this.handleExtendeMenuSelection
                                           }
                                         >
@@ -293,15 +309,20 @@ class SubscriptionItem extends React.Component {
                         <li>
                           <a
                             className="btn btn_sv"
-                            onClick={this.handleSaveUpdate}
+                            // onClick={this.handleSaveUpdate}
+                            onKeyDown={this.handleSaveUpdate}
+                            role="button"
+                            tabIndex={0}
                           >
                             {appData.content.SaveUpdate}
                           </a>
                         </li>
                         <li>
                           <a
+                            role="button"
+                            tabIndex={0}
                             className="btn btn_cncl"
-                            onClick={this.handleCancelSave}
+                            onKeyDown={this.handleCancelSave}
                           >
                             {appData.content.CancelSaveUpdate}
                           </a>

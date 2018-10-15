@@ -61,7 +61,8 @@ class App extends Component {
 
   handleGetSubListFailure = (error, isJWTFailed) => {
     if (error) {
-      console.log(error.status, isJWTFailed);
+      // console.log(error.status, isJWTFailed);
+      this.setState({ getSubListError: error, isJWTFailed });
     }
     FireFetch(
       // content.apiUrls.getSubList,
@@ -82,11 +83,11 @@ class App extends Component {
   };
 
   handleAllFilter = selected => {
-    console.log(selected);
+    // console.log(selected);
     this.setState({ initialAppLoading: true }, () => {
       window.setTimeout(() => {
-        this.setState({ initialAppLoading: false });
-      }, 1000);
+        this.setState({ initialAppLoading: false, selectedFilter: selected });
+      }, 3000);
     });
   };
 
@@ -95,6 +96,7 @@ class App extends Component {
   };
 
   sortItemsAndSubs(response) {
+    const { subscriptions } = this.state;
     const itemsList =
       response.data.responseObject.jsonObjectResponse.GetSubListDetail;
     const beautifiedItems = Object.values(itemsList).map(item => ({
@@ -106,7 +108,7 @@ class App extends Component {
       status: item.Status,
       sortDate: item.NextDlvDt
     }));
-    const itemsAndServices = [...beautifiedItems, ...this.state.subscriptions];
+    const itemsAndServices = [...beautifiedItems, ...subscriptions];
     const sortedByDate = itemsAndServices.sort(
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
@@ -114,6 +116,7 @@ class App extends Component {
   }
 
   render() {
+    const { enableNotifications } = this.state;
     return (
       <AppContext.Provider
         value={{
@@ -124,7 +127,7 @@ class App extends Component {
       >
         <div className="app-container">
           <Header />
-          {this.state.enableNotifications ? <Notifications /> : null}
+          {enableNotifications ? <Notifications /> : null}
           <Subscriptions />
         </div>
       </AppContext.Provider>
