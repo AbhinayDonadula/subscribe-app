@@ -1,13 +1,13 @@
 /* eslint-disable */
-import React from "react";
-import AppContext from "../../Context/AppContext";
-import SubscriptionContext from "../../Context/SubscriptionContext";
-import Img from "../../SharedComponents/Img";
+import React from 'react';
+import AppContext from '../../Context/AppContext';
+import SubscriptionContext from '../../Context/SubscriptionContext';
+import Img from '../../SharedComponents/Img';
 import {
   FireFetch,
   formatDate,
   beautifyBillingHistoryResponse
-} from "../../utils";
+} from '../../utils';
 
 class BillingInfoSection extends React.Component {
   state = {
@@ -19,7 +19,7 @@ class BillingInfoSection extends React.Component {
   componentDidMount() {
     FireFetch(
       this.localAPI
-        ? "http://localhost:3004/billingHistory"
+        ? 'http://localhost:3004/billingHistory'
         : this.billingHistoryUrl,
       this.handleSuccess,
       this.handleFailure
@@ -32,7 +32,7 @@ class BillingInfoSection extends React.Component {
 
   handleFailure = (error, isJWTFailed) => {
     if (isJWTFailed) {
-      console.log("JWT failed in billing section", error.status);
+      console.log('JWT failed in billing section', error.status);
     }
     console.log(error);
     this.setState({ billingHistory: [], billingHistoryError: error });
@@ -85,7 +85,7 @@ class BillingInfoSection extends React.Component {
                               appData.content.BillingSection
                                 .NextScheduledPayment
                             }
-                          </label>{" "}
+                          </label>{' '}
                           {formatDate(billingHistory.items[0].nextBillingDate)}
                         </p>
                       ) : null}
@@ -99,7 +99,7 @@ class BillingInfoSection extends React.Component {
                       </a>
                       <div
                         className="pos_rel"
-                        style={{ height: !showBillingTable ? "100%" : "auto" }}
+                        style={{ height: !showBillingTable ? '100%' : 'auto' }}
                       >
                         <div className="clearfix" />
                         <div className="table-responsive zui-scroller">
@@ -148,9 +148,9 @@ class BillingInfoSection extends React.Component {
                                     {billingHistory &&
                                     billingHistory.length === 0 ? (
                                       billingHistoryError ? (
-                                        "Billing History unvailable"
+                                        'Billing History unvailable'
                                       ) : (
-                                        "Your first recurring bill has not been generated"
+                                        'Your first recurring bill has not been generated'
                                       )
                                     ) : (
                                       <Img
@@ -171,11 +171,11 @@ class BillingInfoSection extends React.Component {
                                         <td>{date}</td>
                                         <td>{invoiceNumber}</td>
                                         <td>
-                                          {each.paymentCardType}{" "}
+                                          {each.paymentCardType}{' '}
                                           {each.paymentCardNumber.slice(-4)}
                                         </td>
                                         <td>
-                                          {each.servicePeriodStart} -{" "}
+                                          {each.servicePeriodStart} -{' '}
                                           {each.servicePeriodEnd}
                                         </td>
                                         <td className="zui-sticky-col mob">
@@ -192,7 +192,7 @@ class BillingInfoSection extends React.Component {
 
                         <div
                           className="fix d-mob1"
-                          style={{ height: !showBillingTable ? 226 : "auto" }}
+                          style={{ height: !showBillingTable ? 226 : 'auto' }}
                         >
                           <table
                             className="table table2 table-striped zui-table"
@@ -207,7 +207,7 @@ class BillingInfoSection extends React.Component {
                             </thead>
                             <tbody>
                               <tr>
-                                <td>{!showBillingTable ? "$15" : "N/A"}</td>
+                                <td>{!showBillingTable ? '$15' : 'N/A'}</td>
                               </tr>
                               {!showBillingTable ? (
                                 <React.Fragment>

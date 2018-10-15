@@ -1,6 +1,6 @@
-import React from "react";
-import Nugget from "./Nugget";
-import AppContext from "../Context/AppContext";
+import React from 'react';
+import Nugget from './Nugget';
+import AppContext from '../Context/AppContext';
 
 class NotificationNugget extends React.Component {
   state = {};
@@ -12,9 +12,9 @@ class NotificationNugget extends React.Component {
           <div className="row">
             <div className="col-sm-12">
               <ul className="list-inline list-unstyled list_sub">
-                {Array.from({ length: 4 }).map((each, index) => (
+                {Array.from({ length: 4 }).map(() => (
                   <Nugget
-                    key={index}
+                    key={Math.random()}
                     viewLink={appData.content.ViewAllSubscriptions}
                   />
                 ))}
