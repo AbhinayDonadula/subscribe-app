@@ -184,3 +184,74 @@ export const formatStatus = status => {
 
   return status;
 };
+
+export const beautifyBillingHistoryResponse = (response, lineNumber) => {
+  const records = response.data.billingHistoryResponse.billingHistoryRecord;
+  const list = [];
+  for (let i = 0; i < records.length; i += 1) {
+    const record = records[i];
+    const lines = record.invoice.invoiceLines.invoiceLine;
+
+    for (let j = 0; j < lines.length; j += 1) {
+      const line = lines[j];
+      if (
+        lineNumber === undefined ||
+        parseInt(line.contractLineNumber, 10) === parseInt(lineNumber, 10)
+      ) {
+        const invoice = {
+          ...record.invoice,
+          ...line,
+          ...record.invoice.tenders
+        };
+
+        list.push({
+          id: `${invoice.itemNumber}-${invoice.orderLineNumber}`,
+          invoiceNumber: invoice.invoiceNumber,
+          date: datefns.format(invoice.invoiceDate, "MM/DD/YYYY"),
+          servicePeriodStart: datefns.format(
+            invoice.servicePeriodStartDate,
+            "MM/DD/YYYY"
+          ),
+          servicePeriodEnd: datefns.format(
+            invoice.servicePeriodEndDate,
+            "MM/DD/YYYY"
+          ),
+          paymentCardType: invoice.cardType,
+          paymentCardNumber: invoice.cardnumber,
+          total: invoice.unitTotal,
+          nextBillingDate: datefns.format(
+            invoice.nextBillingDate,
+            "MM/DD/YYYY"
+          ),
+          contractLineNumber: invoice.contractLineNumber
+        });
+      }
+    }
+  }
+
+  list.sort((prev, next) => new Date(next.date) - new Date(prev.date));
+  let digestedResponse = { items: [] };
+  if (records.length > 0) {
+    const invoice = records[0].invoice;
+    if (invoice) {
+      digestedResponse = Object.assign(digestedResponse, {
+        orderNumber: invoice.orderNumber,
+        contractNumber: invoice.serviceContractNumber,
+        orderDate: datefns.format(invoice.invoiceDate, "MM/DD/YYYY"),
+        status: invoice.invoiceStatus,
+        servicePeriodStartDate: datefns.format(
+          invoice.servicePeriodStartDate,
+          "MM/DD/YYYY"
+        ),
+        servicePeriodEndDate: datefns.format(
+          invoice.servicePeriodEndDate,
+          "MM/DD/YYYY"
+        ),
+        tenders: invoice.tenders,
+        invoiceNumber: invoice.invoiceNumber,
+        items: list
+      });
+    }
+  }
+  return digestedResponse;
+};

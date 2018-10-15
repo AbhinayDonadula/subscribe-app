@@ -2,7 +2,11 @@ import React from "react";
 import AppContext from "../../Context/AppContext";
 import SubscriptionContext from "../../Context/SubscriptionContext";
 import Img from "../../SharedComponents/Img";
-import { FireFetch, formatDate } from "../../utils";
+import {
+  FireFetch,
+  formatDate,
+  beautifyBillingHistoryResponse
+} from "../../utils";
 
 class BillingInfoSection extends React.Component {
   state = {
@@ -12,14 +16,16 @@ class BillingInfoSection extends React.Component {
   };
 
   componentDidMount() {
-    FireFetch(this.billingHistoryUrl, this.handleSuccess, this.handleFailure);
+    FireFetch(
+      // this.billingHistoryUrl,
+      "http://localhost:3004/billingHistory",
+      this.handleSuccess,
+      this.handleFailure
+    );
   }
 
   handleSuccess = response => {
-    console.log("billing history success", response);
-    this.setState({
-      billingHistory: response.data.billingHistoryResponse.billingHistoryRecord
-    });
+    this.setState({ billingHistory: beautifyBillingHistoryResponse(response) });
   };
 
   handleFailure = (error, isJWTFailed) => {
@@ -42,6 +48,7 @@ class BillingInfoSection extends React.Component {
     const showBillingTable =
       (billingHistory && billingHistory.length === 0) ||
       billingHistory === null;
+
     return (
       <AppContext.Consumer>
         {appData => (
@@ -74,7 +81,7 @@ class BillingInfoSection extends React.Component {
                                 .NextScheduledPayment
                             }
                           </label>{" "}
-                          {formatDate(subscription.nextBillingDate)}
+                          {formatDate(billingHistory.items[0].nextBillingDate)}
                         </p>
                       ) : null}
 
@@ -87,7 +94,7 @@ class BillingInfoSection extends React.Component {
                       </a>
                       <div
                         className="pos_rel"
-                        style={{ height: !showBillingTable ? 207 : "auto" }}
+                        style={{ height: !showBillingTable ? "100%" : "auto" }}
                       >
                         <div className="clearfix" />
                         <div className="table-responsive zui-scroller">
@@ -115,7 +122,20 @@ class BillingInfoSection extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {showBillingTable ? (
+                              {billingHistory === null ? (
+                                <tr>
+                                  <td />
+                                  <td />
+                                  <td>
+                                    <Img
+                                      spinner
+                                      src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
+                                    />
+                                  </td>
+                                  <td />
+                                  <td className="zui-sticky-col mob" />
+                                </tr>
+                              ) : showBillingTable ? (
                                 <tr>
                                   <td />
                                   <td />
@@ -139,41 +159,26 @@ class BillingInfoSection extends React.Component {
                                 </tr>
                               ) : (
                                 <React.Fragment>
-                                  <tr>
-                                    <td>3/26/2018</td>
-                                    <td>9000190</td>
-                                    <td>PLCC 0659</td>
-                                    <td>3/26/2018 - 3/26/2018</td>
-                                    <td className="zui-sticky-col mob">$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3/26/2018</td>
-                                    <td>9000190</td>
-                                    <td>MASTERCARD 0659</td>
-                                    <td>3/26/2018 - 3/26/2018</td>
-                                    <td className="zui-sticky-col mob">$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3/26/2018</td>
-                                    <td>9000190</td>
-                                    <td>MASTERCARD 0659</td>
-                                    <td>3/26/2018 - 3/26/2018</td>
-                                    <td className="zui-sticky-col mob">$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3/26/2018</td>
-                                    <td>9000190</td>
-                                    <td>MASTERCARD 0659</td>
-                                    <td>3/26/2018 - 3/26/2018</td>
-                                    <td className="zui-sticky-col mob">$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3/26/2018</td>
-                                    <td>9000190</td>
-                                    <td>MASTERCARD 0659</td>
-                                    <td>3/26/2018 - 3/26/2018</td>
-                                    <td className="zui-sticky-col mob">$15</td>
-                                  </tr>
+                                  {billingHistory.items.map(each => {
+                                    const { invoiceNumber, date } = each;
+                                    return (
+                                      <tr key={invoiceNumber}>
+                                        <td>{date}</td>
+                                        <td>{invoiceNumber}</td>
+                                        <td>
+                                          {each.paymentCardType}{" "}
+                                          {each.paymentCardNumber.slice(-4)}
+                                        </td>
+                                        <td>
+                                          {each.servicePeriodStart} -{" "}
+                                          {each.servicePeriodEnd}
+                                        </td>
+                                        <td className="zui-sticky-col mob">
+                                          ${each.total}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
                                 </React.Fragment>
                               )}
                             </tbody>

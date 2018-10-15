@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "../node_modules/font-awesome/css/font-awesome.min.css";
 import Header from "./Components/Header/Header";
 import Notifications from "./Components/Notifications/Notifications";
 import content from "./content";

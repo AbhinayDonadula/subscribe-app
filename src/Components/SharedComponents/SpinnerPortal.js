@@ -1,14 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import PropTypes from "prop-types";
 import Img from "./Img";
 
+// get React app root elements
 const appRoot = document.getElementById("root");
+const odRoot = document.getElementById("SubscriptionsReact");
+
+// get spinner div
 let modalPortalRoot = document.getElementById("spinner-modal");
-if (!modalPortalRoot) {
+
+if (!modalPortalRoot && appRoot) {
   modalPortalRoot = document.createElement("div");
   modalPortalRoot.setAttribute("id", "spinner-modal");
   appRoot.insertAdjacentElement("afterend", modalPortalRoot);
+}
+if (!modalPortalRoot && odRoot) {
+  modalPortalRoot = document.createElement("div");
+  modalPortalRoot.setAttribute("id", "spinner-modal");
+  odRoot.insertAdjacentElement("afterend", modalPortalRoot);
 }
 
 class SpinnerPortal extends React.Component {
@@ -39,13 +48,5 @@ class SpinnerPortal extends React.Component {
     return ReactDOM.createPortal(ModalBody, this.el);
   }
 }
-
-SpinnerPortal.propTypes = {
-  //   showSpinner: PropTypes.bool
-};
-
-SpinnerPortal.defaultProps = {
-  //   showSpinner: false
-};
 
 export default SpinnerPortal;

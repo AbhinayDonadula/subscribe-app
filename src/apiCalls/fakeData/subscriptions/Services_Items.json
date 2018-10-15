@@ -2400,5 +2400,149 @@
     },
     "timestamp": 0,
     "requestObject": null
+  },
+  "billingHistory": {
+    "billingHistoryResponse": {
+      "billingHistoryRecord": [
+        {
+          "customer": {
+            "firstName": "ANDREW PARRY",
+            "middleName": "",
+            "lastName": "",
+            "accountNumber": "",
+            "loyaltyNumber": "",
+            "paymentDetails": {
+              "paymentType": "CreditCard",
+              "paymentCard": {
+                "billingAddress": {
+                  "name": "ANDREW PARRY",
+                  "address": {
+                    "address1": "800 JEFFERY ST APT 106",
+                    "address2": "",
+                    "city": "BOCA RATON",
+                    "state": "FL",
+                    "postalCode": "334874165",
+                    "country": "US"
+                  }
+                }
+              },
+              "billingAgreementId": "",
+              "walletId": ""
+            },
+            "contact": {
+              "email": "",
+              "phoneNumber": "",
+              "faxNumber": ""
+            }
+          },
+          "invoice": {
+            "invoiceNumber": "9000000000011",
+            "orderNumber": "104187769001",
+            "serviceContractNumber": "4",
+            "billingDate": "14-MAR-2018",
+            "billingTime": "00:00:00",
+            "invoiceDate": "14-MAR-2018",
+            "invoiceTime": "00:00:00",
+            "invoiceStatus": "OK",
+            "servicePeriodStartDate": "02-MAR-2018 00:00:00",
+            "servicePeriodEndDate": "01-APR-2018 00:00:00",
+            "nextBillingDate": "02-APR-2018",
+            "invoiceLines": {
+              "invoiceLine": [
+                {
+                  "orderLineNumber": "1",
+                  "contractLineNumber": "1",
+                  "lineTypeName": "Subscription",
+                  "itemName": "Unlimited On Demand Technical Support & Tune Ups",
+                  "itemNumber": "9760638",
+                  "contractStartDate": "2018-02-02",
+                  "contractEndDate": "2020-02-01",
+                  "unitOfMeasure": "EC",
+                  "quantity": "1",
+                  "billingFrequency": "MON",
+                  "unitPrice": "13.99",
+                  "tax": "0",
+                  "unitTotal": "13.99"
+                }
+              ]
+            },
+            "tenders": {
+              "cardType": "VISA",
+              "amount": "13.99",
+              "cardnumber": ""
+            }
+          }
+        },
+        {
+          "customer": {
+            "firstName": "ANDREW PARRY",
+            "middleName": "",
+            "lastName": "",
+            "accountNumber": "",
+            "loyaltyNumber": "",
+            "paymentDetails": {
+              "paymentType": "CreditCard",
+              "paymentCard": {
+                "billingAddress": {
+                  "name": "ANDREW PARRY",
+                  "address": {
+                    "address1": "800 JEFFERY ST APT 106",
+                    "address2": "",
+                    "city": "BOCA RATON",
+                    "state": "FL",
+                    "postalCode": "334874165",
+                    "country": "US"
+                  }
+                }
+              },
+              "billingAgreementId": "",
+              "walletId": ""
+            },
+            "contact": {
+              "email": "",
+              "phoneNumber": "",
+              "faxNumber": ""
+            }
+          },
+          "invoice": {
+            "invoiceNumber": "9000000000113",
+            "orderNumber": "104187769001",
+            "serviceContractNumber": "4",
+            "billingDate": "02-APR-2018",
+            "billingTime": "00:00:00",
+            "invoiceDate": "02-APR-2018",
+            "invoiceTime": "00:00:00",
+            "invoiceStatus": "OK",
+            "servicePeriodStartDate": "02-APR-2018 00:00:00",
+            "servicePeriodEndDate": "01-MAY-2018 00:00:00",
+            "nextBillingDate": "02-MAY-2018",
+            "invoiceLines": {
+              "invoiceLine": [
+                {
+                  "orderLineNumber": "1",
+                  "contractLineNumber": "1",
+                  "lineTypeName": "Subscription",
+                  "itemName": "Unlimited On Demand Technical Support & Tune Ups",
+                  "itemNumber": "9760638",
+                  "contractStartDate": "2018-02-02",
+                  "contractEndDate": "2020-02-01",
+                  "unitOfMeasure": "EC",
+                  "quantity": "1",
+                  "billingFrequency": "MON",
+                  "unitPrice": "13.99",
+                  "tax": "0",
+                  "unitTotal": "13.99"
+                }
+              ]
+            },
+            "tenders": {
+              "cardType": "VISA",
+              "amount": "13.99",
+              "cardnumber": "xxxxxx8873"
+            }
+          }
+        }
+      ]
+    }
   }
 }
