@@ -116,10 +116,10 @@ export const getContractNumber = (contractId = "N/A", lineNumber = "N/A") =>
 
 export const FireFetch = async (url, handleSuccess, handleError) => {
   const axiosInstance = axios.create({ baseURL: url });
-  // const tokenFromCookie = document.cookie.replace(
-  //   /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
-  //   "$1"
-  // );
+  const tokenFromCookie = document.cookie.replace(
+    /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
+    "$1"
+  );
   // if (!tokenFromCookie.length) {
   //   const axiosJWTInstance = axios.create({
   //     baseURL: "/json/jwtSubscription.do"
@@ -137,9 +137,7 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   // } else {
   //   axiosInstance.defaults.headers.common.Authorization = tokenFromCookie;
   // }
-
-  axiosInstance.defaults.headers.common.Authorization =
-    "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1MzkwMzMwNzZ9.Jw2AhFMMcRTt1FztxLK7deyFMEdUmzKIyfKlbf7n11qzJjW3VySWVLbWE1Tf1KLXvwsruraUFtXz-z0GvdmJXw";
+  axiosInstance.defaults.headers.common.Authorization = tokenFromCookie;
 
   // api call
   try {

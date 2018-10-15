@@ -16,7 +16,8 @@ class App extends Component {
     initialAppLoading: true,
     enableNotifications: true,
     subscriptions: null,
-    subscriptionsAndItems: null
+    subscriptionsAndItems: null,
+    localAPI: true
   };
 
   componentDidMount() {
@@ -36,6 +37,7 @@ class App extends Component {
   };
 
   handleGetSubListSuccess = response => {
+    // const { localAPI } = this.state;
     const {
       data: { getSubscriptionDetailsListResponse }
     } = response;
@@ -46,44 +48,45 @@ class App extends Component {
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
         subscriptions,
-        subscriptionsAndItems: null
+        subscriptionsAndItems: subscriptions,
+        // subscriptionsAndItems: null,
+        initialAppLoading: false
       },
       () => {
-        FireFetch(
-          // content.apiUrls.getSubList,
-          "http://localhost:3004/getItems",
-          this.handleGetItemsListSuccess,
-          this.handleGetItemsListFailure
-        );
+        // FireFetch(
+        //   localAPI
+        //     ? "http://localhost:3004/getItems"
+        //     : content.apiUrls.getSubList,
+        //   this.handleGetItemsListSuccess,
+        //   this.handleGetItemsListFailure
+        // );
       }
     );
   };
 
   handleGetSubListFailure = (error, isJWTFailed) => {
+    // const { localAPI } = this.state;
     if (error) {
       // console.log(error.status, isJWTFailed);
       this.setState({ getSubListError: error, isJWTFailed });
     }
-    FireFetch(
-      // content.apiUrls.getSubList,
-      "http://localhost:3004/getItems",
-      this.handleGetItemsListSuccess,
-      this.handleGetItemsListFailure
-    );
-    // this.setState({ initialAppLoading: false });
+    // FireFetch(
+    //   localAPI ? "http://localhost:3004/getItems" : content.apiUrls.getSubList,
+    //   this.handleGetItemsListSuccess,
+    //   this.handleGetItemsListFailure
+    // );
   };
 
   getSubscriptionsAndItemsList = () => {
+    const { localAPI } = this.state;
     FireFetch(
-      // content.apiUrls.getSubList,
-      "http://localhost:3004/data",
+      localAPI ? "http://localhost:3004/data" : content.apiUrls.getSubList,
       this.handleGetSubListSuccess,
       this.handleGetSubListFailure
     );
   };
 
   handleAllFilter = selected => {
-    // console.log(selected);
     this.setState({ initialAppLoading: true }, () => {
       window.setTimeout(() => {
         this.setState({ initialAppLoading: false, selectedFilter: selected });
