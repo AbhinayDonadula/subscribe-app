@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import AppContext from "../Context/AppContext";
 import TextLink from "../SharedComponents/TextLink";
