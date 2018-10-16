@@ -62,16 +62,25 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleExtendeMenuSelection = event => {
+  handleExtendeMenuSelection = (event, subscription) => {
     event.preventDefault();
+    const { quantity, SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
     const selected = event.target.getAttribute('data-value');
     this.setState(
       { openExtendedMenu: false, selectedExtendedMenu: selected },
       () => {
-        selected;
+        if (selected === 'Order Now') {
+          location.href = getOrderNowURL(
+            quantity.replace(/^0+/, ''),
+            SKU,
+            IncPct,
+            FreeSku,
+            WlrPct,
+            RecordKey
+          );
+        }
       }
     );
-    // getOrderNowURL()
   };
 
   handleSaveUpdate = () => {
@@ -281,7 +290,8 @@ class SubscriptionItem extends React.Component {
                                           data-value={each.label}
                                           onClick={event => {
                                             this.handleExtendeMenuSelection(
-                                              event
+                                              event,
+                                              subscription
                                             );
                                           }}
                                         >
