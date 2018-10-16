@@ -2,27 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { formatPhoneNumber } from '../../utils';
+// import { formatPhoneNumber } from '../../utils';
 
 class PaymentSection extends React.Component {
   editPayment = event => {
     event.preventDefault();
-    console.log('editPayment');
+    // console.log('editPayment');
   };
 
   editContactEmail = event => {
     event.preventDefault();
-    console.log('editContactEmail');
+    // console.log('editContactEmail');
   };
 
   editMemberNumber = event => {
     event.preventDefault();
-    console.log('editMemberNumber');
+    // console.log('editMemberNumber');
   };
 
   addMobileNumber = event => {
     event.preventDefault();
-    console.log('addMobileNumber');
+    // console.log('addMobileNumber');
   };
 
   render() {
@@ -49,9 +49,9 @@ class PaymentSection extends React.Component {
                           <th>
                             {appData.content.PaymentSection.RewardsMemberNumber}
                           </th>
-                          <th>
+                          {/* <th>
                             {appData.content.PaymentSection.SignUpTextUpdates}{' '}
-                          </th>
+                          </th> */}
                         </tr>
                       </thead>
                       <tbody>
@@ -86,7 +86,9 @@ class PaymentSection extends React.Component {
                             </a>
                           </td>
                           <td>
-                            <a className="test_txt">{loyaltyMember}</a>
+                            <a className="test_txt">
+                              {itemInfo ? itemInfo.AdvantageNum : loyaltyMember}
+                            </a>
                             <br />
                             <a
                               href="/"
@@ -96,7 +98,7 @@ class PaymentSection extends React.Component {
                               {appData.content.PaymentSection.EditMemberNumber}
                             </a>
                           </td>
-                          <td>
+                          {/* <td>
                             {itemInfo ? (
                               formatPhoneNumber(itemInfo.PhoneNo)
                             ) : (
@@ -113,7 +115,7 @@ class PaymentSection extends React.Component {
                             >
                               {appData.content.PaymentSection.AddMyMobileNumber}
                             </a>
-                          </td>
+                          </td> */}
                         </tr>
                       </tbody>
                     </table>
@@ -194,7 +196,11 @@ class PaymentSection extends React.Component {
   }
 }
 PaymentSection.propTypes = {
-  itemInfo: PropTypes.object.isRequired
+  itemInfo: PropTypes.object
+};
+
+PaymentSection.defaultProps = {
+  itemInfo: {}
 };
 
 export default PaymentSection;

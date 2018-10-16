@@ -1,5 +1,4 @@
 import React from 'react';
-import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import Img from '../../SharedComponents/Img';
 import {
@@ -7,6 +6,7 @@ import {
   formatDate,
   beautifyBillingHistoryResponse
 } from '../../utils';
+import AppContext from '../../Context/AppContext';
 
 class BillingInfoSection extends React.Component {
   state = {

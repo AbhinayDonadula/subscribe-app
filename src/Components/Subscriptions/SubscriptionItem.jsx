@@ -9,7 +9,8 @@ import {
   getSubscriptionImg,
   getFrequency,
   getImageBySKU,
-  formatStatus
+  formatStatus,
+  getOrderNowURL
 } from '../utils';
 import Img from '../SharedComponents/Img';
 
@@ -62,10 +63,15 @@ class SubscriptionItem extends React.Component {
   };
 
   handleExtendeMenuSelection = event => {
-    this.setState({
-      openExtendedMenu: false,
-      selectedExtendedMenu: event.target.getAttribute('data-value')
-    });
+    event.preventDefault();
+    const selected = event.target.getAttribute('data-value');
+    this.setState(
+      { openExtendedMenu: false, selectedExtendedMenu: selected },
+      () => {
+        selected;
+      }
+    );
+    // getOrderNowURL()
   };
 
   handleSaveUpdate = () => {
@@ -96,7 +102,6 @@ class SubscriptionItem extends React.Component {
   };
 
   render() {
-    // const { subscription: sub, isSubCancelled } = this;
     const {
       openExtendedMenu,
       showFreqSuccessMsg,
@@ -106,16 +111,6 @@ class SubscriptionItem extends React.Component {
       viewDetailsOpen
     } = this.state;
 
-    // let subscriptionImage = "";
-    // if (sub.isItem) {
-    //   subscriptionImage =
-    //     "https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$";
-    // } else if (sub.vendorNumber === "01242135") {
-    //   subscriptionImage = getImageBySKU(sub.itemNumber);
-    // } else {
-    //   subscriptionImage = getSubscriptionImg(sub.itemNumber, isSubCancelled);
-    // }
-
     return (
       <AppContext.Consumer>
         {appData => (
@@ -123,8 +118,18 @@ class SubscriptionItem extends React.Component {
             {subscription => {
               this.subscription = subscription;
               const { closeDate = '' } = subscription;
-              this.isSubCancelled = closeDate.length > 0;
-              // console.log(subscription);
+              let subscriptionImage = '';
+              if (subscription.isItem) {
+                subscriptionImage =
+                  'https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$';
+              } else if (subscription.vendorNumber === '01242135') {
+                subscriptionImage = getImageBySKU(subscription.itemNumber);
+              } else {
+                subscriptionImage = getSubscriptionImg(
+                  subscription.itemNumber,
+                  closeDate.length > 0
+                );
+              }
               return (
                 <React.Fragment>
                   <div
@@ -169,19 +174,7 @@ class SubscriptionItem extends React.Component {
                     {/* each item */}
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
-                        <Img
-                          // src={subscriptionImage}
-                          src={
-                            subscription.isItem
-                              ? 'https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$'
-                              : subscription.vendorNumber === '01242135'
-                                ? getImageBySKU(subscription.itemNumber)
-                                : getSubscriptionImg(
-                                    subscription.itemNumber,
-                                    this.isSubCancelled
-                                  )
-                          }
-                        />
+                        <Img src={subscriptionImage} />
                       </li>
                       <li>
                         <span className="main_txt desc">
@@ -278,15 +271,19 @@ class SubscriptionItem extends React.Component {
                                     if (each.id === 2 && !subscription.isItem) {
                                       return undefined;
                                     }
+                                    if (each.id === 3 && !subscription.isItem) {
+                                      return undefined;
+                                    }
                                     return (
                                       <li key={each.id}>
                                         <a
-                                          role="button"
-                                          tabIndex={0}
+                                          href="/"
                                           data-value={each.label}
-                                          onKeyPress={
-                                            this.handleExtendeMenuSelection
-                                          }
+                                          onClick={event => {
+                                            this.handleExtendeMenuSelection(
+                                              event
+                                            );
+                                          }}
                                         >
                                           {each.label}
                                         </a>

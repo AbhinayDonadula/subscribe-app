@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.css";
-import Header from "./Components/Header/Header";
-import Notifications from "./Components/Notifications/Notifications";
-import content from "./content";
-import AppContext from "./Components/Context/AppContext";
-import "./App.css";
-import Subscriptions from "./Components/Subscriptions/Subscriptions";
-import { beautifyGetSubListResponse, FireFetch } from "./Components/utils";
+import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import Header from './components/Header/Header';
+import Notifications from './components/Notifications/Notifications';
+import content from './content';
+import AppContext from './components/Context/AppContext';
+import './App.css';
+import Subscriptions from './components/Subscriptions/Subscriptions';
+import { beautifyGetSubListResponse, FireFetch } from './components/utils';
 
 class App extends Component {
   state = {
     content,
-    userName: "John Doe",
+    userName: 'John Doe',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
     enableNotifications: true,
@@ -37,7 +37,7 @@ class App extends Component {
   };
 
   handleGetSubListSuccess = response => {
-    // const { localAPI } = this.state;
+    const { localAPI } = this.state;
     const {
       data: { getSubscriptionDetailsListResponse }
     } = response;
@@ -48,39 +48,39 @@ class App extends Component {
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
         subscriptions,
-        subscriptionsAndItems: subscriptions,
-        // subscriptionsAndItems: null,
+        // subscriptionsAndItems: subscriptions,
+        subscriptionsAndItems: null,
         initialAppLoading: false
       },
       () => {
-        // FireFetch(
-        //   localAPI
-        //     ? "http://localhost:3004/getItems"
-        //     : content.apiUrls.getSubList,
-        //   this.handleGetItemsListSuccess,
-        //   this.handleGetItemsListFailure
-        // );
+        FireFetch(
+          localAPI
+            ? 'http://localhost:3004/getItems'
+            : content.apiUrls.getSubList,
+          this.handleGetItemsListSuccess,
+          this.handleGetItemsListFailure
+        );
       }
     );
   };
 
   handleGetSubListFailure = (error, isJWTFailed) => {
-    // const { localAPI } = this.state;
+    const { localAPI } = this.state;
     if (error) {
       // console.log(error.status, isJWTFailed);
       this.setState({ getSubListError: error, isJWTFailed });
     }
-    // FireFetch(
-    //   localAPI ? "http://localhost:3004/getItems" : content.apiUrls.getSubList,
-    //   this.handleGetItemsListSuccess,
-    //   this.handleGetItemsListFailure
-    // );
+    FireFetch(
+      localAPI ? 'http://localhost:3004/getItems' : content.apiUrls.getSubList,
+      this.handleGetItemsListSuccess,
+      this.handleGetItemsListFailure
+    );
   };
 
   getSubscriptionsAndItemsList = () => {
     const { localAPI } = this.state;
     FireFetch(
-      localAPI ? "http://localhost:3004/data" : content.apiUrls.getSubList,
+      localAPI ? 'http://localhost:3004/data' : content.apiUrls.getSubList,
       this.handleGetSubListSuccess,
       this.handleGetSubListFailure
     );
@@ -102,15 +102,20 @@ class App extends Component {
     const { subscriptions } = this.state;
     const itemsList =
       response.data.responseObject.jsonObjectResponse.GetSubListDetail;
-    const beautifiedItems = Object.values(itemsList).map(item => ({
-      ...item,
-      isItem: true,
-      itemDescription: item.Desc,
-      billingFrequency: item.Freq,
-      quantity: item.QtyOrd,
-      status: item.Status,
-      sortDate: item.NextDlvDt
-    }));
+    const itemsArray = Object.values(itemsList).filter(
+      each => each.RecordKey.length > 0
+    );
+    const beautifiedItems = itemsArray.map(item => {
+      return {
+        ...item,
+        isItem: true,
+        itemDescription: item.Desc,
+        billingFrequency: item.Freq,
+        quantity: item.QtyOrd,
+        status: item.Status,
+        sortDate: item.NextDlvDt
+      };
+    });
     const itemsAndServices = [...beautifiedItems, ...subscriptions];
     const sortedByDate = itemsAndServices.sort(
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)

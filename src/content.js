@@ -19,9 +19,12 @@ export default {
   Quantity: 'Quantity',
   SubscriptionDetails: 'Subscription Details',
   TotalPrice: 'Total Price',
+  ItemPrice: 'Item Price',
   SubscriptionStart: 'Subscription Start',
   SubscriptionEnd: 'Subscription End',
   FeeToCancel: 'Fee To Cancel',
+  LastShipmentDate: 'Last Shipment Date',
+  SubscriptionDiscount: 'Subscription Discount',
   OrderNumber: 'Order #',
   ItemNumber: 'Item #',
   ContractNumber: 'Contract #',
@@ -139,6 +142,7 @@ export default {
   ],
   ExtendedMenuOptions: [
     { id: 1, label: 'Go To Order History' },
-    { id: 2, label: 'Cancel Subscription' }
+    { id: 2, label: 'Cancel Subscription' },
+    { id: 3, label: 'Order Now' }
   ]
 };
