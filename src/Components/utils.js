@@ -11,7 +11,7 @@ export const setTokenCookie = (name, value) => {
 export const getTokenFromCookie = () =>
   document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
 
-export const formatDate = date => {
+export const formatDate = (date) => {
   const jsDate = new Date(date);
   const year = jsDate.getFullYear();
   return jsDate
@@ -20,14 +20,14 @@ export const formatDate = date => {
     .replace(` ${year}`, `, ${year}`);
 };
 
-export const beautifyGetSubListResponse = response => {
+export const beautifyGetSubListResponse = (response) => {
   const subscriptions = [];
   const { contractList } = response;
   const contract = contractList ? contractList.contract : [];
   contract.forEach((_contract, index) => {
     const header = { ..._contract.contractHeader };
     const contractLines = _contract.contractLines || [];
-    contractLines.forEach(contractLine => {
+    contractLines.forEach((contractLine) => {
       // use below to skip cancelled
       // (contractLine.status === "Active" ||
       //   contractLine.status === "Under amendment" ||
@@ -65,7 +65,7 @@ export const getSubscriptionImg = (sku, isSubCancelled) => {
   return imgUrl;
 };
 
-export const getImageBySKU = itemNum => {
+export const getImageBySKU = (itemNum) => {
   if (itemNum === '5628175' || itemNum === '932208') {
     return 'http://officedepot.scene7.com/is/image/officedepot/Logo';
   }
@@ -96,7 +96,7 @@ export const getImageBySKU = itemNum => {
   return 'http://officedepot.scene7.com/is/image/officedepot/Logo';
 };
 
-export const getFrequency = frequency => {
+export const getFrequency = (frequency) => {
   if (frequency === 'MON' || frequency === 'M') {
     return 'Monthly';
   }
@@ -109,7 +109,7 @@ export const getFrequency = frequency => {
   return 'Quarterly';
 };
 
-export const formatPrice = price => `$${parseFloat(price).toFixed(2)}`;
+export const formatPrice = (price) => `$${parseFloat(price).toFixed(2)}`;
 
 export const getContractNumber = (contractId = 'N/A', lineNumber = 'N/A') =>
   `${contractId}-${lineNumber}`;
@@ -156,14 +156,40 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   }
 };
 
-export const getStatusFromError = err => {
+export const FireGetItems = async (url, handleSuccess, handleError) => {
+  const headers = new window.Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  });
+
+  const request = new window.Request(url, {
+    headers,
+    method: 'GET',
+    credentials: 'same-origin'
+  });
+
+  // api call
+  try {
+    window
+      .fetch(request)
+      .then((resp) => resp.json())
+      .then((resp) => {
+        handleSuccess(resp);
+      });
+  } catch (error) {
+    const { response } = JSON.parse(JSON.stringify(error));
+    handleError(response);
+  }
+};
+
+export const getStatusFromError = (err) => {
   const {
     response: { status }
   } = JSON.parse(JSON.stringify(err));
   return status;
 };
 
-export const formatPhoneNumber = phoneNumberString => {
+export const formatPhoneNumber = (phoneNumberString) => {
   const cleaned = `${phoneNumberString}`.replace(/\D/g, '');
   const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
   if (match) {
@@ -172,7 +198,7 @@ export const formatPhoneNumber = phoneNumberString => {
   return null;
 };
 
-export const formatStatus = status => {
+export const formatStatus = (status) => {
   if (status === 'A') {
     return 'Active';
   }
@@ -263,4 +289,17 @@ export const getOrderNowURL = (
   subscriptionId = ''
 ) => {
   return `/catalog/addSkuByButtonSetAction.do?addingToCartFromSubscriptionManager=true&qty=${qty}&sku=${sku}&subscriptionIncentivePercent=${subscriptionIncentivePercent}&subscriptionHasFreeDelivery=${subscriptionHasFreeDelivery}&subscriptionWlrPercent=${subscriptionWlrPercent}&subscriptionId=${subscriptionId}`;
+};
+
+export const createGetItemsURL = (
+  RecordKey = '',
+  Freq = '',
+  DirFlag = 'F',
+  StsCode = 'A',
+  SortBy = 'D',
+  request = 'LIST',
+  isTest = true
+) => {
+  // "/orderhistory/subscriptionManager.do?RecordKey=&Freq=W&DirFlag=F&StsCode=A&SortBy=D&request=LIST&isTest=true"
+  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&Freq=${Freq}&DirFlag=${DirFlag}&StsCode=${StsCode}&SortBy=${SortBy}&request=${request}&isTest=${isTest}`;
 };

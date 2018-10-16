@@ -1,4 +1,4 @@
-import Axios from "axios";
+import Axios from 'axios';
 
 const getJWToken = async () => {
   // const headers = new window.Headers({
@@ -32,16 +32,16 @@ const getJWToken = async () => {
   //   }));
 
   const axiosJWTInstance = Axios.create({
-    baseURL: "/json/jwtSubscription.do"
+    baseURL: '/json/jwtSubscription.do'
   });
-  let token = "";
-  axiosJWTInstance.defaults.headers.common.credentials = "same-origin";
+  let token = '';
+  axiosJWTInstance.defaults.headers.common.credentials = 'same-origin';
   try {
     const response = await axiosJWTInstance.get();
     token = response;
-    console.log("success", response);
+    // console.log('success', response);
   } catch (error) {
-    console.error("error", error);
+    console.error('error', error);
   }
   return token;
 };

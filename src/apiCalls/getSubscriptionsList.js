@@ -1,19 +1,22 @@
-import { getTokenFromCookie, setTokenCookie } from "../Components/utils";
-import getJWToken from "./getJWToken";
+import { getTokenFromCookie, setTokenCookie } from '../components/utils';
+import getJWToken from './getJWToken';
 
-const customizeResponse = response => {
+const customizeResponse = (response) => {
   try {
     const subscriptions = [];
     const customer = {
       ...response.getSubscriptionDetailsListResponse.customer
     };
-    const contractList =
-      response.getSubscriptionDetailsListResponse.contractList;
+    const {
+      getSubscriptionDetailsListResponse: { contractList }
+    } = response;
+    // const contractList =
+    //   response..contractList;
     const contract = contractList ? contractList.contract : [];
-    contract.forEach(_contract => {
+    contract.forEach((_contract) => {
       const header = { ..._contract.contractHeader };
       const contractLines = _contract.contractLines || [];
-      contractLines.forEach(contractLine => {
+      contractLines.forEach((contractLine) => {
         subscriptions.push(
           Object.assign({ ...header, ...contractLine, ...customer })
         );
@@ -33,11 +36,11 @@ const getSubscriptionsList = () => {
   const token = getTokenFromCookie();
   if (token.length > 0) {
     return window
-      .fetch("http://localhost:3004/getSubscriptionDetailsListResponse", {
-        method: "get",
+      .fetch('http://localhost:3004/getSubscriptionDetailsListResponse', {
+        method: 'get',
         headers: new window.Headers({ Authorization: `Bearer ${token}` })
       })
-      .then(response => {
+      .then((response) => {
         if (response.status === 401) {
           return {
             ok: false,
@@ -70,23 +73,23 @@ const getSubscriptionsList = () => {
         notFound: false,
         systemFailure: true
       }))
-      .then(response => {
+      .then((response) => {
         if (response.ok !== false) {
           return customizeResponse(response);
         }
         return response;
       })
-      .catch(e => new Error(`error while getting sub list ${e}`));
+      .catch((e) => new Error(`error while getting sub list ${e}`));
   }
-  return getJWToken().then(data => {
+  return getJWToken().then((data) => {
     if (data && data.ok && data.token) {
-      setTokenCookie("token", data.token, 540); // cookie name, cookie val, time in seconds
+      setTokenCookie('token', data.token, 540); // cookie name, cookie val, time in seconds
       return window
-        .fetch("http://localhost:3004/getSubscriptionDetailsListResponse", {
-          method: "get",
+        .fetch('http://localhost:3004/getSubscriptionDetailsListResponse', {
+          method: 'get',
           headers: new window.Headers({ Authorization: `Bearer ${data.token}` })
         })
-        .then(response => {
+        .then((response) => {
           if (response.status === 401) {
             return {
               ok: false,
@@ -119,13 +122,13 @@ const getSubscriptionsList = () => {
           notFound: false,
           systemFailure: true
         }))
-        .then(response => {
+        .then((response) => {
           if (response.ok !== false) {
             return customizeResponse(response);
           }
           return response;
         })
-        .catch(e => new Error(`error while getting sub list ${e}`));
+        .catch((e) => new Error(`error while getting sub list ${e}`));
     }
     return {
       ok: false,

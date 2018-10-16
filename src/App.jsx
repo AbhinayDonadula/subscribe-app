@@ -6,7 +6,12 @@ import content from './content';
 import AppContext from './components/Context/AppContext';
 import './App.css';
 import Subscriptions from './components/Subscriptions/Subscriptions';
-import { beautifyGetSubListResponse, FireFetch } from './components/utils';
+import {
+  beautifyGetSubListResponse,
+  FireFetch,
+  createGetItemsURL,
+  FireGetItems
+} from './components/utils';
 
 class App extends Component {
   state = {
@@ -53,10 +58,8 @@ class App extends Component {
         initialAppLoading: false
       },
       () => {
-        FireFetch(
-          localAPI
-            ? 'http://localhost:3004/getItems'
-            : content.apiUrls.getItemsList,
+        FireGetItems(
+          localAPI ? 'http://localhost:3004/getItems' : createGetItemsURL(),
           this.handleGetItemsListSuccess,
           this.handleGetItemsListFailure
         );
@@ -67,13 +70,10 @@ class App extends Component {
   handleGetSubListFailure = (error, isJWTFailed) => {
     const { localAPI } = this.state;
     if (error) {
-      // console.log(error.status, isJWTFailed);
       this.setState({ getSubListError: error, isJWTFailed });
     }
-    FireFetch(
-      localAPI
-        ? 'http://localhost:3004/getItems'
-        : content.apiUrls.getItemsList,
+    FireGetItems(
+      localAPI ? 'http://localhost:3004/getItems' : createGetItemsURL(),
       this.handleGetItemsListSuccess,
       this.handleGetItemsListFailure
     );
@@ -103,7 +103,7 @@ class App extends Component {
   sortItemsAndSubs(response) {
     const { subscriptions } = this.state;
     const itemsList =
-      response.data.responseObject.jsonObjectResponse.GetSubListDetail;
+      response.responseObject.jsonObjectResponse.GetSubListDetail;
     const itemsArray = Object.values(itemsList).filter(
       (each) => each.RecordKey.length > 0
     );
