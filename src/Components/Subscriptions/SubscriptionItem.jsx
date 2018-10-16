@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import AppContext from '../Context/AppContext';
 import TextLink from '../SharedComponents/TextLink';
@@ -23,13 +22,17 @@ class SubscriptionItem extends React.Component {
     frequencySelected: '',
     prevFrequencySelected: '',
     quantitySelected: 1,
-    prevQuantitySelected: 1
+    prevQuantitySelected: 1,
+    itemQuantity: 1
   };
 
   componentDidMount() {
     this.setState({
       frequencySelected: getFrequency(this.subscription.billingFrequency),
-      prevFrequencySelected: getFrequency(this.subscription.billingFrequency)
+      prevFrequencySelected: getFrequency(this.subscription.billingFrequency),
+      itemQuantity: this.subscription.isItem
+        ? this.subscription.quantity.replace(/^0+/, '')
+        : ''
     });
   }
 
@@ -56,6 +59,10 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
+  handleItemQuantity = event => {
+    this.setState({ itemQuantity: event.target.value });
+  };
+
   handleExtendedMenu = () => {
     this.setState(({ openExtendedMenu }) => ({
       openExtendedMenu: !openExtendedMenu
@@ -66,24 +73,22 @@ class SubscriptionItem extends React.Component {
     event.preventDefault();
     const { quantity, SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
     const selected = event.target.getAttribute('data-value');
-    this.setState(
-      { openExtendedMenu: false, selectedExtendedMenu: selected },
-      () => {
-        if (selected === 'Order Now') {
-          location.href = getOrderNowURL(
-            quantity.replace(/^0+/, ''),
-            SKU,
-            IncPct,
-            FreeSku,
-            WlrPct,
-            RecordKey
-          );
-        }
+    this.setState({ openExtendedMenu: false }, () => {
+      if (selected === 'Order Now') {
+        window.location.href = getOrderNowURL(
+          quantity.replace(/^0+/, ''),
+          SKU,
+          IncPct,
+          FreeSku,
+          WlrPct,
+          RecordKey
+        );
       }
-    );
+    });
   };
 
-  handleSaveUpdate = () => {
+  handleSaveUpdate = event => {
+    event.preventDefault();
     this.setState(
       ({ showFreqUpdateSaveConf, showQtyUpdateSaveConf }) => ({
         showFreqUpdateSaveConf: false,
@@ -117,7 +122,8 @@ class SubscriptionItem extends React.Component {
       showFreqUpdateSaveConf,
       showQtyUpdateSaveConf,
       showQtySuccessMsg,
-      viewDetailsOpen
+      viewDetailsOpen,
+      itemQuantity
     } = this.state;
 
     return (
@@ -125,6 +131,7 @@ class SubscriptionItem extends React.Component {
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
+              console.log(subscription);
               this.subscription = subscription;
               const { closeDate = '' } = subscription;
               let subscriptionImage = '';
@@ -209,9 +216,17 @@ class SubscriptionItem extends React.Component {
                       <li className="d-mob">
                         <label>{appData.content.Quantity}</label>
                         <br />
-                        <label className="pad_span margin__left-25">
-                          {subscription.quantity.replace(/^0+/, '')}
-                        </label>
+                        {subscription.isItem ? (
+                          <input
+                            className="item__quantity"
+                            onChange={this.handleItemQuantity}
+                            value={itemQuantity}
+                          />
+                        ) : (
+                          <label className="pad_span margin__left-25">
+                            {subscription.quantity.replace(/^0+/, '')}
+                          </label>
+                        )}
                         {/* <Dropdown
                           options={appData.content.QuantityOptions}
                           updateParentState={this.handleQuantityDropDown}
@@ -321,11 +336,9 @@ class SubscriptionItem extends React.Component {
                         </li>
                         <li>
                           <a
+                            href="/"
                             className="btn btn_sv"
-                            // onClick={this.handleSaveUpdate}
-                            onKeyDown={this.handleSaveUpdate}
-                            role="button"
-                            tabIndex={0}
+                            onClick={this.handleSaveUpdate}
                           >
                             {appData.content.SaveUpdate}
                           </a>

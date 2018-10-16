@@ -2086,3 +2086,8 @@ height: 73px;
   background-color: #000;
   opacity: 0.5;
 }
+
+.item__quantity {
+  width: 50px;
+  text-align: center;
+}
