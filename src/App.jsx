@@ -19,7 +19,7 @@ class App extends Component {
     userName: 'John Doe',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
-    enableNotifications: true,
+    enableNotifications: false,
     subscriptions: null,
     subscriptionsAndItems: null,
     localAPI: true

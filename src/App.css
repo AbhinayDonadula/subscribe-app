@@ -2110,7 +2110,8 @@ height: 73px;
 /* modal */
 #spinner-modal {
   width: 100%;
-  position: fixed;
+  position: absolute;
+  /* position: fixed; */
   top: 50%;
 }
 

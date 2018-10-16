@@ -8,7 +8,7 @@ class SubscriptionFilters extends React.Component {
   render() {
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           // this.appData = appData;
           <div className="row">
             <div className="col-md-12">
@@ -17,7 +17,7 @@ class SubscriptionFilters extends React.Component {
               </h3>
               <div className="space40" />
               <div className="row row_sub">
-                <div className="col-md-6 col-sm-10 col-xs-12">
+                <div className="col-lg-8 col-md-6 col-sm-10 col-xs-12">
                   <div className="row select_Box">
                     <div className="col-md-6 col-sm-6 col-xs-7">
                       <Dropdown

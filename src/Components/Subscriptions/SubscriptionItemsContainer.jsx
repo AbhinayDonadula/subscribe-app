@@ -78,6 +78,7 @@ class SubscriptionItemsContainer extends React.Component {
               </div>
             ) : (
               <SpinnerPortal />
+              // <div>Loading....</div>
             )}
           </div>
         )}
