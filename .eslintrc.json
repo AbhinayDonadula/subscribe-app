@@ -14,6 +14,8 @@
   "plugins": ["react"],
   "rules": {
     "jsx-a11y/href-no-hash": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-for": "off",
     "jsx-a11y/anchor-is-valid": [
       "warn",
       {
@@ -21,7 +23,7 @@
       }
     ],
     "no-console": [
-      0,
+      2,
       {
         "allow": ["warn", "error"]
       }
@@ -41,6 +43,7 @@
     "no-underscore-dangle": "off",
     "no-param-reassign": [2, { "props": false }],
     "eol-last": ["error", "always"],
+    "arrow-parens": ["error", "always"],
     "react/jsx-no-literals": "off",
     "import/no-dynamic-require": "off",
     "global-require": "off",

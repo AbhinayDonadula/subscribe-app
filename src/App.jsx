@@ -24,7 +24,7 @@ class App extends Component {
     this.getSubscriptionsAndItemsList();
   }
 
-  handleGetItemsListSuccess = response => {
+  handleGetItemsListSuccess = (response) => {
     const sortedByDate = this.sortItemsAndSubs(response);
     this.setState({
       initialAppLoading: false,
@@ -32,11 +32,11 @@ class App extends Component {
     });
   };
 
-  handleGetItemsListFailure = error => {
-    console.log(error);
+  handleGetItemsListFailure = (error) => {
+    this.setState({ getItemsError: error });
   };
 
-  handleGetSubListSuccess = response => {
+  handleGetSubListSuccess = (response) => {
     const { localAPI } = this.state;
     const {
       data: { getSubscriptionDetailsListResponse }
@@ -86,7 +86,7 @@ class App extends Component {
     );
   };
 
-  handleAllFilter = selected => {
+  handleAllFilter = (selected) => {
     this.setState({ initialAppLoading: true }, () => {
       window.setTimeout(() => {
         this.setState({ initialAppLoading: false, selectedFilter: selected });
@@ -94,8 +94,8 @@ class App extends Component {
     });
   };
 
-  handleSortFilter = selected => {
-    console.log(selected);
+  handleSortFilter = (selected) => {
+    this.setState({ sortFilter: selected });
   };
 
   sortItemsAndSubs(response) {
@@ -103,9 +103,9 @@ class App extends Component {
     const itemsList =
       response.data.responseObject.jsonObjectResponse.GetSubListDetail;
     const itemsArray = Object.values(itemsList).filter(
-      each => each.RecordKey.length > 0
+      (each) => each.RecordKey.length > 0
     );
-    const beautifiedItems = itemsArray.map(item => {
+    const beautifiedItems = itemsArray.map((item) => {
       return {
         ...item,
         isItem: true,

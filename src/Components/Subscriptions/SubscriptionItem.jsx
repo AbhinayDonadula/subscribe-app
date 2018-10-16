@@ -36,14 +36,14 @@ class SubscriptionItem extends React.Component {
     });
   }
 
-  handleViewDetails = event => {
+  handleViewDetails = (event) => {
     event.preventDefault();
     this.setState(({ viewDetailsOpen }) => ({
       viewDetailsOpen: !viewDetailsOpen
     }));
   };
 
-  handleFrequencyDropDown = selected => {
+  handleFrequencyDropDown = (selected) => {
     this.setState(({ frequencySelected }) => ({
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
@@ -51,7 +51,7 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleQuantityDropDown = selected => {
+  handleQuantityDropDown = (selected) => {
     this.setState(({ quantitySelected }) => ({
       prevQuantitySelected: quantitySelected,
       quantitySelected: Number(selected),
@@ -59,7 +59,7 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleItemQuantity = event => {
+  handleItemQuantity = (event) => {
     this.setState({ itemQuantity: event.target.value });
   };
 
@@ -87,7 +87,7 @@ class SubscriptionItem extends React.Component {
     });
   };
 
-  handleSaveUpdate = event => {
+  handleSaveUpdate = (event) => {
     event.preventDefault();
     this.setState(
       ({ showFreqUpdateSaveConf, showQtyUpdateSaveConf }) => ({
@@ -123,15 +123,19 @@ class SubscriptionItem extends React.Component {
       showQtyUpdateSaveConf,
       showQtySuccessMsg,
       viewDetailsOpen,
-      itemQuantity
+      itemQuantity,
+      frequencySelected,
+      prevFrequencySelected,
+      quantitySelected,
+      prevQuantitySelected
     } = this.state;
 
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <SubscriptionContext.Consumer>
-            {subscription => {
-              console.log(subscription);
+            {(subscription) => {
+              // console.log(subscription);
               this.subscription = subscription;
               const { closeDate = '' } = subscription;
               let subscriptionImage = '';
@@ -148,6 +152,14 @@ class SubscriptionItem extends React.Component {
               }
               return (
                 <React.Fragment>
+                  <div style={{ display: 'none' }}>
+                    {
+                      (frequencySelected,
+                      prevFrequencySelected,
+                      quantitySelected,
+                      prevQuantitySelected)
+                    }
+                  </div>
                   <div
                     className={`data-table ${
                       openExtendedMenu ? 'overlay' : ''
@@ -208,6 +220,7 @@ class SubscriptionItem extends React.Component {
                         />
                       </li>
                       <li className="d-mob">
+                        {/* <span className="label">STATUS </span> <br /> */}
                         <label>STATUS </label> <br />
                         <label className="pad_span">
                           {formatStatus(subscription.status)}
@@ -291,7 +304,7 @@ class SubscriptionItem extends React.Component {
                             <div className="dropbody">
                               <ul className="list-unstyled subscription__extended-menu">
                                 {appData.content.ExtendedMenuOptions.map(
-                                  each => {
+                                  (each) => {
                                     if (each.id === 2 && !subscription.isItem) {
                                       return undefined;
                                     }
@@ -303,7 +316,7 @@ class SubscriptionItem extends React.Component {
                                         <a
                                           href="/"
                                           data-value={each.label}
-                                          onClick={event => {
+                                          onClick={(event) => {
                                             this.handleExtendeMenuSelection(
                                               event,
                                               subscription

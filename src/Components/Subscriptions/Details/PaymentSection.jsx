@@ -5,22 +5,22 @@ import SubscriptionContext from '../../Context/SubscriptionContext';
 // import { formatPhoneNumber } from '../../utils';
 
 class PaymentSection extends React.Component {
-  editPayment = event => {
+  editPayment = (event) => {
     event.preventDefault();
     // console.log('editPayment');
   };
 
-  editContactEmail = event => {
+  editContactEmail = (event) => {
     event.preventDefault();
     // console.log('editContactEmail');
   };
 
-  editMemberNumber = event => {
+  editMemberNumber = (event) => {
     event.preventDefault();
     // console.log('editMemberNumber');
   };
 
-  addMobileNumber = event => {
+  addMobileNumber = (event) => {
     event.preventDefault();
     // console.log('addMobileNumber');
   };
@@ -29,9 +29,9 @@ class PaymentSection extends React.Component {
     const { itemInfo } = this.props;
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <SubscriptionContext.Consumer>
-            {subscription => {
+            {(subscription) => {
               const { loyaltyMember = 'N/A' } = subscription;
               return (
                 <React.Fragment>

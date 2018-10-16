@@ -25,32 +25,33 @@ class SubscriptionDetails extends React.Component {
     }
   }
 
-  handleGetItemInfoSuccess = response => {
-    console.log(
-      'get item info success',
-      response.data.responseObject.jsonObjectResponse
-    );
+  handleGetItemInfoSuccess = (response) => {
+    // console.log(
+    //   'get item info success',
+    //   response.data.responseObject.jsonObjectResponse
+    // );
     this.setState({
       itemInfo: response.data.responseObject.jsonObjectResponse
       // itemInfo: null
     });
   };
 
-  handleGetItemInfoErr = error => {
-    console.log(error);
+  handleGetItemInfoErr = () => {
+    // console.log(error);
   };
 
-  handleFrequencyDropDown = selected => {
-    this.setState({ frequencySelected: selected });
+  handleFrequencyDropDown = () => {
+    // handleFrequencyDropDown = (selected) => {
+    // this.setState({ frequencySelected: selected });
   };
 
   render() {
     const { itemInfo } = this.state;
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <SubscriptionContext.Consumer>
-            {subscription => {
+            {(subscription) => {
               this.subscription = subscription;
               // console.log(subscription);
               const {
@@ -77,7 +78,8 @@ class SubscriptionDetails extends React.Component {
                   <div className="d-block d-md-none d-lg-none status_box">
                     <ul className="list-unstyled">
                       <li>
-                        <label>STATUS </label> Subscribed until:{' '}
+                        <span className="label">STATUS</span> Subscribed until:{' '}
+                        {/* <label>STATUS </label>  */}
                         {formatDate(subscription.endDate)}
                       </li>
                       <li>

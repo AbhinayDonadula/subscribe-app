@@ -337,6 +337,14 @@ padding: 60px 0;
   margin-bottom: 19px;
   font-weight: 500;
 }
+
+.data-table span.label {
+  font-size: 13px;
+  color: #797777;
+  text-transform: uppercase;
+  margin-bottom: 19px;
+  font-weight: 500;
+}
 .data-table ul li {
   font-size: 15px;
   color: #1f1e1e;
@@ -471,6 +479,10 @@ font-weight: 600;
 font-size: 15px;
 }
 .pay_txt label{
+  color: #aba5a5;
+}
+
+.pay_txt span.label{
   color: #aba5a5;
 }
 .table2 td{
@@ -1311,6 +1323,9 @@ left: 0;
   .table label {
       font-size: 11px;
   }
+  .table span.label {
+      font-size: 11px;
+  }
   .table1 td {
       font-size: 15px;
       color: #1f1e1e;
@@ -1379,7 +1394,17 @@ left: 0;
     margin-bottom: 19px;
     font-weight: 500;
 }
+.data-table span.label {
+    font-size: 11px;
+    color: #797777;
+    text-transform: uppercase;
+    margin-bottom: 19px;
+    font-weight: 500;
+}
 .data-table label {
+    font-size: 11px;
+}
+.data-table span.label {
     font-size: 11px;
 }
 .main_txt br{
@@ -1483,6 +1508,12 @@ span.main_txt br {
     display: inline-block;
     width: 94px;
 }
+
+.table span.label {
+    font-size: 11px;
+    display: inline-block;
+    width: 94px;
+}
 #sel4,#sel3{
   display: inline-block;
 }
@@ -1535,6 +1566,13 @@ span.main_txt br {
     font-size: 14px;
 }
 .pay_txt label{
+  font-size: 11px;
+  display: inline-block;
+  width: 59%;
+  margin-bottom: 0;
+}
+
+.pay_txt span.label{
   font-size: 11px;
   display: inline-block;
   width: 59%;
@@ -2091,3 +2129,12 @@ height: 73px;
   width: 50px;
   text-align: center;
 }
+
+.item__quantity-container {
+  padding-top: 18px !important;
+}
+
+.item__quantity-label {
+  margin-bottom: 30px !important;
+}
+
