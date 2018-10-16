@@ -169,17 +169,15 @@ export const FireGetItems = async (url, handleSuccess, handleError) => {
   });
 
   // api call
-  try {
-    window
-      .fetch(request)
-      .then((resp) => resp.json())
-      .then((resp) => {
-        handleSuccess(resp);
-      });
-  } catch (error) {
-    const { response } = JSON.parse(JSON.stringify(error));
-    handleError(response);
-  }
+  window
+    .fetch(request)
+    .then((resp) => resp.json())
+    .then((resp) => {
+      handleSuccess(resp);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
 };
 
 export const getStatusFromError = (err) => {
