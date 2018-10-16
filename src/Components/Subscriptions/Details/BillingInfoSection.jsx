@@ -25,7 +25,7 @@ class BillingInfoSection extends React.Component {
     );
   }
 
-  handleSuccess = response => {
+  handleSuccess = (response) => {
     window.setTimeout(() => {
       this.setState({
         billingHistory: beautifyBillingHistoryResponse(response)
@@ -33,12 +33,12 @@ class BillingInfoSection extends React.Component {
     }, 3000);
   };
 
-  handleFailure = (error, isJWTFailed) => {
-    if (isJWTFailed) {
-      console.log('JWT failed in billing section', error.status);
-    }
-    console.log(error);
-    this.setState({ billingHistory: [], billingHistoryError: error });
+  handleFailure = () => {
+    // if (isJWTFailed) {
+    //   console.log('JWT failed in billing section', error.status);
+    // }
+    // console.log(error);
+    this.setState({ billingHistory: [] });
   };
 
   toggleShowHide = () => {
@@ -61,9 +61,9 @@ class BillingInfoSection extends React.Component {
 
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <SubscriptionContext.Consumer>
-            {subscription => {
+            {(subscription) => {
               this.billingHistoryUrl =
                 appData.content.apiUrls.getBillingHistory +
                 subscription.contractId;
@@ -162,7 +162,7 @@ class BillingInfoSection extends React.Component {
                               ) : (
                                 <React.Fragment>
                                   {billingHistory &&
-                                    billingHistory.items.map(each => {
+                                    billingHistory.items.map((each) => {
                                       const { invoiceNumber, date } = each;
                                       return (
                                         <tr key={invoiceNumber}>

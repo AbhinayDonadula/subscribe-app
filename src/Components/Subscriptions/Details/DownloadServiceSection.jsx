@@ -15,19 +15,20 @@ class DownloadServiceSection extends React.Component {
     FireFetch(this.apiUrl, this.handleSuccess, this.handleFailure);
   }
 
-  handleSuccess = response => {
-    console.log('ASI call success for download section', response);
+  handleSuccess = (response) => {
+    // console.log('ASI call success for download section', response);
     this.setState(({ downloadLink }) => ({
       downloadLink: downloadLink + response.data.emailAddress
     }));
   };
 
-  handleFailure = (error, isJWTFailed) => {
-    if (isJWTFailed) {
-      console.log('JWT failed in download section', error.status, error);
-    } else {
-      console.log('Download Section Error', error);
-    }
+  handleFailure = () => {
+    // handleFailure = (error, isJWTFailed) => {
+    // if (isJWTFailed) {
+    //   console.log('JWT failed in download section', error.status, error);
+    // } else {
+    //   console.log('Download Section Error', error);
+    // }
   };
 
   showDownloadDetailsSection = () => {
@@ -41,9 +42,9 @@ class DownloadServiceSection extends React.Component {
     const { showDownloadDetailsMobile, isMobile, downloadLink } = this.state;
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <SubscriptionContext.Consumer>
-            {subscription => {
+            {(subscription) => {
               this.apiUrl = appData.content.apiUrls.getEmailForDownloadService.replace(
                 'contractId',
                 subscription.contractId
