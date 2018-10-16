@@ -135,7 +135,7 @@ class App extends Component {
           handleSortFilter: this.handleSortFilter
         }}
       >
-        <div className="app-container">
+        <div>
           <Header />
           {enableNotifications ? <Notifications /> : null}
           <Subscriptions />

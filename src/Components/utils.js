@@ -137,7 +137,7 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   // } else {
   //   axiosInstance.defaults.headers.common.Authorization = tokenFromCookie;
   // }
-  axiosInstance.defaults.headers.common.Authorization = tokenFromCookie;
+  axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
 
   // api call
   try {
