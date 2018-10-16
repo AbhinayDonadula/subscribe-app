@@ -1,0 +1,5 @@
+api end point for get item subscriptions
+https://wwwsqs.officedepot.com/orderhistory/subscriptionManager.do?request=LIST&isTest=true
+
+
+
