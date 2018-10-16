@@ -8,7 +8,7 @@ class Subscriptions extends React.Component {
   render() {
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <section
             className="detail_sec"
             style={{

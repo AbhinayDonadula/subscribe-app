@@ -56,7 +56,7 @@ class App extends Component {
         FireFetch(
           localAPI
             ? 'http://localhost:3004/getItems'
-            : content.apiUrls.getSubList,
+            : content.apiUrls.getItemsList,
           this.handleGetItemsListSuccess,
           this.handleGetItemsListFailure
         );
@@ -71,7 +71,9 @@ class App extends Component {
       this.setState({ getSubListError: error, isJWTFailed });
     }
     FireFetch(
-      localAPI ? 'http://localhost:3004/getItems' : content.apiUrls.getSubList,
+      localAPI
+        ? 'http://localhost:3004/getItems'
+        : content.apiUrls.getItemsList,
       this.handleGetItemsListSuccess,
       this.handleGetItemsListFailure
     );

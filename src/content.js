@@ -5,6 +5,8 @@ export default {
     // with anitest user account id
     getSubList:
       'https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034',
+    getItemsList:
+      'https://wwwsqs.officedepot.com/orderhistory/subscriptionManager.do?request=LIST&isTest=true',
     getEmailForDownloadService:
       'https://subscription-ui-sqm.odplabs.com/dev/accounts/contractId',
     getBillingHistory:
