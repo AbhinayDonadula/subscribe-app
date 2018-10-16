@@ -300,6 +300,5 @@ export const createGetItemsURL = (
   request = 'LIST',
   isTest = true
 ) => {
-  // "/orderhistory/subscriptionManager.do?RecordKey=&Freq=W&DirFlag=F&StsCode=A&SortBy=D&request=LIST&isTest=true"
   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&Freq=${Freq}&DirFlag=${DirFlag}&StsCode=${StsCode}&SortBy=${SortBy}&request=${request}&isTest=${isTest}`;
 };
