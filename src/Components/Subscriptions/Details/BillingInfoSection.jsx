@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
@@ -27,7 +26,11 @@ class BillingInfoSection extends React.Component {
   }
 
   handleSuccess = response => {
-    this.setState({ billingHistory: beautifyBillingHistoryResponse(response) });
+    window.setTimeout(() => {
+      this.setState({
+        billingHistory: beautifyBillingHistoryResponse(response)
+      });
+    }, 3000);
   };
 
   handleFailure = (error, isJWTFailed) => {
@@ -52,6 +55,9 @@ class BillingInfoSection extends React.Component {
       billingHistory === null;
 
     const { isMobile, show } = this.state;
+
+    const isLoading = billingHistory === null;
+    const noBillingHistory = billingHistory && billingHistory.length === 0;
 
     return (
       <AppContext.Consumer>
@@ -91,7 +97,7 @@ class BillingInfoSection extends React.Component {
                       ) : null}
 
                       <a
-                        href=""
+                        href="/"
                         className="view_txt d-block d-md-none d-lg-none"
                       >
                         {appData.content.BillingSection.ViewAllBillingHistory}
@@ -127,7 +133,7 @@ class BillingInfoSection extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                              {billingHistory === null ? (
+                              {isLoading && (
                                 <tr>
                                   <td />
                                   <td />
@@ -140,50 +146,42 @@ class BillingInfoSection extends React.Component {
                                   <td />
                                   <td className="zui-sticky-col mob" />
                                 </tr>
-                              ) : showBillingTable ? (
+                              )}
+                              {showBillingTable && !isLoading ? (
                                 <tr>
                                   <td />
                                   <td />
                                   <td>
-                                    {billingHistory &&
-                                    billingHistory.length === 0 ? (
-                                      billingHistoryError ? (
-                                        'Billing History unvailable'
-                                      ) : (
-                                        'Your first recurring bill has not been generated'
-                                      )
-                                    ) : (
-                                      <Img
-                                        spinner
-                                        src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
-                                      />
-                                    )}
+                                    {noBillingHistory && billingHistoryError
+                                      ? 'Billing History unvailable'
+                                      : 'Your first recurring bill has not been generated'}
                                   </td>
                                   <td />
                                   <td className="zui-sticky-col mob" />
                                 </tr>
                               ) : (
                                 <React.Fragment>
-                                  {billingHistory.items.map(each => {
-                                    const { invoiceNumber, date } = each;
-                                    return (
-                                      <tr key={invoiceNumber}>
-                                        <td>{date}</td>
-                                        <td>{invoiceNumber}</td>
-                                        <td>
-                                          {each.paymentCardType}{' '}
-                                          {each.paymentCardNumber.slice(-4)}
-                                        </td>
-                                        <td>
-                                          {each.servicePeriodStart} -{' '}
-                                          {each.servicePeriodEnd}
-                                        </td>
-                                        <td className="zui-sticky-col mob">
-                                          ${each.total}
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
+                                  {billingHistory &&
+                                    billingHistory.items.map(each => {
+                                      const { invoiceNumber, date } = each;
+                                      return (
+                                        <tr key={invoiceNumber}>
+                                          <td>{date}</td>
+                                          <td>{invoiceNumber}</td>
+                                          <td>
+                                            {each.paymentCardType}{' '}
+                                            {each.paymentCardNumber.slice(-4)}
+                                          </td>
+                                          <td>
+                                            {each.servicePeriodStart} -{' '}
+                                            {each.servicePeriodEnd}
+                                          </td>
+                                          <td className="zui-sticky-col mob">
+                                            ${each.total}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
                                 </React.Fragment>
                               )}
                             </tbody>

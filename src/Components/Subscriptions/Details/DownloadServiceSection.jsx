@@ -1,14 +1,14 @@
-import React from "react";
-import AppContext from "../../Context/AppContext";
-import SubscriptionContext from "../../Context/SubscriptionContext";
-import { FireFetch } from "../../utils";
+import React from 'react';
+import AppContext from '../../Context/AppContext';
+import SubscriptionContext from '../../Context/SubscriptionContext';
+import { FireFetch } from '../../utils';
 
 class DownloadServiceSection extends React.Component {
   state = {
     showDownloadDetailsMobile: false,
     isMobile: window.innerWidth <= 750,
     downloadLink:
-      "https://update.optimumdesk.com/user/download_agent?_c=23515&_s=884c3b4485160e19f93ffe73cf719fa6b081b7a7&_u="
+      'https://update.optimumdesk.com/user/download_agent?_c=23515&_s=884c3b4485160e19f93ffe73cf719fa6b081b7a7&_u='
   };
 
   componentDidMount() {
@@ -16,7 +16,7 @@ class DownloadServiceSection extends React.Component {
   }
 
   handleSuccess = response => {
-    console.log("ASI call success for download section", response);
+    console.log('ASI call success for download section', response);
     this.setState(({ downloadLink }) => ({
       downloadLink: downloadLink + response.data.emailAddress
     }));
@@ -24,9 +24,9 @@ class DownloadServiceSection extends React.Component {
 
   handleFailure = (error, isJWTFailed) => {
     if (isJWTFailed) {
-      console.log("JWT failed in download section", error.status, error);
+      console.log('JWT failed in download section', error.status, error);
     } else {
-      console.log("Download Section Error", error);
+      console.log('Download Section Error', error);
     }
   };
 
@@ -38,13 +38,14 @@ class DownloadServiceSection extends React.Component {
   };
 
   render() {
+    const { showDownloadDetailsMobile, isMobile, downloadLink } = this.state;
     return (
       <AppContext.Consumer>
         {appData => (
           <SubscriptionContext.Consumer>
             {subscription => {
               this.apiUrl = appData.content.apiUrls.getEmailForDownloadService.replace(
-                "contractId",
+                'contractId',
                 subscription.contractId
               );
               return (
@@ -61,14 +62,13 @@ class DownloadServiceSection extends React.Component {
                       alt=""
                     />
                   </h3>
-                  {(this.state.showDownloadDetailsMobile ||
-                    !this.state.isMobile) && (
+                  {(showDownloadDetailsMobile || !isMobile) && (
                     <div className="dnload_div show">
                       <p className="dn_txt">
-                        Please download the following agent:{" "}
+                        Please download the following agent:{' '}
                         {subscription.itemDescription}
                       </p>
-                      <a className="dnload__txt" href={this.state.downloadLink}>
+                      <a className="dnload__txt" href={downloadLink}>
                         <button type="button" className="btn btn_dnload">
                           <img
                             src="https://officedepot.scene7.com/is/image/officedepot/Download_icon_White?fmt=png-alpha"

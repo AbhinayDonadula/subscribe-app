@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class TextLink extends React.Component {
   state = {};
@@ -7,13 +7,7 @@ class TextLink extends React.Component {
   render() {
     const { label, handleClick } = this.props;
     return (
-      <a
-        href="/"
-        className="view_txt opn_box"
-        onClick={handleClick}
-        tabIndex={0}
-        role="button"
-      >
+      <a href="/" className="view_txt opn_box" onClick={handleClick}>
         <span className="view-txt">
           {label}
           <i className="fa fa-angle-down" />
