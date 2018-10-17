@@ -714,6 +714,7 @@ display: none; /*hide original SELECT element:*/
 }
 .select-selected {
 background-color:transparent;
+font-size: 11px
 }
 /*style the arrow inside the select element:*/
 /*.select-selected:after {
@@ -2098,6 +2099,7 @@ height: 73px;
 .item__quantity {
   width: 50px;
   text-align: center;
+  font-size: 13px;
 }
 
 .item__quantity-container {
