@@ -70,7 +70,7 @@ class DownloadServiceSection extends React.Component {
                         {subscription.itemDescription}
                       </p>
                       <a className="dnload__txt" href={downloadLink}>
-                        <button type="button" className="btn btn_dnload">
+                        <button type="button" className="btn_dnload">
                           <img
                             src="https://officedepot.scene7.com/is/image/officedepot/Download_icon_White?fmt=png-alpha"
                             alt=""

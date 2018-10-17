@@ -139,6 +139,7 @@ class BillingInfoSection extends React.Component {
                                   <td>
                                     <Img
                                       spinner
+                                      styles={{ width: '5%' }}
                                       src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
                                     />
                                   </td>

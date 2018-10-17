@@ -26,13 +26,8 @@ class SubscriptionDetails extends React.Component {
   }
 
   handleGetItemInfoSuccess = (response) => {
-    // console.log(
-    //   'get item info success',
-    //   response.data.responseObject.jsonObjectResponse
-    // );
     this.setState({
       itemInfo: response.data.responseObject.jsonObjectResponse
-      // itemInfo: null
     });
   };
 

@@ -1,15 +1,6 @@
 import axios from 'axios';
 import datefns from 'date-fns';
-
-export const setTokenCookie = (name, value) => {
-  const date = new Date();
-  date.setTime(date.getTime() + 540 * 1000);
-  const expires = `; expires= ${date.toGMTString()}`;
-  document.cookie = `${name} = ${value}${expires}; path=/`;
-};
-
-export const getTokenFromCookie = () =>
-  document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+import getJWToken from '../apiCalls/getJWToken';
 
 export const formatDate = (date) => {
   const jsDate = new Date(date);
@@ -112,40 +103,26 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
     '$1'
   );
-  // if (!tokenFromCookie.length) {
-  //   const axiosJWTInstance = axios.create({
-  //     baseURL: "/json/jwtSubscription.do"
-  //   });
-  //   // axiosJWTInstance.defaults.headers.common.credentials = "same-origin";
-  //   try {
-  //     const response = await axiosJWTInstance.get();
-  //     axiosInstance.defaults.headers.common.Authorization = response;
-  //   } catch (error) {
-  //     const { response } = JSON.parse(JSON.stringify(error));
-  //     const isJWTfailed = true;
-
-  //     handleError(response, isJWTfailed);
-  //   }
-  // } else {
-  //   axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
-  // }
-  axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
-
-  // api call
-  try {
-    const response = await axiosInstance.get();
-    handleSuccess(response);
-    return response;
-  } catch (error) {
-    const { response } = JSON.parse(JSON.stringify(error));
-    const isJWTfailed = false;
-    if (!response) {
-      handleError({ status: 401 }, isJWTfailed);
-    } else {
-      handleError(response, isJWTfailed);
-    }
-    return error;
+  if (tokenFromCookie.length === 0) {
+    await getJWToken().then(({ token }) => {
+      const date = new Date();
+      date.setTime(date.getTime() + 540 * 1000);
+      const expires = `; expires= ${date.toGMTString()}`;
+      document.cookie = `token = ${token}${expires}; path=/`;
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    });
+  } else {
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
   }
+  axiosInstance.defaults.headers.common.Authorization = `Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzk4MTU5NDB9.VbKg9kwc_Z7S1B474VyeUw4aJjCy86aKiYIrv3kUHMjYzmhfV1fz-jnfQm9qqVDJHUw8ginR3sZH0fyeR30iLQ`;
+  await axiosInstance
+    .get()
+    .then((response) => {
+      handleSuccess(response);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
 };
 
 export const FireGetItems = async (url, handleSuccess, handleError) => {
@@ -170,13 +147,6 @@ export const FireGetItems = async (url, handleSuccess, handleError) => {
     .catch((error) => {
       handleError(error);
     });
-};
-
-export const getStatusFromError = (err) => {
-  const {
-    response: { status }
-  } = JSON.parse(JSON.stringify(err));
-  return status;
 };
 
 export const formatPhoneNumber = (phoneNumberString) => {

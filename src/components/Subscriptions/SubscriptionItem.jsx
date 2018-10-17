@@ -220,8 +220,18 @@ class SubscriptionItem extends React.Component {
                           {formatStatus(subscription.status)}
                         </label>
                       </li>
-                      <li className="d-mob item__quantity-container">
-                        <label className="item__quantity-label">
+                      <li
+                        className={`d-mob ${
+                          subscription.isItem ? 'item__quantity-container' : ''
+                        }`}
+                      >
+                        <label
+                          className={`${
+                            subscription.isItem
+                              ? 'item__quantity-container'
+                              : ''
+                          }`}
+                        >
                           {appData.content.Quantity}
                         </label>
                         <br />

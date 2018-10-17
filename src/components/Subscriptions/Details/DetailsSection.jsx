@@ -43,6 +43,10 @@ class DetailsSection extends React.Component {
                   <ul
                     className={`list-inline list-unstyled list_price ${
                       isMobile ? 'show' : ''
+                    } ${
+                      itemInfo
+                        ? 'sub__details--section-item'
+                        : 'sub__details--section-sub'
                     }`}
                   >
                     <li className="list-inline-item">
