@@ -1164,7 +1164,7 @@ left: 0;
 
 .table2 thead th {
     padding: 15px 10px;
-    font-size: 14px;
+    font-size: 12px;
 }
 .notif_box ul li {
     font-size: 14px;
@@ -1348,17 +1348,19 @@ left: 0;
     padding-bottom: 45px;
     font-size: 10px;
 }
+
 .payment__header {
   font-size: 11px;
   text-transform: uppercase;
 }
+
 .visa_img {
     margin-right: 3px;
     width: 30px;
 }
 .table2 thead th {
     padding: 15px 5px;
-    font-size: 10px;
+    font-size: 11px;
 }
 .data-table .view_txt {
     font-size: 15px;

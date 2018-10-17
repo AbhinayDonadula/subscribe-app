@@ -41,12 +41,14 @@ class PaymentSection extends React.Component {
                       id="table_pay"
                     >
                       <thead>
-                        <tr className="payment__head">
-                          <th>
+                        <tr>
+                          <th className="payment__header">
                             {appData.content.PaymentSection.PaymentMethod}
                           </th>
-                          <th>{appData.content.PaymentSection.ContactEmail}</th>
-                          <th>
+                          <th className="payment__header">
+                            {appData.content.PaymentSection.ContactEmail}
+                          </th>
+                          <th className="payment__header">
                             {appData.content.PaymentSection.RewardsMemberNumber}
                           </th>
                           {/* <th>
