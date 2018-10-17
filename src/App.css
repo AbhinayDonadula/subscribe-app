@@ -918,7 +918,7 @@ display: none !important;
   border-bottom: 0;
 }
 .dropdown_div>ul>li{
-  width: 21%;
+  width: 25%;
   vertical-align: top;
 }
 .dropdown_div {
@@ -926,8 +926,8 @@ display: none !important;
   z-index: 99999;
   width: 100%;
   bottom: auto;
-  top: 119px;
-  right: 18px;
+  top: 100px;
+  right: 0px;
   display: none;
 }
 .dropdown_div>ul{

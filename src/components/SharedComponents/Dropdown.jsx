@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 class Dropdown extends React.Component {
   state = {
     listOpen: false,
-    selected: ""
+    selected: ''
   };
 
   componentDidMount() {
@@ -12,16 +12,16 @@ class Dropdown extends React.Component {
     this.setState({ selected });
   }
 
-  handleSelected = event => {
+  handleSelected = (event) => {
     const { updateParentState } = this.props;
     const { selected } = this.state;
-    this.setState({ selected: event.target.getAttribute("data-value") }, () => {
+    this.setState({ selected: event.target.getAttribute('data-value') }, () => {
       updateParentState(selected);
     });
   };
 
   toggleList = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       listOpen: !prevState.listOpen
     }));
   };
@@ -31,21 +31,18 @@ class Dropdown extends React.Component {
     const { listOpen, selected } = this.state;
     return (
       <div
-        className={`custom-select ${frequencyDropDown ? "custom-select1" : ""}`}
+        className={`custom-select ${frequencyDropDown ? 'custom-select1' : ''}`}
         onClick={this.toggleList}
-        onKeyPress={this.toggleList}
-        role="button"
-        tabIndex={0}
       >
         <div
           className={`select-selected ${
-            !listOpen ? "" : "select-arrow-active"
+            !listOpen ? '' : 'select-arrow-active'
           }`}
         >
           {selected && selected.length ? selected : options[0].title}
         </div>
-        <div className={`select-items ${!listOpen ? "select-hide" : ""}`}>
-          {options.map(each => (
+        <div className={`select-items ${!listOpen ? 'select-hide' : ''}`}>
+          {options.map((each) => (
             <div
               key={each.id}
               data-value={each.value}
@@ -78,7 +75,7 @@ Dropdown.propTypes = {
 
 Dropdown.defaultProps = {
   frequencyDropDown: false,
-  selected: ""
+  selected: ''
 };
 
 export default Dropdown;

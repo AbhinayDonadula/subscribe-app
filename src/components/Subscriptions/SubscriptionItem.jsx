@@ -165,16 +165,10 @@ class SubscriptionItem extends React.Component {
                     className={`data-table ${
                       openExtendedMenu ? 'overlay' : ''
                     }`}
-                    onKeyPress={() => {
-                      if (openExtendedMenu)
-                        this.setState({ openExtendedMenu: false });
-                    }}
                     onClick={() => {
                       if (openExtendedMenu)
                         this.setState({ openExtendedMenu: false });
                     }}
-                    role="button"
-                    tabIndex={0}
                   >
                     {/* Success message */}
                     {(showFreqSuccessMsg || showQtySuccessMsg) && (
@@ -358,7 +352,7 @@ class SubscriptionItem extends React.Component {
                         <li>
                           <a
                             href="/"
-                            className="btn btn_cncl"
+                            className="btn_cncl"
                             onKeyDown={this.handleCancelSave}
                           >
                             {appData.content.CancelSaveUpdate}

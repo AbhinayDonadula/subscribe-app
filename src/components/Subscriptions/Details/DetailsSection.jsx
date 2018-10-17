@@ -22,15 +22,14 @@ class DetailsSection extends React.Component {
     const { itemInfo } = this.props;
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <SubscriptionContext.Consumer>
-            {subscription => (
+            {(subscription) => (
               // console.log(subscription);
               <React.Fragment>
                 <h3
                   className="head_txt sub_txt"
                   onClick={this.showSubDetailsSection}
-                  role="presentation"
                 >
                   {appData.content.SubscriptionDetails}
                   <img

@@ -72,7 +72,6 @@ class BillingInfoSection extends React.Component {
                 <React.Fragment>
                   <h3
                     className="head_txt dnload_txt"
-                    role="presentation"
                     onClick={this.toggleShowHide}
                   >
                     {appData.content.BillingSection.BillingInfoSectionHeader}
