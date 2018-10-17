@@ -17,7 +17,7 @@ import {
 class App extends Component {
   state = {
     content,
-    userName: 'John Doe',
+    userName: '',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
     enableNotifications: false,
@@ -28,22 +28,31 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.getSubscriptionsAndItemsList();
     if (document.getElementById('actualContent')) {
       document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
     }
+    this.getSubscriptionsAndItemsList();
   }
 
   handleGetItemsListSuccess = (response) => {
-    const sortedByDate = this.sortItemsAndSubs(response);
-    this.setState({
-      initialAppLoading: false,
-      subscriptionsAndItems: sortedByDate
-    });
+    const { subscriptions } = this.state;
+    if (!response.responseObject) {
+      this.setState({ subscriptionsAndItems: subscriptions });
+    } else {
+      const sortedByDate = this.sortItemsAndSubs(response);
+      this.setState({
+        initialAppLoading: false,
+        subscriptionsAndItems: sortedByDate
+      });
+    }
   };
 
   handleGetItemsListFailure = (error) => {
-    this.setState({ getItemsError: error });
+    const { subscriptions } = this.state;
+    this.setState({
+      getItemsError: error,
+      subscriptionsAndItems: subscriptions
+    });
   };
 
   handleGetSubListSuccess = (response) => {
@@ -58,7 +67,6 @@ class App extends Component {
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
         subscriptions,
-        // subscriptionsAndItems: subscriptions,
         subscriptionsAndItems: null,
         initialAppLoading: false
       },

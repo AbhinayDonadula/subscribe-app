@@ -34,10 +34,6 @@ class BillingInfoSection extends React.Component {
   };
 
   handleFailure = () => {
-    // if (isJWTFailed) {
-    //   console.log('JWT failed in billing section', error.status);
-    // }
-    // console.log(error);
     this.setState({ billingHistory: [] });
   };
 
@@ -91,7 +87,11 @@ class BillingInfoSection extends React.Component {
                                 .NextScheduledPayment
                             }
                           </label>{' '}
-                          {formatDate(billingHistory.items[0].nextBillingDate)}
+                          {billingHistory.items[0]
+                            ? formatDate(
+                                billingHistory.items[0].nextBillingDate
+                              )
+                            : 'N/A'}
                         </p>
                       ) : null}
 

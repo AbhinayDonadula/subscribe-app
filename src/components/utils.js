@@ -28,14 +28,6 @@ export const beautifyGetSubListResponse = (response) => {
     const header = { ..._contract.contractHeader };
     const contractLines = _contract.contractLines || [];
     contractLines.forEach((contractLine) => {
-      // use below to skip cancelled
-      // (contractLine.status === "Active" ||
-      //   contractLine.status === "Under amendment" ||
-      //   contractLine.status === "Pending signature" ||
-      //   contractLine.status === "Pending approval" ||
-      //   contractLine.status === "Sent for signature" ||
-      //   contractLine.status === "Hold")
-
       // skip BS(Bussiness-Select) contracts
       if (contractLine.serviceType !== 'BS') {
         subscriptions.push(
@@ -135,7 +127,7 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   //     handleError(response, isJWTfailed);
   //   }
   // } else {
-  //   axiosInstance.defaults.headers.common.Authorization = tokenFromCookie;
+  //   axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
   // }
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
 

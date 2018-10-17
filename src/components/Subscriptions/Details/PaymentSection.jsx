@@ -41,7 +41,7 @@ class PaymentSection extends React.Component {
                       id="table_pay"
                     >
                       <thead>
-                        <tr>
+                        <tr className="payment__head">
                           <th>
                             {appData.content.PaymentSection.PaymentMethod}
                           </th>
