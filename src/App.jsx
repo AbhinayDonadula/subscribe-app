@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Header from './components/Header/Header';
 import Notifications from './components/Notifications/Notifications';
 import content from './content';
 import AppContext from './components/Context/AppContext';
-import './App.css';
 import Subscriptions from './components/Subscriptions/Subscriptions';
 import {
   beautifyGetSubListResponse,
@@ -20,6 +21,7 @@ class App extends Component {
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
     enableNotifications: false,
+    enableEmailCampaign: false,
     subscriptions: null,
     subscriptionsAndItems: null,
     localAPI: true
@@ -27,6 +29,9 @@ class App extends Component {
 
   componentDidMount() {
     this.getSubscriptionsAndItemsList();
+    if (document.getElementById('actualContent')) {
+      document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
+    }
   }
 
   handleGetItemsListSuccess = (response) => {

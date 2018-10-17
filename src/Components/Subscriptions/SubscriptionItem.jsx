@@ -107,7 +107,8 @@ class SubscriptionItem extends React.Component {
     );
   };
 
-  handleCancelSave = () => {
+  handleCancelSave = (event) => {
+    event.preventDefault();
     this.setState(({ prevFrequencySelected }) => ({
       showFreqUpdateSaveConf: false,
       showQtyUpdateSaveConf: false,
@@ -220,14 +221,15 @@ class SubscriptionItem extends React.Component {
                         />
                       </li>
                       <li className="d-mob">
-                        {/* <span className="label">STATUS </span> <br /> */}
                         <label>STATUS </label> <br />
                         <label className="pad_span">
                           {formatStatus(subscription.status)}
                         </label>
                       </li>
-                      <li className="d-mob">
-                        <label>{appData.content.Quantity}</label>
+                      <li className="d-mob item__quantity-container">
+                        <label className="item__quantity-label">
+                          {appData.content.Quantity}
+                        </label>
                         <br />
                         {subscription.isItem ? (
                           <input
@@ -262,9 +264,6 @@ class SubscriptionItem extends React.Component {
                             {getFrequency(subscription.billingFrequency)}
                           </span>
                         )}
-                        {/* <span className="pad_span margin__left-10">
-                          {getFrequency(subscription.billingFrequency)}
-                        </span> */}
                       </li>
                       {/*
                       This is used when Notifications are implemented
@@ -343,9 +342,9 @@ class SubscriptionItem extends React.Component {
                       <ul className="list-inline list-unstyled">
                         <li>
                           {showFreqUpdateSaveConf &&
-                            `Save/Update frequency changes?`}
+                            'Save/Update frequency changes?'}
                           {showQtyUpdateSaveConf &&
-                            `Save/Update quantity changes?`}
+                            'Save/Update quantity changes?'}
                         </li>
                         <li>
                           <a
@@ -358,8 +357,7 @@ class SubscriptionItem extends React.Component {
                         </li>
                         <li>
                           <a
-                            role="button"
-                            tabIndex={0}
+                            href="/"
                             className="btn btn_cncl"
                             onKeyDown={this.handleCancelSave}
                           >

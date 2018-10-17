@@ -15,7 +15,7 @@ class SubscriptionFilters extends React.Component {
               <h3 className="notif_head">
                 {appData.content.MySubscriptionsHeader}
               </h3>
-              <div className="space40" />
+              <div className="space20" />
               <div className="row row_sub">
                 <div className="col-lg-8 col-md-6 col-sm-10 col-xs-12">
                   <div className="row select_Box">
