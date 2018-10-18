@@ -275,6 +275,7 @@ export const getOrderNowURL = (
 };
 
 export const createGetItemsURL = (
+  localAPI,
   RecordKey = '',
   Freq = '',
   DirFlag = 'F',
@@ -282,9 +283,33 @@ export const createGetItemsURL = (
   SortBy = 'D',
   isTest = true
 ) => {
+  if (localAPI) {
+    return 'http://localhost:3004/getItems';
+  }
   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&Freq=${Freq}&DirFlag=${DirFlag}&StsCode=${StsCode}&SortBy=${SortBy}&request=LIST&isTest=${isTest}`;
 };
 
-export const createGetItemDetailsURL = (RecordKey = '', isTest = true) => {
+export const createGetItemDetailsURL = (
+  localAPI,
+  RecordKey = '',
+  isTest = true
+) => {
+  if (localAPI) {
+    return 'http://localhost:3004/getItemInfo';
+  }
   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=INFO&isTest=${isTest}`;
+};
+
+export const getGetServiceSubscriptionsURL = (accountInfo = {}, localAPI) => {
+  // default account id for nativepet login
+  const accountId = accountInfo.accountId ? accountInfo.accountId : '02688034';
+  if (localAPI) {
+    return 'http://localhost:3004/data';
+  }
+  return (
+    'https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034'.replace(
+      new RegExp('[0-9]', 'g'),
+      ''
+    ) + accountId
+  );
 };

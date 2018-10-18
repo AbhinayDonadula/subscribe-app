@@ -22,9 +22,7 @@ class SubscriptionDetails extends React.Component {
     const { isItem, RecordKey } = this.subscription;
     if (isItem) {
       FireGetItemDetails(
-        this.appData.localAPI
-          ? 'http://localhost:3004/getItemInfo'
-          : createGetItemDetailsURL(RecordKey),
+        createGetItemDetailsURL(this.appData.localAPI, RecordKey),
         this.handleGetItemInfoSuccess,
         this.handleGetItemInfoFailure
       );

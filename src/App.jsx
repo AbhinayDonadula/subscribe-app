@@ -11,7 +11,8 @@ import {
   beautifyGetSubListResponse,
   FireFetch,
   createGetItemsURL,
-  FireGetItems
+  FireGetItems,
+  getGetServiceSubscriptionsURL
 } from './components/utils';
 
 class App extends Component {
@@ -72,7 +73,7 @@ class App extends Component {
       },
       () => {
         FireGetItems(
-          localAPI ? 'http://localhost:3004/getItems' : createGetItemsURL(),
+          createGetItemsURL(localAPI),
           this.handleGetItemsListSuccess,
           this.handleGetItemsListFailure
         );
@@ -86,7 +87,7 @@ class App extends Component {
       this.setState({ getSubListError: error, isJWTFailed });
     }
     FireGetItems(
-      localAPI ? 'http://localhost:3004/getItems' : createGetItemsURL(),
+      createGetItemsURL(localAPI),
       this.handleGetItemsListSuccess,
       this.handleGetItemsListFailure
     );
@@ -95,7 +96,7 @@ class App extends Component {
   getSubscriptionsAndItemsList = () => {
     const { localAPI } = this.state;
     FireFetch(
-      localAPI ? 'http://localhost:3004/data' : content.apiUrls.getSubList,
+      getGetServiceSubscriptionsURL(window.accountInfo, localAPI),
       this.handleGetSubListSuccess,
       this.handleGetSubListFailure
     );
