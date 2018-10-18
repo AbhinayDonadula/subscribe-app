@@ -301,17 +301,16 @@ export const createGetItemDetailsURL = (
 };
 
 export const getServiceSubscriptionsURL = (accountInfo = {}, localAPI) => {
-  // default account id for nativepet login
-  const accountId = accountInfo.accountId ? accountInfo.accountId : '02688034';
   if (localAPI) {
     return 'http://localhost:3004/data';
   }
-  return (
-    'https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034'.replace(
-      /[0-9]/g,
-      ''
-    ) + accountId
-  );
+  if (accountInfo.accountId) {
+    return `https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=${
+      accountInfo.accountId
+    }`;
+  }
+  // default account id for nativepet login
+  return 'https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034';
 };
 
 export const updateItemURL = (
