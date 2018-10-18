@@ -2,6 +2,10 @@ import axios from 'axios';
 import datefns from 'date-fns';
 import getJWToken from '../apiCalls/getJWToken';
 
+export const getTokenFromCookie = () => {};
+
+export const setTokenCookie = () => {};
+
 export const formatDate = (date) => {
   const jsDate = new Date(date);
   const year = jsDate.getFullYear();
