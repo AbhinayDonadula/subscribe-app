@@ -304,17 +304,12 @@ export const createGetItemDetailsURL = (
   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=INFO&isTest=${isTest}`;
 };
 
-export const getServiceSubscriptionsURL = (accountInfo = {}, localAPI) => {
+export const getServiceSubscriptionsURL = (localAPI) => {
+  const accountId = document.querySelector("input[name='accountId']").value;
   if (localAPI) {
     return 'http://localhost:3004/data';
   }
-  if (accountInfo.accountId) {
-    return `https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=${
-      accountInfo.accountId
-    }`;
-  }
-  // default account id for nativepet login
-  return 'https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034';
+  return `https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=${accountId}`;
 };
 
 export const updateItemURL = (
