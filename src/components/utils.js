@@ -148,6 +148,29 @@ export const FireGetItems = async (url, handleSuccess, handleError) => {
       handleError(error);
     });
 };
+export const FireGetItemDetails = async (url, handleSuccess, handleError) => {
+  const headers = new window.Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  });
+
+  const request = new window.Request(url, {
+    headers,
+    method: 'GET',
+    credentials: 'same-origin'
+  });
+
+  // api call
+  window
+    .fetch(request)
+    .then((resp) => resp.json())
+    .then((resp) => {
+      handleSuccess(resp);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+};
 
 export const formatPhoneNumber = (phoneNumberString) => {
   const cleaned = `${phoneNumberString}`.replace(/\D/g, '');
@@ -257,8 +280,11 @@ export const createGetItemsURL = (
   DirFlag = 'F',
   StsCode = 'A',
   SortBy = 'D',
-  request = 'LIST',
   isTest = true
 ) => {
-  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&Freq=${Freq}&DirFlag=${DirFlag}&StsCode=${StsCode}&SortBy=${SortBy}&request=${request}&isTest=${isTest}`;
+  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&Freq=${Freq}&DirFlag=${DirFlag}&StsCode=${StsCode}&SortBy=${SortBy}&request=LIST&isTest=${isTest}`;
+};
+
+export const createGetItemDetailsURL = (RecordKey = '', isTest = true) => {
+  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=INFO&isTest=${isTest}`;
 };

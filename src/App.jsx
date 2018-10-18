@@ -24,7 +24,7 @@ class App extends Component {
     enableEmailCampaign: false,
     subscriptions: null,
     subscriptionsAndItems: null,
-    localAPI: false
+    localAPI: true
   };
 
   componentDidMount() {

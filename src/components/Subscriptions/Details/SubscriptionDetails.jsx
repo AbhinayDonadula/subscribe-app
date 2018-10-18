@@ -6,7 +6,11 @@ import DownloadServiceSection from './DownloadServiceSection';
 import BillingInfoSection from './BillingInfoSection';
 import PaymentSection from './PaymentSection';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { formatDate, FireFetch } from '../../utils';
+import {
+  formatDate,
+  FireGetItemDetails,
+  createGetItemDetailsURL
+} from '../../utils';
 import Img from '../../SharedComponents/Img';
 
 class SubscriptionDetails extends React.Component {
@@ -15,10 +19,12 @@ class SubscriptionDetails extends React.Component {
   };
 
   componentDidMount() {
-    if (this.subscription.isItem) {
-      FireFetch(
-        // content.apiUrls.getSubList,
-        'http://localhost:3004/getItemInfo',
+    const { isItem, RecordKey } = this.subscription;
+    if (isItem) {
+      FireGetItemDetails(
+        this.appData.localAPI
+          ? 'http://localhost:3004/getItemInfo'
+          : createGetItemDetailsURL(RecordKey),
         this.handleGetItemInfoSuccess,
         this.handleGetItemInfoFailure
       );
@@ -26,9 +32,7 @@ class SubscriptionDetails extends React.Component {
   }
 
   handleGetItemInfoSuccess = (response) => {
-    this.setState({
-      itemInfo: response.data.responseObject.jsonObjectResponse
-    });
+    this.setState({ itemInfo: response.responseObject.jsonObjectResponse });
   };
 
   handleGetItemInfoErr = () => {
@@ -48,7 +52,7 @@ class SubscriptionDetails extends React.Component {
           <SubscriptionContext.Consumer>
             {(subscription) => {
               this.subscription = subscription;
-              // console.log(subscription);
+              this.appData = appData;
               const {
                 status = '',
                 serviceType = 'SS',
@@ -73,8 +77,7 @@ class SubscriptionDetails extends React.Component {
                   <div className="d-block d-md-none d-lg-none status_box">
                     <ul className="list-unstyled">
                       <li>
-                        <span className="label">STATUS</span> Subscribed until:{' '}
-                        {/* <label>STATUS </label>  */}
+                        <label>STATUS </label> Subscribed until:{' '}
                         {formatDate(subscription.endDate)}
                       </li>
                       <li>
