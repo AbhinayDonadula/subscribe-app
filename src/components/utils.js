@@ -308,8 +308,41 @@ export const getGetServiceSubscriptionsURL = (accountInfo = {}, localAPI) => {
   }
   return (
     'https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=02688034'.replace(
-      new RegExp('[0-9]', 'g'),
+      /[0-9]/g,
       ''
     ) + accountId
   );
+};
+
+export const updateItemURL = (
+  RecordKey = '',
+  actions,
+  LstChgTS,
+  localAPI,
+  isTest = true
+) => {
+  // ['cancel', 'skip', ]
+  let SkipNext = '';
+  let Cancel = '';
+  const Freq = '';
+  const Email = '';
+  const WLRNumber = '';
+  const QtyOrd = '';
+
+  actions.forEach((action) => {
+    if (action === 'cancel') {
+      Cancel = '0';
+    }
+    if (action === 'skip') {
+      SkipNext = '0';
+    }
+    if (action === 'skip') {
+      SkipNext = '0';
+    }
+  });
+
+  if (localAPI) {
+    return 'http://localhost:3004/getItemInfo';
+  }
+  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=MAINTAIN&isTest=${isTest}`;
 };
