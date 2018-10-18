@@ -12,7 +12,7 @@ import {
   FireFetch,
   createGetItemsURL,
   FireGetItems,
-  getGetServiceSubscriptionsURL
+  getServiceSubscriptionsURL
 } from './components/utils';
 
 class App extends Component {
@@ -96,7 +96,7 @@ class App extends Component {
   getSubscriptionsAndItemsList = () => {
     const { localAPI } = this.state;
     FireFetch(
-      getGetServiceSubscriptionsURL(window.accountInfo, localAPI),
+      getServiceSubscriptionsURL(window.accountInfo, localAPI),
       this.handleGetSubListSuccess,
       this.handleGetSubListFailure
     );

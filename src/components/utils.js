@@ -300,7 +300,7 @@ export const createGetItemDetailsURL = (
   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=INFO&isTest=${isTest}`;
 };
 
-export const getGetServiceSubscriptionsURL = (accountInfo = {}, localAPI) => {
+export const getServiceSubscriptionsURL = (accountInfo = {}, localAPI) => {
   // default account id for nativepet login
   const accountId = accountInfo.accountId ? accountInfo.accountId : '02688034';
   if (localAPI) {
