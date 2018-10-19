@@ -54,6 +54,7 @@ export default {
   },
   SaveUpdate: 'Save/Update',
   CancelSaveUpdate: 'No, Cancel',
+  navigateToService: '/catalog/search.do?Ntt=itemNumber',
   defaultItemImg:
     'https://officedepot.scene7.com/is/image/officedepot/sku-image-default',
   ShowOptions: [

@@ -136,8 +136,16 @@ class SubscriptionItem extends React.Component {
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
+              const {
+                closeDate = '',
+                isItem,
+                skuUrl,
+                itemNumber,
+                itemDescription = 'N/A',
+                shortDescription
+              } = subscription;
               this.subscription = subscription;
-              const { closeDate = '' } = subscription;
+
               let subscriptionImage = '';
               if (subscription.isItem) {
                 subscriptionImage = subscription.mediumImageUrl
@@ -151,6 +159,8 @@ class SubscriptionItem extends React.Component {
                   closeDate.length > 0
                 );
               }
+              // console.log(subscription);
+
               return (
                 <React.Fragment>
                   <div
@@ -189,14 +199,22 @@ class SubscriptionItem extends React.Component {
                     {/* each item */}
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
-                        <Img src={subscriptionImage} />
+                        <a
+                          href={`${
+                            isItem
+                              ? skuUrl
+                              : '/catalog/search.do?Ntt=itemNumber'.replace(
+                                  'itemNumber',
+                                  itemNumber
+                                )
+                          }`}
+                        >
+                          <Img src={subscriptionImage} />
+                        </a>
                       </li>
                       <li>
                         <span className="main_txt desc">
-                          {subscription.itemDescription &&
-                          subscription.itemDescription.length > 0
-                            ? subscription.itemDescription
-                            : 'N/A'}
+                          {isItem ? shortDescription : itemDescription}
                         </span>
                         <br />
                         <TextLink

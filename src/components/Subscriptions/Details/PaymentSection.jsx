@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 
@@ -10,6 +11,7 @@ class PaymentSection extends React.Component {
 
   editContactEmail = (event) => {
     event.preventDefault();
+    toast.success('Email is updated.');
   };
 
   editMemberNumber = (event) => {

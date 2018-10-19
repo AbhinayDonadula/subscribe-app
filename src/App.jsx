@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
+import { toast } from 'react-toastify';
 import Header from './components/Header/Header';
 import Notifications from './components/Notifications/Notifications';
 import content from './content';
@@ -14,6 +15,7 @@ import {
   getServiceSubscriptionsURL
 } from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
+import SnackBar from './components/SharedComponents/SnackBar';
 
 class App extends Component {
   state = {
@@ -25,8 +27,7 @@ class App extends Component {
     enableEmailCampaign: false,
     subscriptions: null,
     itemsAndServices: null,
-    localAPI: true,
-    itemSkus: []
+    localAPI: true
   };
 
   componentDidMount() {
@@ -84,12 +85,12 @@ class App extends Component {
             el.skuId.replace(/^0+/, '') === eachItem.SKU.replace(/^0+/, '')
           );
         });
-
         // once we found the item, merge with all the needed properties with item as below
         return {
           smallImageUrl: itemWithSku.imageUrl + itemWithSku.smallImageUrl,
           mediumImageUrl: itemWithSku.imageUrl + itemWithSku.mediumImageUrl,
           shortDescription: itemWithSku.shortDescription,
+          skuUrl: itemWithSku.skuUrl,
           ...eachItem
         };
       });
@@ -161,11 +162,12 @@ class App extends Component {
   };
 
   handleAllFilter = (selected) => {
-    this.setState({ initialAppLoading: true }, () => {
-      window.setTimeout(() => {
-        this.setState({ initialAppLoading: false, selectedFilter: selected });
-      }, 3000);
-    });
+    // this.setState({ initialAppLoading: true }, () => {
+    //   // window.setTimeout(() => {
+    //   //   this.setState({ initialAppLoading: false, selectedFilter: selected });
+    //   // }, 3000);
+    // });
+    toast.success('Quantity is updated.');
   };
 
   handleSortFilter = (selected) => {
@@ -182,11 +184,11 @@ class App extends Component {
           handleSortFilter: this.handleSortFilter
         }}
       >
-        <div>
+        <SnackBar>
           <Header />
           {enableNotifications ? <Notifications /> : null}
           <Subscriptions />
-        </div>
+        </SnackBar>
       </AppContext.Provider>
     );
   }
