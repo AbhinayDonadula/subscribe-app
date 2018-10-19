@@ -54,6 +54,8 @@ export default {
   },
   SaveUpdate: 'Save/Update',
   CancelSaveUpdate: 'No, Cancel',
+  defaultItemImg:
+    'https://officedepot.scene7.com/is/image/officedepot/sku-image-default',
   ShowOptions: [
     {
       id: 0,

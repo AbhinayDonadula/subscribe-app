@@ -6,11 +6,7 @@ import DownloadServiceSection from './DownloadServiceSection';
 import BillingInfoSection from './BillingInfoSection';
 import PaymentSection from './PaymentSection';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import {
-  formatDate,
-  FireGetItemDetails,
-  createGetItemDetailsURL
-} from '../../utils';
+import { formatDate, FireGetItemDetails } from '../../utils';
 import Img from '../../SharedComponents/Img';
 
 class SubscriptionDetails extends React.Component {
@@ -22,9 +18,10 @@ class SubscriptionDetails extends React.Component {
     const { isItem, RecordKey } = this.subscription;
     if (isItem) {
       FireGetItemDetails(
-        createGetItemDetailsURL(this.appData.localAPI, RecordKey),
+        this.appData.localAPI,
         this.handleGetItemInfoSuccess,
-        this.handleGetItemInfoFailure
+        this.handleGetItemInfoFailure,
+        RecordKey
       );
     }
   }

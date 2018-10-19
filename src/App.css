@@ -2203,6 +2203,9 @@ body h1, body h2, body h3, body h4, body h5, body h6, .h1, .h2, .h3, .h4, .h5, .
 
 @media (min-width: 1025px) and (max-width: 2000px) {
   
+  .img-responsive {
+    height: auto;
+  }
   ul.sub__details--section-item {
     display: flex;
     justify-content: space-evenly;

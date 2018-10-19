@@ -14,7 +14,7 @@ class SubscriptionItemsContainer extends React.Component {
       <AppContext.Consumer>
         {(appData) => (
           <div className="row">
-            {appData.subscriptionsAndItems && !appData.initialAppLoading ? (
+            {appData.itemsAndServices && !appData.initialAppLoading ? (
               <div className="col-md-12">
                 <SubscriptionFilters
                   handleAllFilter={appData.handleAllFilter}
@@ -22,8 +22,8 @@ class SubscriptionItemsContainer extends React.Component {
                 />
                 <div className="space50" />
                 {!appData.initialAppLoading &&
-                  appData.subscriptionsAndItems &&
-                  appData.subscriptionsAndItems.map((eachSubscription) => (
+                  appData.itemsAndServices &&
+                  appData.itemsAndServices.map((eachSubscription) => (
                     <div
                       className="sub_div"
                       key={

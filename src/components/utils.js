@@ -118,7 +118,7 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
   } else {
     axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
   }
-  axiosInstance.defaults.headers.common.Authorization = `Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzk4MTU5NDB9.VbKg9kwc_Z7S1B474VyeUw4aJjCy86aKiYIrv3kUHMjYzmhfV1fz-jnfQm9qqVDJHUw8ginR3sZH0fyeR30iLQ`;
+  // axiosInstance.defaults.headers.common.Authorization = `Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzk4MTU5NDB9.VbKg9kwc_Z7S1B474VyeUw4aJjCy86aKiYIrv3kUHMjYzmhfV1fz-jnfQm9qqVDJHUw8ginR3sZH0fyeR30iLQ`;
   await axiosInstance
     .get()
     .then((response) => {
@@ -129,7 +129,110 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
     });
 };
 
-export const FireGetItems = async (url, handleSuccess, handleError) => {
+export const FireGetItems = async (
+  localAPI,
+  handleSuccess,
+  handleError,
+  statusCode = 'A',
+  sortBy = 'D',
+  dirFlag = 'T'
+) => {
+  let url = '';
+  if (localAPI) {
+    url = 'http://localhost:3004/getItems';
+  } else {
+    url = '/orderhistory/subscriptionManager.do';
+  }
+  const data = {
+    REQUEST: {
+      NAME: 'SUBSCRIPTION',
+      TYPE: 'LIST'
+    },
+    INPUT: {
+      StsCode: statusCode,
+      DirFlag: dirFlag,
+      PONo: '',
+      SortBy: sortBy,
+      ItemNum: '',
+      Freq: '',
+      CostCenter: '',
+      ShipTo: '',
+      BundleFlag: '',
+      RecordKey: ''
+    }
+  };
+
+  const headers = new window.Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  });
+
+  const request = new window.Request(url, {
+    headers,
+    method: localAPI ? 'GET' : 'POST',
+    credentials: 'same-origin',
+    body: localAPI ? undefined : JSON.stringify(data)
+  });
+
+  // api call
+  window
+    .fetch(request)
+    .then((resp) => resp.json())
+    .then((resp) => {
+      handleSuccess(resp);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+};
+
+export const FireGetItemDetails = async (
+  localAPI,
+  handleSuccess,
+  handleError,
+  recordKey
+) => {
+  let url = '';
+  if (localAPI) {
+    url = 'http://localhost:3004/getItemInfo';
+  } else {
+    url = '/orderhistory/subscriptionManager.do';
+  }
+  const data = {
+    REQUEST: {
+      NAME: 'SUBSCRIPTION',
+      TYPE: 'INFO'
+    },
+    INPUT: {
+      RecordKey: recordKey
+    }
+  };
+
+  const headers = new window.Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  });
+
+  const request = new window.Request(url, {
+    headers,
+    method: localAPI ? 'GET' : 'POST',
+    credentials: 'same-origin',
+    body: localAPI ? undefined : JSON.stringify(data)
+  });
+
+  // api call
+  window
+    .fetch(request)
+    .then((resp) => resp.json())
+    .then((resp) => {
+      handleSuccess(resp);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+};
+
+export const FireGetImageBySku = async (url, handleSuccess, handleError) => {
   const headers = new window.Headers({
     'Content-Type': 'application/json',
     Accept: 'application/json'
@@ -152,28 +255,17 @@ export const FireGetItems = async (url, handleSuccess, handleError) => {
       handleError(error);
     });
 };
-export const FireGetItemDetails = async (url, handleSuccess, handleError) => {
-  const headers = new window.Headers({
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  });
 
-  const request = new window.Request(url, {
-    headers,
-    method: 'GET',
-    credentials: 'same-origin'
-  });
-
-  // api call
-  window
-    .fetch(request)
-    .then((resp) => resp.json())
-    .then((resp) => {
-      handleSuccess(resp);
-    })
-    .catch((error) => {
-      handleError(error);
-    });
+export const createGetImageInfoBySkuURL = (localAPI, itemSkus) => {
+  const stripZerosFromItemSkus = itemSkus.map((each) =>
+    each.replace(/^0+/, '')
+  );
+  if (!localAPI) {
+    return `/mobile/getAjaxPriceListFromService.do?mapBySkuId=true&items=${stripZerosFromItemSkus.join(
+      ','
+    )}`;
+  }
+  return 'http://localhost:3004/imageForSku';
 };
 
 export const formatPhoneNumber = (phoneNumberString) => {
@@ -278,69 +370,50 @@ export const getOrderNowURL = (
   return `/catalog/addSkuByButtonSetAction.do?addingToCartFromSubscriptionManager=true&qty=${qty}&sku=${sku}&subscriptionIncentivePercent=${subscriptionIncentivePercent}&subscriptionHasFreeDelivery=${subscriptionHasFreeDelivery}&subscriptionWlrPercent=${subscriptionWlrPercent}&subscriptionId=${subscriptionId}`;
 };
 
-export const createGetItemsURL = (
-  localAPI,
-  RecordKey = '',
-  Freq = '',
-  DirFlag = 'F',
-  StsCode = 'A',
-  SortBy = 'D',
-  isTest = true
-) => {
-  if (localAPI) {
-    return 'http://localhost:3004/getItems';
-  }
-  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&Freq=${Freq}&DirFlag=${DirFlag}&StsCode=${StsCode}&SortBy=${SortBy}&request=LIST&isTest=${isTest}`;
-};
-
-export const createGetItemDetailsURL = (
-  localAPI,
-  RecordKey = '',
-  isTest = true
-) => {
-  if (localAPI) {
-    return 'http://localhost:3004/getItemInfo';
-  }
-  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=INFO&isTest=${isTest}`;
-};
-
 export const getServiceSubscriptionsURL = (localAPI) => {
-  const accountId = document.querySelector("input[name='accountId']").value;
-  if (localAPI) {
-    return 'http://localhost:3004/data';
+  if (!localAPI) {
+    const accountId = document.querySelector("input[name='accountId']").value;
+    return `https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=${accountId}`;
   }
-  return `https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=${accountId}`;
+  return 'http://localhost:3004/data';
 };
 
-export const updateItemURL = (
-  RecordKey = '',
-  actions,
-  LstChgTS,
-  localAPI,
-  isTest = true
-) => {
-  // ['cancel', 'skip', ]
-  let SkipNext = '';
-  let Cancel = '';
-  const Freq = '';
-  const Email = '';
-  const WLRNumber = '';
-  const QtyOrd = '';
-
-  actions.forEach((action) => {
-    if (action === 'cancel') {
-      Cancel = '0';
-    }
-    if (action === 'skip') {
-      SkipNext = '0';
-    }
-    if (action === 'skip') {
-      SkipNext = '0';
-    }
+export const getDefaultHeaders = () => {
+  return new window.Headers({
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
   });
-
-  if (localAPI) {
-    return 'http://localhost:3004/getItemInfo';
-  }
-  return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=MAINTAIN&isTest=${isTest}`;
 };
+
+// export const updateItemURL = (
+//   RecordKey = '',
+//   actions,
+//   LstChgTS,
+//   localAPI,
+//   isTest = true
+// ) => {
+//   // ['cancel', 'skip', ]
+//   let SkipNext = '';
+//   let Cancel = '';
+//   const Freq = '';
+//   const Email = '';
+//   const WLRNumber = '';
+//   const QtyOrd = '';
+
+//   actions.forEach((action) => {
+//     if (action === 'cancel') {
+//       Cancel = '0';
+//     }
+//     if (action === 'skip') {
+//       SkipNext = '0';
+//     }
+//     if (action === 'skip') {
+//       SkipNext = '0';
+//     }
+//   });
+
+//   if (localAPI) {
+//     return 'http://localhost:3004/getItemInfo';
+//   }
+//   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=MAINTAIN&isTest=${isTest}`;
+// };

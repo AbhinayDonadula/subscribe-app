@@ -23,7 +23,8 @@ const getJWToken = async () => {
     }))
     .catch((err) => ({
       error: err,
-      ok: false
+      ok: false,
+      token: 'failed to get'
     }));
 };
 

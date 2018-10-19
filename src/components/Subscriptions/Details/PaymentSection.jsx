@@ -2,27 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-// import { formatPhoneNumber } from '../../utils';
 
 class PaymentSection extends React.Component {
   editPayment = (event) => {
     event.preventDefault();
-    // console.log('editPayment');
   };
 
   editContactEmail = (event) => {
     event.preventDefault();
-    // console.log('editContactEmail');
   };
 
   editMemberNumber = (event) => {
     event.preventDefault();
-    // console.log('editMemberNumber');
   };
 
   addMobileNumber = (event) => {
     event.preventDefault();
-    // console.log('addMobileNumber');
   };
 
   render() {

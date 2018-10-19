@@ -19,17 +19,17 @@ class SubscriptionItem extends React.Component {
     openExtendedMenu: false,
     showFreqSuccessMsg: false,
     showQtySuccessMsg: false,
-    frequencySelected: '',
-    prevFrequencySelected: '',
-    quantitySelected: 1,
-    prevQuantitySelected: 1,
+    // frequencySelected: '',
+    // prevFrequencySelected: '',
+    // quantitySelected: 1,
+    // prevQuantitySelected: 1,
     itemQuantity: 1
   };
 
   componentDidMount() {
     this.setState({
-      frequencySelected: getFrequency(this.subscription.billingFrequency),
-      prevFrequencySelected: getFrequency(this.subscription.billingFrequency),
+      // frequencySelected: getFrequency(this.subscription.billingFrequency),
+      // prevFrequencySelected: getFrequency(this.subscription.billingFrequency),
       itemQuantity: this.subscription.isItem
         ? this.subscription.quantity.replace(/^0+/, '')
         : ''
@@ -124,11 +124,11 @@ class SubscriptionItem extends React.Component {
       showQtyUpdateSaveConf,
       showQtySuccessMsg,
       viewDetailsOpen,
-      itemQuantity,
-      frequencySelected,
-      prevFrequencySelected,
-      quantitySelected,
-      prevQuantitySelected
+      itemQuantity
+      // frequencySelected,
+      // prevFrequencySelected,
+      // quantitySelected,
+      // prevQuantitySelected
     } = this.state;
 
     return (
@@ -136,13 +136,13 @@ class SubscriptionItem extends React.Component {
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
-              // console.log(subscription);
               this.subscription = subscription;
               const { closeDate = '' } = subscription;
               let subscriptionImage = '';
               if (subscription.isItem) {
-                subscriptionImage =
-                  'https://officedepot.scene7.com/is/image/officedepot/315515_p_smead_manila_file_folders?$OD%2DMed$';
+                subscriptionImage = subscription.mediumImageUrl
+                  ? subscription.mediumImageUrl
+                  : appData.content.defaultItemImg;
               } else if (subscription.vendorNumber === '01242135') {
                 subscriptionImage = getImageBySKU(subscription.itemNumber);
               } else {
@@ -153,14 +153,6 @@ class SubscriptionItem extends React.Component {
               }
               return (
                 <React.Fragment>
-                  <div style={{ display: 'none' }}>
-                    {
-                      (frequencySelected,
-                      prevFrequencySelected,
-                      quantitySelected,
-                      prevQuantitySelected)
-                    }
-                  </div>
                   <div
                     className={`data-table ${
                       openExtendedMenu ? 'overlay' : ''

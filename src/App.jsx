@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import './App.css';
 import Header from './components/Header/Header';
 import Notifications from './components/Notifications/Notifications';
 import content from './content';
@@ -10,10 +10,10 @@ import Subscriptions from './components/Subscriptions/Subscriptions';
 import {
   beautifyGetSubListResponse,
   FireFetch,
-  createGetItemsURL,
   FireGetItems,
   getServiceSubscriptionsURL
 } from './components/utils';
+import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 
 class App extends Component {
   state = {
@@ -24,8 +24,9 @@ class App extends Component {
     enableNotifications: false,
     enableEmailCampaign: false,
     subscriptions: null,
-    subscriptionsAndItems: null,
-    localAPI: true
+    itemsAndServices: null,
+    localAPI: true,
+    itemSkus: []
   };
 
   componentDidMount() {
@@ -38,21 +39,78 @@ class App extends Component {
   handleGetItemsListSuccess = (response) => {
     const { subscriptions } = this.state;
     if (!response.responseObject) {
-      this.setState({ subscriptionsAndItems: subscriptions });
+      this.setState({ itemsAndServices: subscriptions });
     } else {
-      const sortedByDate = this.sortItemsAndSubs(response);
-      this.setState({
-        initialAppLoading: false,
-        subscriptionsAndItems: sortedByDate
-      });
+      this.sortItemsAndSubs(response);
     }
+  };
+
+  sortItemsAndSubs = async ({ responseObject }) => {
+    const { subscriptions, localAPI } = this.state;
+    const itemSkus = [];
+    const {
+      jsonObjectResponse: { GetSubListDetail }
+    } = responseObject;
+    const itemsList = GetSubListDetail;
+
+    // sort out just item subscriptions from the response
+    const itemsArray = Object.values(itemsList).filter(
+      (each) => each.RecordKey.length > 0
+    );
+
+    // add sortDate/isItem for sorting/filtering purposes
+    const beautifiedItems = itemsArray.map((item) => {
+      itemSkus.push(item.SKU);
+      return {
+        ...item,
+        isItem: true,
+        itemDescription: item.Desc,
+        billingFrequency: item.Freq,
+        quantity: item.QtyOrd,
+        status: item.Status,
+        sortDate: item.NextDlvDt
+      };
+    });
+    let itemsAndServices = [];
+    try {
+      // below call will give image info for a given sku or array of skus
+      const response = await getImageInfoBySku(localAPI, itemSkus);
+
+      // go through each item and find the relevant sku from response above and merge obj
+      const beautifiedItemsWithImages = beautifiedItems.map((eachItem) => {
+        // take the sku from repsonse and find the same item inside items array
+        const itemWithSku = Object.values(response).find((el) => {
+          return (
+            el.skuId.replace(/^0+/, '') === eachItem.SKU.replace(/^0+/, '')
+          );
+        });
+
+        // once we found the item, merge with all the needed properties with item as below
+        return {
+          smallImageUrl: itemWithSku.imageUrl + itemWithSku.smallImageUrl,
+          mediumImageUrl: itemWithSku.imageUrl + itemWithSku.mediumImageUrl,
+          shortDescription: itemWithSku.shortDescription,
+          ...eachItem
+        };
+      });
+      itemsAndServices = [...beautifiedItemsWithImages, ...subscriptions];
+    } catch (error) {
+      itemsAndServices = [...beautifiedItems, ...subscriptions];
+    }
+    const sortedByDate = itemsAndServices.sort(
+      (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+    );
+    this.setState({
+      initialAppLoading: false,
+      itemsAndServices: sortedByDate
+    });
   };
 
   handleGetItemsListFailure = (error) => {
     const { subscriptions } = this.state;
     this.setState({
       getItemsError: error,
-      subscriptionsAndItems: subscriptions
+      itemsAndServices: subscriptions
     });
   };
 
@@ -68,12 +126,12 @@ class App extends Component {
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
         subscriptions,
-        subscriptionsAndItems: null,
+        itemsAndServices: null,
         initialAppLoading: false
       },
       () => {
         FireGetItems(
-          createGetItemsURL(localAPI),
+          localAPI,
           this.handleGetItemsListSuccess,
           this.handleGetItemsListFailure
         );
@@ -87,7 +145,7 @@ class App extends Component {
       this.setState({ getSubListError: error, isJWTFailed });
     }
     FireGetItems(
-      createGetItemsURL(localAPI),
+      localAPI,
       this.handleGetItemsListSuccess,
       this.handleGetItemsListFailure
     );
@@ -96,7 +154,7 @@ class App extends Component {
   getSubscriptionsAndItemsList = () => {
     const { localAPI } = this.state;
     FireFetch(
-      getServiceSubscriptionsURL(window.accountInfo, localAPI),
+      getServiceSubscriptionsURL(localAPI),
       this.handleGetSubListSuccess,
       this.handleGetSubListFailure
     );
@@ -113,31 +171,6 @@ class App extends Component {
   handleSortFilter = (selected) => {
     this.setState({ sortFilter: selected });
   };
-
-  sortItemsAndSubs(response) {
-    const { subscriptions } = this.state;
-    const itemsList =
-      response.responseObject.jsonObjectResponse.GetSubListDetail;
-    const itemsArray = Object.values(itemsList).filter(
-      (each) => each.RecordKey.length > 0
-    );
-    const beautifiedItems = itemsArray.map((item) => {
-      return {
-        ...item,
-        isItem: true,
-        itemDescription: item.Desc,
-        billingFrequency: item.Freq,
-        quantity: item.QtyOrd,
-        status: item.Status,
-        sortDate: item.NextDlvDt
-      };
-    });
-    const itemsAndServices = [...beautifiedItems, ...subscriptions];
-    const sortedByDate = itemsAndServices.sort(
-      (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-    );
-    return sortedByDate;
-  }
 
   render() {
     const { enableNotifications } = this.state;
