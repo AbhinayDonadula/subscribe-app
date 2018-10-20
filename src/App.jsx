@@ -8,14 +8,10 @@ import Notifications from './components/Notifications/Notifications';
 import content from './content';
 import AppContext from './components/Context/AppContext';
 import Subscriptions from './components/Subscriptions/Subscriptions';
-import {
-  beautifyGetSubListResponse,
-  FireFetch,
-  FireGetItems,
-  getServiceSubscriptionsURL
-} from './components/utils';
+import { beautifyGetSubListResponse, FireFetch } from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
+import getItemSubscriptions from './apiCalls/getItemSubscriptions';
 
 class App extends Component {
   state = {
@@ -36,15 +32,6 @@ class App extends Component {
     }
     this.getSubscriptionsAndItemsList();
   }
-
-  handleGetItemsListSuccess = (response) => {
-    const { subscriptions } = this.state;
-    if (!response.responseObject) {
-      this.setState({ itemsAndServices: subscriptions });
-    } else {
-      this.sortItemsAndSubs(response);
-    }
-  };
 
   sortItemsAndSubs = async ({ responseObject }) => {
     const { subscriptions, localAPI } = this.state;
@@ -107,16 +94,7 @@ class App extends Component {
     });
   };
 
-  handleGetItemsListFailure = (error) => {
-    const { subscriptions } = this.state;
-    this.setState({
-      getItemsError: error,
-      itemsAndServices: subscriptions
-    });
-  };
-
   handleGetSubListSuccess = (response) => {
-    const { localAPI } = this.state;
     const {
       data: { getSubscriptionDetailsListResponse }
     } = response;
@@ -136,35 +114,37 @@ class App extends Component {
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
         subscriptions,
-        itemsAndServices: null,
-        initialAppLoading: false
+        itemsAndServices: null
       },
       () => {
-        FireGetItems(
-          localAPI,
-          this.handleGetItemsListSuccess,
-          this.handleGetItemsListFailure
-        );
+        this.getItems();
       }
     );
   };
 
-  handleGetSubListFailure = (error, isJWTFailed) => {
-    const { localAPI } = this.state;
-    if (error) {
-      this.setState({ getSubListError: error, isJWTFailed });
+  getItems = async () => {
+    const { localAPI, subscriptions } = this.state;
+    try {
+      const itemsSubs = await getItemSubscriptions(localAPI);
+      if (!itemsSubs.responseObject) {
+        this.setState({ itemsAndServices: subscriptions });
+      } else {
+        this.sortItemsAndSubs(itemsSubs);
+      }
+    } catch (error) {
+      this.setState({ itemsAndServices: subscriptions });
     }
-    FireGetItems(
-      localAPI,
-      this.handleGetItemsListSuccess,
-      this.handleGetItemsListFailure
-    );
+  };
+
+  handleGetSubListFailure = (error) => {
+    this.setState({ getSubListError: error });
+    this.getItems();
   };
 
   getSubscriptionsAndItemsList = () => {
     const { localAPI } = this.state;
     FireFetch(
-      getServiceSubscriptionsURL(localAPI),
+      localAPI,
       this.handleGetSubListSuccess,
       this.handleGetSubListFailure
     );

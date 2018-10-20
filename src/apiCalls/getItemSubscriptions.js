@@ -1,11 +1,18 @@
 import { getDefaultHeaders } from '../components/utils';
 
-const getItemSubscriptions = async (
-  url,
+const getItemSubscriptions = (
+  localAPI,
   statusCode = 'A',
   sortBy = 'D',
   dirFlag = 'T'
 ) => {
+  let url = '';
+  if (localAPI) {
+    url = 'http://localhost:3004/getItems';
+  } else {
+    url = '/orderhistory/subscriptionManager.do';
+  }
+
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
@@ -27,9 +34,9 @@ const getItemSubscriptions = async (
 
   const request = new window.Request(url, {
     headers: getDefaultHeaders(),
-    method: 'POST',
+    method: localAPI ? 'GET' : 'POST',
     credentials: 'same-origin',
-    body: JSON.stringify(data)
+    body: localAPI ? undefined : JSON.stringify(data)
   });
 
   // api call
@@ -38,9 +45,6 @@ const getItemSubscriptions = async (
     .then((resp) => resp.json())
     .then((resp) => resp)
     .catch(() => {});
-
-  // const result = await window.fetch(request);
-  // return result;
 };
 
 export default getItemSubscriptions;

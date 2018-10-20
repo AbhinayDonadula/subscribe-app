@@ -101,7 +101,14 @@ export const formatPrice = (price) => `$${parseFloat(price).toFixed(2)}`;
 export const getContractNumber = (contractId = 'N/A', lineNumber = 'N/A') =>
   `${contractId}-${lineNumber}`;
 
-export const FireFetch = async (url, handleSuccess, handleError) => {
+export const FireFetch = async (localAPI, handleSuccess, handleError) => {
+  let url = '';
+  if (!localAPI) {
+    const accountId = document.querySelector("input[name='accountId']").value;
+    url = `https://staging.odplabs.com/services/subscription-management-sync-service/eaiapi/subscriptions/getSubscriptionList?customerAccountId=${accountId}`;
+  } else {
+    url = 'http://localhost:3004/data';
+  }
   const axiosInstance = axios.create({ baseURL: url });
   const tokenFromCookie = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
@@ -123,63 +130,6 @@ export const FireFetch = async (url, handleSuccess, handleError) => {
     .get()
     .then((response) => {
       handleSuccess(response);
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-};
-
-export const FireGetItems = async (
-  localAPI,
-  handleSuccess,
-  handleError,
-  statusCode = 'A',
-  sortBy = 'D',
-  dirFlag = 'T'
-) => {
-  let url = '';
-  if (localAPI) {
-    url = 'http://localhost:3004/getItems';
-  } else {
-    url = '/orderhistory/subscriptionManager.do';
-  }
-  const data = {
-    REQUEST: {
-      NAME: 'SUBSCRIPTION',
-      TYPE: 'LIST'
-    },
-    INPUT: {
-      StsCode: statusCode,
-      DirFlag: dirFlag,
-      PONo: '',
-      SortBy: sortBy,
-      ItemNum: '',
-      Freq: '',
-      CostCenter: '',
-      ShipTo: '',
-      BundleFlag: '',
-      RecordKey: ''
-    }
-  };
-
-  const headers = new window.Headers({
-    'Content-Type': 'application/json',
-    Accept: 'application/json'
-  });
-
-  const request = new window.Request(url, {
-    headers,
-    method: localAPI ? 'GET' : 'POST',
-    credentials: 'same-origin',
-    body: localAPI ? undefined : JSON.stringify(data)
-  });
-
-  // api call
-  window
-    .fetch(request)
-    .then((resp) => resp.json())
-    .then((resp) => {
-      handleSuccess(resp);
     })
     .catch((error) => {
       handleError(error);
