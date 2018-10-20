@@ -811,10 +811,10 @@ margin-bottom: 0 !important;
 }
 .show_Div.show{
   display: block !important;
-  padding: 21px 0;
+  padding: 28px 0;
   background: #ddd;
   margin-top: -12px;
-  margin-bottom: -13px;
+  margin-bottom: -24px;
 }
 .show_Div li {
   color: #495057;
@@ -825,16 +825,26 @@ margin-bottom: 0 !important;
 .show_Div.hide{
 display: none !important;
 }
+li.btn_sv-container {
+  margin-left: 15px;
+}
 .btn_sv{
+  width: 138px;
+  border-radius: 4px;
+  background-color: #1e5a99;
   color: #fff;
-  font-size: 18px;
-  background: #2478ce ;
+  font-size: 14px;
   padding: 10px 26px;
 }
+li.btn_cncl-container {
+  margin-right: 8%;
+  margin-left: 15px;
+}
 .btn_cncl {
-  color: #2478ce;
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.7px;
+  color: #1e5a99;
 }
 .succ_Div {
   background: #57a60f;
@@ -2234,6 +2244,10 @@ span.menu__ellipses {
     margin: 25px 0;
   }
 
+  div.data-table.open__conf {
+    margin: 13px 0;
+  }
+
   label.item__label {
     font-size: 11px;
     font-weight: 600;
@@ -2244,6 +2258,13 @@ span.menu__ellipses {
   .main_txt.desc {
     display: inline-block;
     max-width: 85%;
+  }
+
+  li.update__save--cancel-conf {
+    font-size: 15px;
+    line-height: 1.53;
+    letter-spacing: 0.5px;
+    color: #64696e;
   }
 }
 

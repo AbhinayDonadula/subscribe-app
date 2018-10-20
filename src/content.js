@@ -53,7 +53,7 @@ export default {
     NextScheduledPayment: 'Next Scheduled Payment : '
   },
   SaveUpdate: 'Save/Update',
-  CancelSaveUpdate: 'No, Cancel',
+  CancelSaveUpdate: 'Cancel',
   navigateToService: '/catalog/search.do?Ntt=itemNumber',
   defaultItemImg:
     'https://officedepot.scene7.com/is/image/officedepot/sku-image-default',

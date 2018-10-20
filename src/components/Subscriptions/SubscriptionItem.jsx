@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import AppContext from '../Context/AppContext';
 import TextLink from '../SharedComponents/TextLink';
 import Dropdown from '../SharedComponents/Dropdown';
@@ -12,6 +13,7 @@ import {
   getOrderNowURL
 } from '../utils';
 import Img from '../SharedComponents/Img';
+import updateItemSubscription from '../../apiCalls/updateItemSubscription';
 
 class SubscriptionItem extends React.Component {
   state = {
@@ -20,10 +22,9 @@ class SubscriptionItem extends React.Component {
     showFreqSuccessMsg: false,
     showQtySuccessMsg: false,
     // frequencySelected: '',
-    // prevFrequencySelected: '',
-    // quantitySelected: 1,
     // prevQuantitySelected: 1,
-    itemQuantity: 1
+    itemQuantity: '',
+    prevItemQuantity: ''
   };
 
   componentDidMount() {
@@ -31,6 +32,9 @@ class SubscriptionItem extends React.Component {
       // frequencySelected: getFrequency(this.subscription.billingFrequency),
       // prevFrequencySelected: getFrequency(this.subscription.billingFrequency),
       itemQuantity: this.subscription.isItem
+        ? this.subscription.quantity.replace(/^0+/, '')
+        : '',
+      prevItemQuantity: this.subscription.isItem
         ? this.subscription.quantity.replace(/^0+/, '')
         : ''
     });
@@ -51,16 +55,15 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleQuantityDropDown = (selected) => {
-    this.setState(({ quantitySelected }) => ({
-      prevQuantitySelected: quantitySelected,
-      quantitySelected: Number(selected),
-      showQtyUpdateSaveConf: quantitySelected !== selected
-    }));
-  };
-
-  handleItemQuantity = (event) => {
-    this.setState({ itemQuantity: event.target.value });
+  handleItemQuantity = async ({ target: { value } }) => {
+    if (Number(value) || value === '') {
+      this.setState(({ itemQuantity }) => ({
+        itemQuantity: value,
+        prevItemQuantity: itemQuantity,
+        showQtyUpdateSaveConf: true,
+        showFreqUpdateSaveConf: false
+      }));
+    }
   };
 
   handleExtendedMenu = () => {
@@ -87,32 +90,29 @@ class SubscriptionItem extends React.Component {
     });
   };
 
-  handleSaveUpdate = (event) => {
+  handleSaveUpdate = async (event) => {
     event.preventDefault();
-    this.setState(
-      ({ showFreqUpdateSaveConf, showQtyUpdateSaveConf }) => ({
-        showFreqUpdateSaveConf: false,
-        showQtyUpdateSaveConf: false,
-        showFreqSuccessMsg: showFreqUpdateSaveConf,
-        showQtySuccessMsg: showQtyUpdateSaveConf
-      }),
-      () => {
-        window.setTimeout(() => {
-          this.setState(() => ({
-            showFreqSuccessMsg: false,
-            showQtySuccessMsg: false
-          }));
-        }, 2000);
-      }
-    );
+    const { RecordKey, LstChgTmpStmp } = this.subscription;
+    const { itemQuantity } = this.state;
+    try {
+      await updateItemSubscription(this.isLocalAPI, RecordKey, LstChgTmpStmp, {
+        name: 'quantity',
+        value: itemQuantity
+      });
+      this.setState({ showQtyUpdateSaveConf: false }, () => {
+        toast.success('Quantity updated.');
+      });
+    } catch (error) {
+      toast.warn('Quantity update failed.');
+    }
   };
 
   handleCancelSave = (event) => {
     event.preventDefault();
-    this.setState(({ prevFrequencySelected }) => ({
-      showFreqUpdateSaveConf: false,
+    this.setState(({ prevItemQuantity }) => ({
+      itemQuantity: prevItemQuantity,
       showQtyUpdateSaveConf: false,
-      frequencySelected: prevFrequencySelected
+      showFreqUpdateSaveConf: false
     }));
   };
 
@@ -127,8 +127,6 @@ class SubscriptionItem extends React.Component {
       itemQuantity
       // frequencySelected,
       // prevFrequencySelected,
-      // quantitySelected,
-      // prevQuantitySelected
     } = this.state;
 
     return (
@@ -136,6 +134,7 @@ class SubscriptionItem extends React.Component {
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
+              this.isLocalAPI = appData.localAPI;
               const {
                 closeDate = '',
                 isItem,
@@ -159,13 +158,16 @@ class SubscriptionItem extends React.Component {
                   closeDate.length > 0
                 );
               }
-              // console.log(subscription);
 
               return (
                 <React.Fragment>
                   <div
                     className={`data-table ${
                       openExtendedMenu ? 'overlay' : ''
+                    } ${
+                      showFreqUpdateSaveConf || showQtyUpdateSaveConf
+                        ? 'open__conf'
+                        : ''
                     }`}
                     onClick={() => {
                       if (openExtendedMenu)
@@ -354,13 +356,13 @@ class SubscriptionItem extends React.Component {
                   {(showFreqUpdateSaveConf || showQtyUpdateSaveConf) && (
                     <div className="show_Div show">
                       <ul className="list-inline list-unstyled">
-                        <li>
+                        <li className="update__save--cancel-conf">
                           {showFreqUpdateSaveConf &&
                             'Save/Update frequency changes?'}
                           {showQtyUpdateSaveConf &&
                             'Save/Update quantity changes?'}
                         </li>
-                        <li>
+                        <li className="btn_sv-container">
                           <a
                             href="/"
                             className="btn btn_sv"
@@ -369,11 +371,11 @@ class SubscriptionItem extends React.Component {
                             {appData.content.SaveUpdate}
                           </a>
                         </li>
-                        <li>
+                        <li className="btn_cncl-container">
                           <a
                             href="/"
                             className="btn_cncl"
-                            onKeyDown={this.handleCancelSave}
+                            onClick={this.handleCancelSave}
                           >
                             {appData.content.CancelSaveUpdate}
                           </a>
