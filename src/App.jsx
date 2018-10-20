@@ -12,6 +12,7 @@ import { beautifyGetSubListResponse, FireFetch } from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
 import getItemSubscriptions from './apiCalls/getItemSubscriptions';
+import SpinnerPortal from './components/SharedComponents/SpinnerPortal';
 
 class App extends Component {
   state = {
@@ -34,7 +35,11 @@ class App extends Component {
     this.getSubscriptionsAndItemsList();
   }
 
-  sortItemsAndSubs = async ({ responseObject }, subscriptionsToShow) => {
+  sortItemsAndSubs = async (
+    { responseObject },
+    subscriptionsToShow,
+    status
+  ) => {
     const { services, localAPI } = this.state;
     const itemSkus = [];
     const {
@@ -103,11 +108,19 @@ class App extends Component {
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
 
-    this.setState({
-      initialAppLoading: false,
-      itemsAndServices: sortedByDate,
-      subscriptionsToShow: sortedByDate
-    });
+    this.setState(
+      {
+        initialAppLoading: false,
+        filtering: false,
+        itemsAndServices: sortedByDate,
+        subscriptionsToShow: sortedByDate
+      },
+      () => {
+        if (status) {
+          toast.success(`Showing ${status} Subscriptions.`);
+        }
+      }
+    );
   };
 
   handleGetSubListSuccess = (response) => {
@@ -167,10 +180,11 @@ class App extends Component {
       if (!itemsSubs.responseObject) {
         this.setState({
           itemsAndServices: services,
-          subscriptionsToShow: subscriptionsToShow || services
+          subscriptionsToShow: subscriptionsToShow || services,
+          filtering: false
         });
       } else {
-        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow);
+        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
       }
     } catch (error) {
       this.setState({ itemsAndServices: services });
@@ -196,14 +210,13 @@ class App extends Component {
   };
 
   filterSubscriptions = (selected) => {
-    this.getItems(selected);
-    this.setState({ sortFilter: selected }, () => {
-      toast.success(`Showing ${selected} Subscriptions.`);
+    this.setState({ sortFilter: selected, filtering: true }, () => {
+      this.getItems(selected);
     });
   };
 
   render() {
-    const { enableNotifications } = this.state;
+    const { enableNotifications, filtering, initialAppLoading } = this.state;
     return (
       <AppContext.Provider
         value={{
@@ -216,6 +229,7 @@ class App extends Component {
           <Header />
           {enableNotifications ? <Notifications /> : null}
           <Subscriptions />
+          {!initialAppLoading && filtering ? <SpinnerPortal /> : null}
         </SnackBar>
       </AppContext.Provider>
     );
