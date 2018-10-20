@@ -123,6 +123,15 @@ class App extends Component {
     const subscriptions = beautifyGetSubListResponse(
       getSubscriptionDetailsListResponse
     );
+
+    // const activeServiceSubscriptions = subscriptions.filter(
+    //   (each) => each.status === 'Active' && !each.isItem
+    // );
+    // const cancelledServiceSubscriptions = subscriptions.filter(
+    //   (each) =>
+    //     each.status === 'Closed' && each.closeDate && each.closeDate.length
+    // );
+
     this.setState(
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
@@ -161,16 +170,12 @@ class App extends Component {
     );
   };
 
-  handleAllFilter = (selected) => {
-    // this.setState({ initialAppLoading: true }, () => {
-    //   // window.setTimeout(() => {
-    //   //   this.setState({ initialAppLoading: false, selectedFilter: selected });
-    //   // }, 3000);
-    // });
+  sortSubscriptions = (selected) => {
+    this.setState({ selectedFilter: selected });
     toast.success('Quantity is updated.');
   };
 
-  handleSortFilter = (selected) => {
+  filterSubscriptions = (selected) => {
     this.setState({ sortFilter: selected });
   };
 
@@ -180,8 +185,8 @@ class App extends Component {
       <AppContext.Provider
         value={{
           ...this.state,
-          handleAllFilter: this.handleAllFilter,
-          handleSortFilter: this.handleSortFilter
+          handleAllFilter: this.filterSubscriptions,
+          handleSortFilter: this.sortSubscriptions
         }}
       >
         <SnackBar>

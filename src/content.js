@@ -65,13 +65,13 @@ export default {
     },
     {
       id: 1,
-      title: 'Select 1',
-      value: 'Select 1'
+      title: 'Active Subscriptions',
+      value: 'Active Subscriptions'
     },
     {
       id: 2,
-      title: 'Select 2',
-      value: 'Select 2'
+      title: 'Cancelled Subscriptions',
+      value: 'Cancelled Subscriptions'
     }
   ],
   SortOptions: [

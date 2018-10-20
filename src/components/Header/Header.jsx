@@ -1,5 +1,5 @@
-import React from "react";
-import AppContext from "../Context/AppContext";
+import React from 'react';
+import AppContext from '../Context/AppContext';
 
 class Header extends React.Component {
   state = {};
@@ -9,18 +9,18 @@ class Header extends React.Component {
     const curHr = today.getHours();
 
     if (curHr < 12) {
-      return "Good Morning";
+      return 'Good Morning';
     }
     if (curHr < 18) {
-      return "Good Afternoon";
+      return 'Good Afternoon';
     }
-    return "Good Evening";
+    return 'Good Evening';
   };
 
   render() {
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <section
             className="heading_sec"
             style={{ marginBottom: appData.enableNotifications ? 90 : 0 }}
@@ -28,8 +28,8 @@ class Header extends React.Component {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-sm-12">
-                  <p className="sub_txt">
-                    {this.greetUser()} <b>{appData.userName}!</b>
+                  <p className="sub_txt greeting__msg">
+                    {this.greetUser()}, <b>{appData.userName}!</b>
                   </p>
                   <h3 className="sub_head">{appData.content.AppTitle}</h3>
                 </div>

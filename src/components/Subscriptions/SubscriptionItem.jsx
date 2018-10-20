@@ -225,7 +225,7 @@ class SubscriptionItem extends React.Component {
                         />
                       </li>
                       <li className="d-mob">
-                        <label>STATUS </label> <br />
+                        <label className="item__label">STATUS</label> <br />
                         <label className="pad_span">
                           {formatStatus(subscription.status)}
                         </label>
@@ -236,7 +236,7 @@ class SubscriptionItem extends React.Component {
                         }`}
                       >
                         <label
-                          className={`${
+                          className={`item__label ${
                             subscription.isItem
                               ? 'item__quantity-container'
                               : ''
@@ -252,17 +252,15 @@ class SubscriptionItem extends React.Component {
                             value={itemQuantity}
                           />
                         ) : (
-                          <label className="pad_span margin__left-25">
+                          <label className="item__label pad_span margin__left-25">
                             {subscription.quantity.replace(/^0+/, '')}
                           </label>
                         )}
-                        {/* <Dropdown
-                          options={appData.content.QuantityOptions}
-                          updateParentState={this.handleQuantityDropDown}
-                        /> */}
                       </li>
                       <li className="d-mob">
-                        <label>{appData.content.FrequencyLabel}</label>
+                        <label className="item__label">
+                          {appData.content.FrequencyLabel}
+                        </label>
                         <br />
                         {subscription.isItem ? (
                           <Dropdown
@@ -291,7 +289,9 @@ class SubscriptionItem extends React.Component {
                         role="presentation"
                       >
                         <a className="open_drop">
-                          <i className="fa fa-ellipsis-h" aria-hidden="true" />
+                          <span className="menu__ellipses">.</span>
+                          <span className="menu__ellipses">.</span>
+                          <span className="menu__ellipses">.</span>
                         </a>
                       </li>
                     </ul>
