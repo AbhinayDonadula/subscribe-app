@@ -14,32 +14,27 @@ class SubscriptionItemsContainer extends React.Component {
       <AppContext.Consumer>
         {(appData) => (
           <div className="row">
-            {appData.itemsAndServices && !appData.initialAppLoading ? (
+            {appData.subscriptionsToShow && !appData.initialAppLoading ? (
               <div className="col-md-12">
-                <SubscriptionFilters
-                  handleAllFilter={appData.handleAllFilter}
-                  handleSortFilter={appData.handleSortFilter}
-                />
+                <SubscriptionFilters />
                 <div className="space50" />
-                {!appData.initialAppLoading &&
-                  appData.itemsAndServices &&
-                  appData.itemsAndServices.map((eachSubscription) => (
-                    <div
-                      className="sub_div"
-                      key={
-                        eachSubscription.RecordKey
-                          ? eachSubscription.RecordKey
-                          : eachSubscription.reactKeyId +
-                            eachSubscription.lineNumber
-                      }
+                {appData.subscriptionsToShow.map((eachSubscription) => (
+                  <div
+                    className="sub_div"
+                    key={
+                      eachSubscription.RecordKey
+                        ? eachSubscription.RecordKey
+                        : eachSubscription.reactKeyId +
+                          eachSubscription.lineNumber
+                    }
+                  >
+                    <SubscriptionContext.Provider
+                      value={{ ...eachSubscription }}
                     >
-                      <SubscriptionContext.Provider
-                        value={{ ...eachSubscription }}
-                      >
-                        <SubscriptionItem />
-                      </SubscriptionContext.Provider>
-                    </div>
-                  ))}
+                      <SubscriptionItem />
+                    </SubscriptionContext.Provider>
+                  </div>
+                ))}
                 {appData.enableEmailCampaign ? <EmailCampaign /> : null}
               </div>
             ) : (

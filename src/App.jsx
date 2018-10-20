@@ -21,7 +21,8 @@ class App extends Component {
     initialAppLoading: true,
     enableNotifications: false,
     enableEmailCampaign: false,
-    subscriptions: null,
+    services: null,
+    subscriptionsToShow: null,
     itemsAndServices: null,
     localAPI: true
   };
@@ -33,15 +34,15 @@ class App extends Component {
     this.getSubscriptionsAndItemsList();
   }
 
-  sortItemsAndSubs = async ({ responseObject }) => {
-    const { subscriptions, localAPI } = this.state;
+  sortItemsAndSubs = async ({ responseObject }, subscriptionsToShow) => {
+    const { services, localAPI } = this.state;
     const itemSkus = [];
     const {
       jsonObjectResponse: { GetSubListDetail }
     } = responseObject;
     const itemsList = GetSubListDetail;
 
-    // sort out just item subscriptions from the response
+    // sort out just item services from the response
     const itemsArray = Object.values(itemsList).filter(
       (each) => each.RecordKey.length > 0
     );
@@ -81,16 +82,31 @@ class App extends Component {
           ...eachItem
         };
       });
-      itemsAndServices = [...beautifiedItemsWithImages, ...subscriptions];
+
+      // filter cancel/active subscriptions
+      if (subscriptionsToShow) {
+        itemsAndServices = [
+          ...beautifiedItemsWithImages,
+          ...subscriptionsToShow
+        ];
+      } else {
+        itemsAndServices = [...beautifiedItemsWithImages, ...services];
+      }
     } catch (error) {
-      itemsAndServices = [...beautifiedItems, ...subscriptions];
+      if (subscriptionsToShow) {
+        itemsAndServices = [...beautifiedItems, ...subscriptionsToShow];
+      } else {
+        itemsAndServices = [...beautifiedItems, ...services];
+      }
     }
     const sortedByDate = itemsAndServices.sort(
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
+
     this.setState({
       initialAppLoading: false,
-      itemsAndServices: sortedByDate
+      itemsAndServices: sortedByDate,
+      subscriptionsToShow: sortedByDate
     });
   };
 
@@ -98,22 +114,28 @@ class App extends Component {
     const {
       data: { getSubscriptionDetailsListResponse }
     } = response;
-    const subscriptions = beautifyGetSubListResponse(
+    const services = beautifyGetSubListResponse(
       getSubscriptionDetailsListResponse
     );
 
-    // const activeServiceSubscriptions = subscriptions.filter(
-    //   (each) => each.status === 'Active' && !each.isItem
-    // );
-    // const cancelledServiceSubscriptions = subscriptions.filter(
-    //   (each) =>
-    //     each.status === 'Closed' && each.closeDate && each.closeDate.length
-    // );
+    // filter all active
+    const activeServices = services.filter(
+      (each) => each.status === 'Active' && !each.isItem
+    );
+
+    // filter all cancelled
+    const cancelledServices = services.filter(
+      (each) =>
+        each.status === 'Closed' && each.closeDate && each.closeDate.length
+    );
 
     this.setState(
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
-        subscriptions,
+        subscriptionsToShow: services,
+        services,
+        activeServices,
+        cancelledServices,
         itemsAndServices: null
       },
       () => {
@@ -122,17 +144,36 @@ class App extends Component {
     );
   };
 
-  getItems = async () => {
-    const { localAPI, subscriptions } = this.state;
+  getItems = async (status) => {
+    let subscriptionsToShow = null;
+    const {
+      localAPI,
+      services,
+      activeServices,
+      cancelledServices,
+      itemsAndServices
+    } = this.state;
+
+    if (status === 'Active') {
+      subscriptionsToShow = activeServices;
+    } else if (status === 'Cancelled') {
+      subscriptionsToShow = cancelledServices;
+    } else {
+      subscriptionsToShow = itemsAndServices;
+    }
+
     try {
-      const itemsSubs = await getItemSubscriptions(localAPI);
+      const itemsSubs = await getItemSubscriptions(localAPI, status);
       if (!itemsSubs.responseObject) {
-        this.setState({ itemsAndServices: subscriptions });
+        this.setState({
+          itemsAndServices: services,
+          subscriptionsToShow: subscriptionsToShow || services
+        });
       } else {
-        this.sortItemsAndSubs(itemsSubs);
+        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow);
       }
     } catch (error) {
-      this.setState({ itemsAndServices: subscriptions });
+      this.setState({ itemsAndServices: services });
     }
   };
 
@@ -152,11 +193,13 @@ class App extends Component {
 
   sortSubscriptions = (selected) => {
     this.setState({ selectedFilter: selected });
-    toast.success('Quantity is updated.');
   };
 
   filterSubscriptions = (selected) => {
-    this.setState({ sortFilter: selected });
+    this.getItems(selected);
+    this.setState({ sortFilter: selected }, () => {
+      toast.success(`Showing ${selected} Subscriptions.`);
+    });
   };
 
   render() {

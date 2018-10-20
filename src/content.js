@@ -61,17 +61,17 @@ export default {
     {
       id: 0,
       title: 'Show All Subscriptions',
-      value: 'Show All Subscriptions'
+      value: 'All'
     },
     {
       id: 1,
       title: 'Active Subscriptions',
-      value: 'Active Subscriptions'
+      value: 'Active'
     },
     {
       id: 2,
       title: 'Cancelled Subscriptions',
-      value: 'Cancelled Subscriptions'
+      value: 'Cancelled'
     }
   ],
   SortOptions: [

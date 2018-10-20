@@ -19,13 +19,13 @@ class SubscriptionFilters extends React.Component {
               <div className="row row_sub">
                 <div className="col-lg-8 col-md-6 col-sm-10 col-xs-12">
                   <div className="row select_Box">
-                    <div className="col-md-6 col-sm-6 col-xs-7">
+                    <div className="col-sm-6 col-xs-7">
                       <Dropdown
                         options={appData.content.ShowOptions}
                         updateParentState={appData.handleAllFilter}
                       />
                     </div>
-                    <div className="col-md-6 col-sm-6 col-xs-5">
+                    <div className="col-sm-6 col-xs-5">
                       <Dropdown
                         options={appData.content.SortOptions}
                         updateParentState={appData.handleSortFilter}

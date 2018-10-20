@@ -12,7 +12,7 @@ class SnackBar extends React.Component {
       <React.Fragment>
         <ToastContainer
           position="bottom-center"
-          autoClose={15000}
+          autoClose={5000}
           hideProgressBar={false}
           closeOnClick={false}
           pauseOnVisibilityChange

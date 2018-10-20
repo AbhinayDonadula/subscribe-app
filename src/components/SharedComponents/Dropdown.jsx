@@ -14,10 +14,8 @@ class Dropdown extends React.Component {
 
   handleSelected = (event) => {
     const { updateParentState } = this.props;
-    const { selected } = this.state;
-    this.setState({ selected: event.target.getAttribute('data-value') }, () => {
-      updateParentState(selected);
-    });
+    this.setState({ selected: event.target.getAttribute('data-value') });
+    updateParentState(event.target.getAttribute('data-value'));
   };
 
   toggleList = () => {
