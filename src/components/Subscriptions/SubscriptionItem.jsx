@@ -288,7 +288,6 @@ class SubscriptionItem extends React.Component {
                       <li
                         className="cursor__pointer"
                         onClick={this.handleExtendedMenu}
-                        role="presentation"
                       >
                         <a className="open_drop">
                           <span className="menu__ellipses">.</span>
@@ -309,7 +308,6 @@ class SubscriptionItem extends React.Component {
                               <p
                                 data-value={appData.content.SkipNextDelivery}
                                 onClick={this.handleExtendeMenuSelection}
-                                role="presentation"
                               >
                                 {subscription.isItem
                                   ? appData.content.SkipNextDelivery

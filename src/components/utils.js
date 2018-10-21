@@ -334,36 +334,3 @@ export const getDefaultHeaders = () => {
     Accept: 'application/json'
   });
 };
-
-// export const updateItemURL = (
-//   RecordKey = '',
-//   actions,
-//   LstChgTS,
-//   localAPI,
-//   isTest = true
-// ) => {
-//   // ['cancel', 'skip', ]
-//   let SkipNext = '';
-//   let Cancel = '';
-//   const Freq = '';
-//   const Email = '';
-//   const WLRNumber = '';
-//   const QtyOrd = '';
-
-//   actions.forEach((action) => {
-//     if (action === 'cancel') {
-//       Cancel = '0';
-//     }
-//     if (action === 'skip') {
-//       SkipNext = '0';
-//     }
-//     if (action === 'skip') {
-//       SkipNext = '0';
-//     }
-//   });
-
-//   if (localAPI) {
-//     return 'http://localhost:3004/getItemInfo';
-//   }
-//   return `/orderhistory/subscriptionManager.do?RecordKey=${RecordKey}&request=MAINTAIN&isTest=${isTest}`;
-// };

@@ -53,7 +53,6 @@ class DownloadServiceSection extends React.Component {
                 <React.Fragment>
                   <h3
                     className="head_txt dnload_txt"
-                    role="presentation"
                     onClick={this.showDownloadDetailsSection}
                   >
                     {appData.content.DownloadSectionHeader}
