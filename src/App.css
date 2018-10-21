@@ -2142,7 +2142,6 @@ body h1, body h2, body h3, body h4, body h5, body h6, .h1, .h2, .h3, .h4, .h5, .
 }
 
 #myOfficeToolbar .assistance_module .assistance_icons {
-  background: url(/images/us/od/myOfficeToolbar/toolbar_help_icons.png) no-repeat 5px -63px;
   border-left: 1px solid #fff;
   display: inline-block;
   float: left;
