@@ -363,7 +363,7 @@ class SubscriptionItem extends React.Component {
                         <li className="btn_sv-container">
                           <a
                             href="/"
-                            className="btn btn_sv"
+                            className="btn_sv"
                             onClick={this.handleSaveUpdate}
                           >
                             {appData.content.SaveUpdate}
