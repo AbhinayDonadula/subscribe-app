@@ -54,7 +54,7 @@ class App extends Component {
 
     // add sortDate/isItem for sorting/filtering purposes
     const beautifiedItems = itemsArray.map((item) => {
-      itemSkus.push(item.SKU);
+      itemSkus.push(item.SKU.replace(/^0+/, ''));
       return {
         ...item,
         isItem: true,
