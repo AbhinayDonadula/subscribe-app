@@ -234,7 +234,12 @@ class SubscriptionItem extends React.Component {
                       </li>
                       <li>
                         <span className="main_txt desc">
-                          {isItem ? shortDescription : itemDescription}
+                          {isItem
+                            ? `${shortDescription
+                                .split(' ')
+                                .slice(1, 12)
+                                .join(' ')}...`
+                            : itemDescription}
                         </span>
                         <br />
                         <TextLink
