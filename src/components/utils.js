@@ -239,7 +239,14 @@ export const formatStatus = (status) => {
 };
 
 export const beautifyBillingHistoryResponse = (response, lineNumber) => {
-  const records = response.data.billingHistoryResponse.billingHistoryRecord;
+  let records = [];
+  // const records = response.data.billingHistoryResponse.billingHistoryRecord;
+  if (
+    response.data.billingHistoryResponse &&
+    response.data.billingHistoryResponse.billingHistoryRecord
+  ) {
+    records = response.data.billingHistoryResponse.billingHistoryRecord;
+  }
   const list = [];
   for (let i = 0; i < records.length; i += 1) {
     const record = records[i];

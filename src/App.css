@@ -405,11 +405,13 @@ color: #2478ce;
   margin-bottom: 23px;
   margin-top: 0;
 }
-.total_box p{
-font-size: 13px;
-color: #000;
-font-weight: 600;
-margin-bottom:0;
+div.total_box p{
+  font-size: 13px;
+  color: #273039;
+  font-weight: 600;
+  margin-bottom:0;
+  letter-spacing: 0.9px;
+  text-align: center;
 }
 
 .total_box {
@@ -581,6 +583,9 @@ display: block;
 #table_pay td {
   position: relative;
   padding-bottom: 45px !important;
+  font-size: 13px;
+  letter-spacing: 0.9px;
+  color: #4e555d;
 }
 .edit_txt {
   position: absolute;
@@ -917,10 +922,13 @@ li.btn_cncl-container {
   left: 0;
   right: 0;
   width: 100%;
-  background: #0000007d;
+  background: #64696e;
   z-index: 999;
   height: 100%;
   top: 0;
+  opacity: 0.8;
+  background-image: linear-gradient(to bottom, #64696e, #64696e);
+  background-blend-mode: multiply;
 }
 
 .open_drop{
@@ -1343,11 +1351,6 @@ left: 0;
     font-size: 10px;
 }
 
-.payment__header {
-  font-size: 11px;
-  text-transform: uppercase;
-}
-
 .visa_img {
     margin-right: 3px;
     width: 30px;
@@ -1765,10 +1768,12 @@ background: #fff;
     width: 100%;
 }
 
-.edit_txt {
-    position: relative;
-    bottom: 16px;
-    font-size: 13px;
+a.edit_txt {
+  position: relative;
+  bottom: 16px;
+  font-size: 13px;
+  letter-spacing: 0.9px;
+  color: #1e5a99;
 }
 .test_txt {
     color: #5e5c5c;
@@ -2061,8 +2066,11 @@ height: 73px;
 #spinner-modal {
   width: 100%;
   position: absolute;
-  /* position: fixed; */
   top: 50%;
+}
+
+#spinner-modal.filtering__spinner {
+  top: 10%
 }
 
 .modal-backdrop {
@@ -2133,11 +2141,11 @@ body h1, body h2, body h3, body h4, body h5, body h6, .h1, .h2, .h3, .h4, .h5, .
 .list_price li:after {
   content: '';
   position: absolute;
-  height: 100%;
+  height: 37px;
   width: 1px;
-  background-color: #dad6d6;
+  background-color: #e3e7e9;
   right: 0;
-  top: 0%;
+  top: 25%;
 }
 
 #myOfficeToolbar .assistance_module .assistance_icons {
@@ -2215,6 +2223,34 @@ label.item__label.pad_span.margin__left-25 {
   letter-spacing: 0.5px;
   color: #273039;
   font-weight: 500;
+}
+div.total_box h3 {
+  font-size: 10px;
+  color: #4e555d;
+  font-weight: 600;
+  margin-bottom: 23px;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+span.main_txt.desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.table.table2.table-striped tr th.payment__header {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.9px;
+  color: #4e555d;
+  text-transform: uppercase;
+}
+
+.overlay {
+  background-color: inherit; 
 }
 
 /* 

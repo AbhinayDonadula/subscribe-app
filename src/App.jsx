@@ -177,7 +177,14 @@ class App extends Component {
 
     try {
       const itemsSubs = await getItemSubscriptions(localAPI, status);
-      if (!itemsSubs.responseObject) {
+      if (
+        !itemsSubs.responseObject ||
+        !(
+          itemsSubs.responseObject &&
+          itemsSubs.responseObject.jsonObjectResponse &&
+          itemsSubs.responseObject.jsonObjectResponse.GetSubListDetail
+        )
+      ) {
         this.setState({
           itemsAndServices: services,
           subscriptionsToShow: subscriptionsToShow || services,
@@ -229,7 +236,7 @@ class App extends Component {
           <Header />
           {enableNotifications ? <Notifications /> : null}
           <Subscriptions />
-          {!initialAppLoading && filtering ? <SpinnerPortal /> : null}
+          {!initialAppLoading && filtering ? <SpinnerPortal filtering /> : null}
         </SnackBar>
       </AppContext.Provider>
     );

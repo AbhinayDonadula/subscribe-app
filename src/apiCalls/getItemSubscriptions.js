@@ -2,15 +2,23 @@ import { getDefaultHeaders } from '../components/utils';
 
 const getItemSubscriptions = (
   localAPI,
-  statusCode = 'A',
+  statusCode,
   sortBy = 'D',
   dirFlag = 'T'
 ) => {
   let url = '';
+  let StsCode = 'A';
+
   if (localAPI) {
     url = 'http://localhost:3004/getItems';
   } else {
     url = '/orderhistory/subscriptionManager.do';
+  }
+
+  if (statusCode === 'Active') {
+    StsCode = 'A';
+  } else {
+    StsCode = 'C';
   }
 
   const data = {
@@ -19,7 +27,7 @@ const getItemSubscriptions = (
       TYPE: 'LIST'
     },
     INPUT: {
-      StsCode: statusCode,
+      StsCode,
       DirFlag: dirFlag,
       PONo: '',
       SortBy: sortBy,

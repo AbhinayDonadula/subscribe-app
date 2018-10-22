@@ -56,11 +56,11 @@ class PaymentSection extends React.Component {
                       <tbody>
                         <tr>
                           <td>
-                            <img
+                            {/* <img
                               src="img/visa.jpg"
                               className="img-resp visa_img"
                               alt=""
-                            />
+                            /> */}
                             VISA - xxxxxx
                             <br />
                             <a
@@ -125,11 +125,11 @@ class PaymentSection extends React.Component {
                     <h3>{appData.content.PaymentSection.PaymentMethod}</h3>
                     <ul className="list-unstyled">
                       <li>
-                        <img
+                        {/* <img
                           src="img/visa.jpg"
                           className="img-resp visa_img"
                           alt=""
-                        />
+                        /> */}
                         VISA - xxxxxx
                       </li>
                       <li>

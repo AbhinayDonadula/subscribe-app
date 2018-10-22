@@ -17,14 +17,14 @@ import updateItemSubscription from '../../apiCalls/updateItemSubscription';
 
 class SubscriptionItem extends React.Component {
   state = {
+    openSaveCancelMenu: false,
+    saveAction: '',
     viewDetailsOpen: false,
     openExtendedMenu: false,
-    showFreqSuccessMsg: false,
-    showQtySuccessMsg: false,
     // frequencySelected: '',
-    // prevQuantitySelected: 1,
     itemQuantity: '',
-    prevItemQuantity: ''
+    prevItemQuantity: '',
+    saveChangesTxt: ''
   };
 
   componentDidMount() {
@@ -51,7 +51,9 @@ class SubscriptionItem extends React.Component {
     this.setState(({ frequencySelected }) => ({
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
-      showFreqUpdateSaveConf: frequencySelected !== selected
+      openSaveCancelMenu: true,
+      saveChangesTxt: 'Save/Update frequency changes?',
+      saveAction: 'frequency'
     }));
   };
 
@@ -60,8 +62,9 @@ class SubscriptionItem extends React.Component {
       this.setState(({ itemQuantity }) => ({
         itemQuantity: value,
         prevItemQuantity: itemQuantity,
-        showQtyUpdateSaveConf: true,
-        showFreqUpdateSaveConf: false
+        openSaveCancelMenu: true,
+        saveChangesTxt: 'Save/Update quantity changes?',
+        saveAction: 'quantity'
       }));
     }
   };
@@ -86,6 +89,12 @@ class SubscriptionItem extends React.Component {
           WlrPct,
           RecordKey
         );
+      } else if (selected === 'Cancel Subscription') {
+        this.setState({
+          openSaveCancelMenu: true,
+          saveChangesTxt: 'Cancel Item Subscription?',
+          saveAction: 'cancel'
+        });
       }
     });
   };
@@ -93,17 +102,57 @@ class SubscriptionItem extends React.Component {
   handleSaveUpdate = async (event) => {
     event.preventDefault();
     const { RecordKey, LstChgTmpStmp } = this.subscription;
-    const { itemQuantity } = this.state;
-    try {
-      await updateItemSubscription(this.isLocalAPI, RecordKey, LstChgTmpStmp, {
-        name: 'quantity',
-        value: itemQuantity
-      });
-      this.setState({ showQtyUpdateSaveConf: false }, () => {
-        toast.success('Quantity updated.');
-      });
-    } catch (error) {
-      toast.warn('Quantity update failed.');
+    const { itemQuantity, saveAction, frequencySelected } = this.state;
+    if (saveAction === 'quantity') {
+      try {
+        await updateItemSubscription(
+          this.isLocalAPI,
+          RecordKey,
+          LstChgTmpStmp,
+          {
+            name: 'quantity',
+            value: itemQuantity
+          }
+        );
+        this.setState({ openSaveCancelMenu: false }, () => {
+          toast.success('Quantity updated.');
+        });
+      } catch (error) {
+        toast.error('Quantity update failed.');
+      }
+    }
+    if (saveAction === 'frequency') {
+      try {
+        await updateItemSubscription(
+          this.isLocalAPI,
+          RecordKey,
+          LstChgTmpStmp,
+          {
+            name: 'freq',
+            value: frequencySelected
+          }
+        );
+        this.setState({ openSaveCancelMenu: false }, () => {
+          toast.success('Frequency updated.');
+        });
+      } catch (error) {
+        toast.error('Frequency update failed.');
+      }
+    }
+    if (saveAction === 'cancel') {
+      try {
+        await updateItemSubscription(
+          this.isLocalAPI,
+          RecordKey,
+          LstChgTmpStmp,
+          { name: 'cancel' }
+        );
+        this.setState({ openSaveCancelMenu: false }, () => {
+          toast.success('Item Cancelled Successfully.');
+        });
+      } catch (error) {
+        toast.error('Item Subscription cancellation failed.');
+      }
     }
   };
 
@@ -111,20 +160,17 @@ class SubscriptionItem extends React.Component {
     event.preventDefault();
     this.setState(({ prevItemQuantity }) => ({
       itemQuantity: prevItemQuantity,
-      showQtyUpdateSaveConf: false,
-      showFreqUpdateSaveConf: false
+      openSaveCancelMenu: false
     }));
   };
 
   render() {
     const {
       openExtendedMenu,
-      showFreqSuccessMsg,
-      showFreqUpdateSaveConf,
-      showQtyUpdateSaveConf,
-      showQtySuccessMsg,
       viewDetailsOpen,
-      itemQuantity
+      itemQuantity,
+      openSaveCancelMenu,
+      saveChangesTxt
       // frequencySelected,
       // prevFrequencySelected,
     } = this.state;
@@ -164,40 +210,12 @@ class SubscriptionItem extends React.Component {
                   <div
                     className={`data-table ${
                       openExtendedMenu ? 'overlay' : ''
-                    } ${
-                      showFreqUpdateSaveConf || showQtyUpdateSaveConf
-                        ? 'open__conf'
-                        : ''
-                    }`}
+                    } ${openSaveCancelMenu ? 'open__conf' : ''}`}
                     onClick={() => {
                       if (openExtendedMenu)
                         this.setState({ openExtendedMenu: false });
                     }}
                   >
-                    {/* Success message */}
-                    {(showFreqSuccessMsg || showQtySuccessMsg) && (
-                      <div className="succ_Div" style={{ display: 'block' }}>
-                        <div className="media">
-                          <div className="media-left">
-                            <i
-                              className="fa fa-check-circle"
-                              aria-hidden="true"
-                            />
-                          </div>
-                          <div className="media-body">
-                            <p>
-                              {showQtySuccessMsg
-                                ? 'your quantity changes have been successfully updated.'
-                                : null}
-                              {showFreqSuccessMsg
-                                ? 'your frequency changes have been successfully updated.'
-                                : null}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
                     {/* each item */}
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
@@ -307,18 +325,31 @@ class SubscriptionItem extends React.Component {
                             <div className="drophead">
                               <p
                                 data-value={appData.content.SkipNextDelivery}
-                                onClick={this.handleExtendeMenuSelection}
+                                onClick={(event) => {
+                                  this.handleExtendeMenuSelection(
+                                    event,
+                                    subscription
+                                  );
+                                }}
                               >
-                                {subscription.isItem
+                                {subscription.isItem &&
+                                subscription.AllowSkip === '1'
                                   ? appData.content.SkipNextDelivery
-                                  : 'Cancel Subscription'}
+                                  : null}
+                                {!subscription.isItem
+                                  ? 'Cancel Subscription'
+                                  : null}
                               </p>
                             </div>
                             <div className="dropbody">
                               <ul className="list-unstyled subscription__extended-menu">
                                 {appData.content.ExtendedMenuOptions.map(
                                   (each) => {
-                                    if (each.id === 2 && !subscription.isItem) {
+                                    if (
+                                      each.id === 2 &&
+                                      !subscription.isItem &&
+                                      subscription.AllowCancel === '1'
+                                    ) {
                                       return undefined;
                                     }
                                     if (each.id === 3 && !subscription.isItem) {
@@ -351,14 +382,11 @@ class SubscriptionItem extends React.Component {
                   )}
 
                   {/* Save/Update confirmation  */}
-                  {(showFreqUpdateSaveConf || showQtyUpdateSaveConf) && (
+                  {openSaveCancelMenu && (
                     <div className="show_Div show">
                       <ul className="list-inline list-unstyled">
                         <li className="update__save--cancel-conf">
-                          {showFreqUpdateSaveConf &&
-                            'Save/Update frequency changes?'}
-                          {showQtyUpdateSaveConf &&
-                            'Save/Update quantity changes?'}
+                          {saveChangesTxt.length ? saveChangesTxt : null}
                         </li>
                         <li className="btn_sv-container">
                           <a
