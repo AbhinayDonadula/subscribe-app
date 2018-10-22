@@ -2,12 +2,12 @@ import { getDefaultHeaders } from '../components/utils';
 
 const getItemSubscriptions = (
   localAPI,
-  statusCode,
+  statusCode = 'A',
   sortBy = 'D',
   dirFlag = 'T'
 ) => {
   let url = '';
-  let StsCode = 'A';
+  let StsCode = '';
 
   if (localAPI) {
     url = 'http://localhost:3004/getItems';
@@ -17,7 +17,8 @@ const getItemSubscriptions = (
 
   if (statusCode === 'Active') {
     StsCode = 'A';
-  } else {
+  }
+  if (statusCode === 'Cancelled') {
     StsCode = 'C';
   }
 
