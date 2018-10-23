@@ -30,6 +30,7 @@ class PaymentSection extends React.Component {
           <SubscriptionContext.Consumer>
             {(subscription) => {
               const { loyaltyMember = 'N/A' } = subscription;
+              console.log(subscription);
               return (
                 <React.Fragment>
                   <div className="table-responsive d-mob">
@@ -48,20 +49,12 @@ class PaymentSection extends React.Component {
                           <th className="payment__header">
                             {appData.content.PaymentSection.RewardsMemberNumber}
                           </th>
-                          {/* <th>
-                            {appData.content.PaymentSection.SignUpTextUpdates}{' '}
-                          </th> */}
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>
-                            {/* <img
-                              src="img/visa.jpg"
-                              className="img-resp visa_img"
-                              alt=""
-                            /> */}
-                            VISA - xxxxxx
+                            Visa - xxxxxx
                             <br />
                             <a
                               href="/"
@@ -72,7 +65,7 @@ class PaymentSection extends React.Component {
                             </a>
                           </td>
                           <td>
-                            <span className="test_txt">
+                            <span className="test_txt  email__address">
                               {itemInfo ? itemInfo.Email : 'N/A'}
                             </span>
                             <br />
@@ -97,24 +90,6 @@ class PaymentSection extends React.Component {
                               {appData.content.PaymentSection.EditMemberNumber}
                             </a>
                           </td>
-                          {/* <td>
-                            {itemInfo ? (
-                              formatPhoneNumber(itemInfo.PhoneNo)
-                            ) : (
-                              <React.Fragment>
-                                Get Notifications sent to
-                                <br /> your mobile! <br />
-                              </React.Fragment>
-                            )}
-
-                            <a
-                              href="/"
-                              onClick={this.addMobileNumber}
-                              className="edit_txt"
-                            >
-                              {appData.content.PaymentSection.AddMyMobileNumber}
-                            </a>
-                          </td> */}
                         </tr>
                       </tbody>
                     </table>
@@ -148,7 +123,7 @@ class PaymentSection extends React.Component {
                         <a
                           href="/"
                           onClick={this.editContactEmail}
-                          className="test_txt"
+                          className="test_txt email__address"
                         >
                           TESTlongnamehere@OFFICEDEPOT.COM
                         </a>
@@ -157,7 +132,7 @@ class PaymentSection extends React.Component {
                         <a
                           href="/"
                           onClick={this.editContactEmail}
-                          className="edit_txt"
+                          className="edit_txt email__address"
                         >
                           {appData.content.PaymentSection.EditContactEmail}
                         </a>

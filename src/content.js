@@ -58,11 +58,11 @@ export default {
   defaultItemImg:
     'https://officedepot.scene7.com/is/image/officedepot/sku-image-default',
   ShowOptions: [
-    {
-      id: 0,
-      title: 'Show All Subscriptions',
-      value: 'All'
-    },
+    // {
+    //   id: 0,
+    //   title: 'Show All Subscriptions',
+    //   value: 'All'
+    // },
     {
       id: 1,
       title: 'Active Subscriptions',

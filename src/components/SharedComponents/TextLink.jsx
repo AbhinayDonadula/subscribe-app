@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import AnimatedDownArrow from './AnimatedDownArrow';
 
 class TextLink extends React.Component {
   state = { active: false };
@@ -29,7 +28,7 @@ class TextLink extends React.Component {
         <span className="view-txt">
           {label}
           <span
-            className={`arrow ${active ? 'active' : ''}`}
+            className={`animated__arrow ${active ? 'active' : ''}`}
             onClick={(event) => {
               this.handleClick(event);
             }}

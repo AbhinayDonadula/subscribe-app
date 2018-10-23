@@ -7,7 +7,7 @@ const getItemSubscriptions = (
   dirFlag = 'T'
 ) => {
   let url = '';
-  let StsCode = '';
+  let StsCode = 'A';
 
   if (localAPI) {
     url = 'http://localhost:3004/getItems';

@@ -69,7 +69,11 @@ class SubscriptionItem extends React.Component {
   };
 
   handleExtendedMenu = (subscription) => {
-    if (subscription.Status === 'C' || subscription.status === 'Closed') {
+    if (
+      subscription.Status === 'C' ||
+      subscription.status === 'Closed' ||
+      (subscription.closeDate && subscription.closeDate.length > 0)
+    ) {
       return;
     }
     this.setState(({ openExtendedMenu }) => ({
@@ -94,8 +98,14 @@ class SubscriptionItem extends React.Component {
       } else if (selected === 'Cancel Subscription') {
         this.setState({
           openSaveCancelMenu: true,
-          saveChangesTxt: 'Cancel Item Subscription?',
+          saveChangesTxt: 'Cancel Item Subscription ?',
           saveAction: 'cancel'
+        });
+      } else if (selected === 'Skip Next Delivery') {
+        this.setState({
+          openSaveCancelMenu: true,
+          saveChangesTxt: 'Skip Item Subscription ?',
+          saveAction: 'skip'
         });
       }
     });
@@ -159,6 +169,21 @@ class SubscriptionItem extends React.Component {
         toast.error('Item Subscription cancellation failed.');
       }
     }
+    if (saveAction === 'skip') {
+      try {
+        await updateItemSubscription(
+          this.isLocalAPI,
+          RecordKey,
+          LstChgTmpStmp,
+          { name: 'skip' }
+        );
+        this.setState({ openSaveCancelMenu: false }, () => {
+          toast.success('Item skipped Successfully.');
+        });
+      } catch (error) {
+        toast.error('Item Subscription skip failed.');
+      }
+    }
   };
 
   handleCancelSave = (event) => {
@@ -188,6 +213,7 @@ class SubscriptionItem extends React.Component {
               this.appData = appData;
               this.subscription = subscription;
               this.isLocalAPI = appData.localAPI;
+              this.subscription = subscription;
               // console.log(subscription);
               const {
                 closeDate = '',
@@ -195,9 +221,8 @@ class SubscriptionItem extends React.Component {
                 skuUrl,
                 itemNumber,
                 itemDescription = 'N/A',
-                shortDescription
+                shortDescription = ''
               } = subscription;
-              this.subscription = subscription;
 
               let subscriptionImage = '';
               if (subscription.isItem) {
@@ -212,6 +237,11 @@ class SubscriptionItem extends React.Component {
                   closeDate.length > 0
                 );
               }
+
+              const disableExtendedMenu =
+                subscription.Status === 'C' ||
+                subscription.status === 'Closed' ||
+                (subscription.closeDate && subscription.closeDate.length > 0);
 
               return (
                 <React.Fragment>
@@ -247,8 +277,8 @@ class SubscriptionItem extends React.Component {
                                 .split(' ')
                                 .slice(1, 15)
                                 .join(' ')}...`
-                            : 'N/A'}
-                          {!isItem ? itemDescription : 'N/A'}
+                            : ''}
+                          {!isItem ? itemDescription : ''}
                         </span>
                         <br />
                         <TextLink
@@ -321,10 +351,7 @@ class SubscriptionItem extends React.Component {
                     */}
                       <li
                         className={`cursor__pointer ${
-                          subscription.Status === 'C' ||
-                          subscription.status === 'Closed'
-                            ? 'disable'
-                            : ''
+                          disableExtendedMenu ? 'disable' : ''
                         }`}
                         onClick={() => {
                           this.handleExtendedMenu(subscription);
@@ -332,10 +359,7 @@ class SubscriptionItem extends React.Component {
                       >
                         <a
                           className={`open_drop ${
-                            subscription.Status === 'C' ||
-                            subscription.status === 'Closed'
-                              ? 'disable'
-                              : ''
+                            disableExtendedMenu ? 'disable' : ''
                           }`}
                         >
                           <span className="menu__ellipses">.</span>

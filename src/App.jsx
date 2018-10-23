@@ -44,7 +44,7 @@ class App extends Component {
     const {
       jsonObjectResponse: { GetSubListDetail }
     } = responseObject;
-    const itemsList = GetSubListDetail;
+    const itemsList = GetSubListDetail || [];
 
     // sort out just item services from the response
     const itemsArray = Object.values(itemsList).filter(
@@ -103,6 +103,8 @@ class App extends Component {
         itemsAndServices = [...beautifiedItems, ...services];
       }
     }
+
+    // console.log(itemsAndServices);
     const sortedByDate = itemsAndServices.sort(
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
@@ -132,20 +134,20 @@ class App extends Component {
 
     // filter all active
     const activeServices = services.filter(
-      (each) => each.status === 'Active' && !each.isItem
+      (each) => !each.isItem && !each.closeDate
     );
 
     // filter all cancelled
     const cancelledServices = services.filter(
-      (each) =>
-        each.status === 'Closed' && each.closeDate && each.closeDate.length
+      (each) => !each.isItem && each.closeDate
     );
 
     this.setState(
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
-        subscriptionsToShow: services,
-        services,
+        // subscriptionsToShow: services,
+        subscriptionsToShow: activeServices,
+        services: activeServices,
         activeServices,
         cancelledServices,
         itemsAndServices: null
