@@ -30,7 +30,7 @@ class PaymentSection extends React.Component {
           <SubscriptionContext.Consumer>
             {(subscription) => {
               const { loyaltyMember = 'N/A' } = subscription;
-              console.log(subscription);
+              // console.log(subscription);
               return (
                 <React.Fragment>
                   <div className="table-responsive d-mob">
@@ -43,9 +43,11 @@ class PaymentSection extends React.Component {
                           <th className="payment__header">
                             {appData.content.PaymentSection.PaymentMethod}
                           </th>
-                          <th className="payment__header">
-                            {appData.content.PaymentSection.ContactEmail}
-                          </th>
+                          {subscription.isItem ? (
+                            <th className="payment__header">
+                              {appData.content.PaymentSection.ContactEmail}
+                            </th>
+                          ) : null}
                           <th className="payment__header">
                             {appData.content.PaymentSection.RewardsMemberNumber}
                           </th>
@@ -64,31 +66,41 @@ class PaymentSection extends React.Component {
                               {appData.content.PaymentSection.EditPaymentMethod}
                             </a>
                           </td>
-                          <td>
-                            <span className="test_txt  email__address">
-                              {itemInfo ? itemInfo.Email : 'N/A'}
-                            </span>
-                            <br />
-                            <a
-                              href="/"
-                              onClick={this.editContactEmail}
-                              className="edit_txt"
-                            >
-                              {appData.content.PaymentSection.EditContactEmail}
-                            </a>
-                          </td>
+                          {subscription.isItem ? (
+                            <td>
+                              <span className="test_txt  email__address">
+                                {itemInfo ? itemInfo.Email : 'N/A'}
+                              </span>
+                              <br />
+                              <a
+                                href="/"
+                                onClick={this.editContactEmail}
+                                className="edit_txt"
+                              >
+                                {
+                                  appData.content.PaymentSection
+                                    .EditContactEmail
+                                }
+                              </a>
+                            </td>
+                          ) : null}
                           <td>
                             <a className="test_txt">
                               {itemInfo ? itemInfo.AdvantageNum : loyaltyMember}
                             </a>
                             <br />
-                            <a
-                              href="/"
-                              onClick={this.editMemberNumber}
-                              className="edit_txt"
-                            >
-                              {appData.content.PaymentSection.EditMemberNumber}
-                            </a>
+                            {subscription.isItem ? (
+                              <a
+                                href="/"
+                                onClick={this.editMemberNumber}
+                                className="edit_txt"
+                              >
+                                {
+                                  appData.content.PaymentSection
+                                    .EditMemberNumber
+                                }
+                              </a>
+                            ) : null}
                           </td>
                         </tr>
                       </tbody>

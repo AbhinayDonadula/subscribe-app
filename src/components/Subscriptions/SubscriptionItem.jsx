@@ -41,7 +41,6 @@ class SubscriptionItem extends React.Component {
   }
 
   handleViewDetails = () => {
-    // event.preventDefault();
     this.setState(({ viewDetailsOpen }) => ({
       viewDetailsOpen: !viewDetailsOpen
     }));
@@ -58,7 +57,7 @@ class SubscriptionItem extends React.Component {
   };
 
   handleItemQuantity = async ({ target: { value } }) => {
-    if (Number(value) || value === '') {
+    if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
         openSaveCancelMenu: true,
@@ -83,12 +82,11 @@ class SubscriptionItem extends React.Component {
 
   handleExtendeMenuSelection = (event, subscription) => {
     event.preventDefault();
-    const { quantity, SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
+    const { SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
     const selected = event.target.getAttribute('data-value');
     this.setState({ openExtendedMenu: false }, () => {
       if (selected === 'Order Now') {
         window.location.href = getOrderNowURL(
-          quantity.replace(/^0+/, ''),
           SKU,
           IncPct,
           FreeSku,
@@ -107,6 +105,12 @@ class SubscriptionItem extends React.Component {
           saveChangesTxt: 'Skip Item Subscription ?',
           saveAction: 'skip'
         });
+      } else if (selected === '') {
+        this.setState({
+          openSaveCancelMenu: true,
+          saveChangesTxt: 'Change Item Frequency ?',
+          saveAction: 'frequency'
+        });
       }
     });
   };
@@ -115,74 +119,46 @@ class SubscriptionItem extends React.Component {
     event.preventDefault();
     const { RecordKey, LstChgTmpStmp } = this.subscription;
     const { itemQuantity, saveAction, frequencySelected } = this.state;
-    if (saveAction === 'quantity') {
-      try {
-        await updateItemSubscription(
-          this.isLocalAPI,
-          RecordKey,
-          LstChgTmpStmp,
-          {
-            name: 'quantity',
-            value: itemQuantity
-          }
-        );
-        this.setState(
-          { openSaveCancelMenu: false, prevItemQuantity: itemQuantity },
-          () => {
-            toast.success('Quantity updated.');
-          }
-        );
-      } catch (error) {
-        toast.error('Quantity update failed.');
-      }
+    let updateAction = {};
+
+    switch (saveAction) {
+      case 'quantity':
+        updateAction = {
+          name: 'quantity',
+          value: itemQuantity
+        };
+        break;
+      case 'frequency':
+        updateAction = {
+          name: 'freq',
+          value: frequencySelected
+        };
+        break;
+      case 'cancel':
+        updateAction = { name: 'cancel' };
+        break;
+      case 'skip':
+        updateAction = { name: 'skip' };
+        break;
+      default:
+        updateAction = {
+          name: 'quantity',
+          value: itemQuantity
+        };
     }
-    if (saveAction === 'frequency') {
-      try {
-        await updateItemSubscription(
-          this.isLocalAPI,
-          RecordKey,
-          LstChgTmpStmp,
-          {
-            name: 'freq',
-            value: frequencySelected
-          }
-        );
-        this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success('Frequency updated.');
-        });
-      } catch (error) {
-        toast.error('Frequency update failed.');
-      }
-    }
-    if (saveAction === 'cancel') {
-      try {
-        await updateItemSubscription(
-          this.isLocalAPI,
-          RecordKey,
-          LstChgTmpStmp,
-          { name: 'cancel' }
-        );
-        this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success('Item Cancelled Successfully.');
-        });
-      } catch (error) {
-        toast.error('Item Subscription cancellation failed.');
-      }
-    }
-    if (saveAction === 'skip') {
-      try {
-        await updateItemSubscription(
-          this.isLocalAPI,
-          RecordKey,
-          LstChgTmpStmp,
-          { name: 'skip' }
-        );
-        this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success('Item skipped Successfully.');
-        });
-      } catch (error) {
-        toast.error('Item Subscription skip failed.');
-      }
+
+    try {
+      await updateItemSubscription(
+        this.isLocalAPI,
+        RecordKey,
+        LstChgTmpStmp,
+        updateAction
+      );
+      this.setState({ openSaveCancelMenu: false }, () => {
+        toast.success(`Item ${saveAction} is successful.`);
+      });
+    } catch (error) {
+      toast.error('Item Subscription skip failed.');
     }
   };
 
@@ -214,7 +190,6 @@ class SubscriptionItem extends React.Component {
               this.subscription = subscription;
               this.isLocalAPI = appData.localAPI;
               this.subscription = subscription;
-              // console.log(subscription);
               const {
                 closeDate = '',
                 isItem,
@@ -242,6 +217,9 @@ class SubscriptionItem extends React.Component {
                 subscription.Status === 'C' ||
                 subscription.status === 'Closed' ||
                 (subscription.closeDate && subscription.closeDate.length > 0);
+
+              const isSteamSub =
+                subscription.isItem && subscription.SKU === '8400226';
 
               return (
                 <React.Fragment>
@@ -402,11 +380,14 @@ class SubscriptionItem extends React.Component {
                                     if (
                                       each.id === 2 &&
                                       !subscription.isItem &&
-                                      subscription.AllowCancel === '1'
+                                      subscription.AllowCancel === '0'
                                     ) {
                                       return undefined;
                                     }
-                                    if (each.id === 3 && !subscription.isItem) {
+                                    if (
+                                      (each.id === 3 && !subscription.isItem) ||
+                                      (each.id === 3 && isSteamSub)
+                                    ) {
                                       return undefined;
                                     }
                                     return (

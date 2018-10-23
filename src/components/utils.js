@@ -125,7 +125,7 @@ export const FireFetch = async (localAPI, handleSuccess, handleError) => {
   } else {
     axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
   }
-  // axiosInstance.defaults.headers.common.Authorization = `Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1Mzk4MTU5NDB9.VbKg9kwc_Z7S1B474VyeUw4aJjCy86aKiYIrv3kUHMjYzmhfV1fz-jnfQm9qqVDJHUw8ginR3sZH0fyeR30iLQ`;
+
   await axiosInstance
     .get()
     .then((response) => {
@@ -299,14 +299,13 @@ export const beautifyBillingHistoryResponse = (response, lineNumber) => {
 };
 
 export const getOrderNowURL = (
-  qty = 1,
   sku = 315515,
   subscriptionIncentivePercent = '',
   subscriptionHasFreeDelivery = '',
   subscriptionWlrPercent = '',
   subscriptionId = ''
 ) => {
-  return `/catalog/addSkuByButtonSetAction.do?addingToCartFromSubscriptionManager=true&qty=${qty}&sku=${sku}&subscriptionIncentivePercent=${subscriptionIncentivePercent}&subscriptionHasFreeDelivery=${subscriptionHasFreeDelivery}&subscriptionWlrPercent=${subscriptionWlrPercent}&subscriptionId=${subscriptionId}`;
+  return `/catalog/addSkuByButtonSetAction.do?addingToCartFromSubscriptionManager=true&qty=1&sku=${sku}&subscriptionIncentivePercent=${subscriptionIncentivePercent}&subscriptionHasFreeDelivery=${subscriptionHasFreeDelivery}&subscriptionWlrPercent=${subscriptionWlrPercent}&subscriptionId=${subscriptionId}`;
 };
 
 export const getServiceSubscriptionsURL = (localAPI) => {
