@@ -274,7 +274,7 @@ padding: 60px 0;
   height: 47px;
 }
 .main_txt {
-  font-size: 19px;
+  font-size: 13px;
   color: #000;
   text-transform: capitalize;
   font-weight: 600;
@@ -354,19 +354,26 @@ margin-left: 10px;
   box-shadow: -5px 0 5px -5px #d2d1d1, 5px 0 5px -5px #d2d1d1;
 }
 .close_box{
-display: none !important;
+  display: none !important;
 }
 .close_box.show{
-display: block !important;
+  display: block !important;
 }
 .view_detail{
-display: inline-block;
+  display: inline-block;
 }
 .head_txt {
   font-size: 16px;
   color: #000;
-  font-weight: 600;
   margin-bottom: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.9px;
+}
+.table2 td.billing__err {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #4e555d;
 }
 .list_price{
 background: #f5f8fd;
@@ -420,30 +427,34 @@ div.total_box p{
   max-width: 270px;
 }
 .btn_dnload {
-  background: #3379c1;
+  background: #1e5a99;
   color: #fff;
-  padding: 10px 26px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 26px;
   outline: none;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
+  letter-spacing: 0.8px;
+  width: 235px;
+  height: 45px;
 }
 .btn_dnload:hover{
   color: #fff;
 }
 .btn_dnload img{
-margin-right: 7px;
+  margin-right: 7px;
 }
 .dn_txt{
-font-size: 16px;
-color: #000;
-margin: 20px 0;
+  margin: 20px 0;
+  font-size: 13px;
+  line-height: 1.62;
+  letter-spacing: 0.9px;
+  color: #273039;
 }
 .pay_txt{
-color: #000;
-font-weight: 600;
-font-size: 13px;
+  color: #000;
+  font-weight: 600;
+  font-size: 13px;
 }
 .pay_txt label{
   color: #aba5a5;
@@ -458,9 +469,12 @@ border: none;
 .table2 thead th {
   border: none !important;
   background: #f2f3f5;
-  color: #5e5c5c;
   font-weight: 600;
   padding: 15px 27px !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.9px;
+  color: #4e555d;
 }
 .table2 td {
   border: none !important;
@@ -2190,6 +2204,14 @@ span.menu__ellipses {
   margin-right: -3px;
 }
 
+a.disable span.menu__ellipses {
+  color: #b3bdc1
+}
+
+a.open_drop.disable, .disable.cursor__pointer {
+  cursor: auto;
+}
+
 div.drophead {
   font-size: 14px;
   font-weight: 600;
@@ -2233,14 +2255,6 @@ div.total_box h3 {
   text-transform: uppercase;
 }
 
-span.main_txt.desc {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
 .table.table2.table-striped tr th.payment__header {
   font-size: 11px;
   font-weight: 600;
@@ -2251,6 +2265,26 @@ span.main_txt.desc {
 
 .overlay {
   background-color: inherit; 
+}
+
+ul.sub__details--section-sub, hr.download__end {
+  margin-bottom: 60px;
+}  
+
+div.dnload_div.show {
+  margin-bottom: 30px;
+}  
+
+span.subscribing__txt {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: #b30000;
+}
+
+div.unexpected__error {
+  text-align: center;
+  color: #b30000;
 }
 
 /* 
@@ -2270,6 +2304,7 @@ span.main_txt.desc {
   ul.sub__details--section-sub {
     display: flex;
     justify-content: space-around;
+    margin-bottom: 60px;
   }  
 
   ul.sub__details--section-item.list-inline > li,

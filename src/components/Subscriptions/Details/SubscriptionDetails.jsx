@@ -6,32 +6,43 @@ import DownloadServiceSection from './DownloadServiceSection';
 import BillingInfoSection from './BillingInfoSection';
 import PaymentSection from './PaymentSection';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { formatDate, FireGetItemDetails } from '../../utils';
+import { formatDate } from '../../utils';
 import Img from '../../SharedComponents/Img';
+import getItemDetails from '../../../apiCalls/getItemDetails';
 
 class SubscriptionDetails extends React.Component {
   state = {
-    itemInfo: null
+    itemInfo: null,
+    gettingDetailsError: false,
+    loading: false
   };
 
   componentDidMount() {
-    const { isItem, RecordKey } = this.subscription;
+    const { isItem } = this.subscription;
     if (isItem) {
-      FireGetItemDetails(
-        this.appData.localAPI,
-        this.handleGetItemInfoSuccess,
-        this.handleGetItemInfoFailure,
-        RecordKey
-      );
+      this.setState({ loading: true }, () => {
+        this.getDetails();
+      });
     }
   }
 
-  handleGetItemInfoSuccess = (response) => {
-    this.setState({ itemInfo: response.responseObject.jsonObjectResponse });
-  };
-
-  handleGetItemInfoErr = () => {
-    // console.log(error);
+  getDetails = async () => {
+    const { RecordKey } = this.subscription;
+    try {
+      const { responseObject } = await getItemDetails(
+        this.appData.localAPI,
+        RecordKey
+      );
+      this.setState({
+        itemInfo: responseObject.success
+          ? responseObject.jsonObjectResponse
+          : null,
+        gettingDetailsError: !responseObject.success,
+        loading: false
+      });
+    } catch (error) {
+      this.setState({ gettingDetailsError: true, loading: false });
+    }
   };
 
   handleFrequencyDropDown = () => {
@@ -40,7 +51,7 @@ class SubscriptionDetails extends React.Component {
   };
 
   render() {
-    const { itemInfo } = this.state;
+    const { itemInfo, loading, gettingDetailsError } = this.state;
     return (
       <AppContext.Consumer>
         {(appData) => (
@@ -58,7 +69,7 @@ class SubscriptionDetails extends React.Component {
 
               // show billing section only only for SS type and Monthly frequency
               const showBillingSection =
-                serviceType === 'SS' && billingFrequency === 'MON';
+                serviceType === 'SS' && billingFrequency === 'MON' && !isItem;
 
               // show/hide download section
               const showDownloadSection =
@@ -88,19 +99,28 @@ class SubscriptionDetails extends React.Component {
                       </li>
                     </ul>
                   </div>
-                  {itemInfo || !subscription.isItem ? (
+                  {loading ? (
+                    <Img
+                      spinner
+                      src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
+                    />
+                  ) : null}
+
+                  {!loading && !gettingDetailsError ? (
                     <React.Fragment>
                       <DetailsSection itemInfo={itemInfo} />
                       {showDownloadSection ? <DownloadServiceSection /> : null}
                       {showBillingSection ? <BillingInfoSection /> : null}
                       <PaymentSection itemInfo={itemInfo} />
                     </React.Fragment>
-                  ) : (
-                    <Img
-                      spinner
-                      src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
-                    />
-                  )}
+                  ) : null}
+
+                  {!loading && gettingDetailsError ? (
+                    <div className="unexpected__error">
+                      Something unexpected happened while we tried to load item
+                      details, Please try again later.
+                    </div>
+                  ) : null}
                 </div>
               );
             }}

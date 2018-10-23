@@ -59,9 +59,8 @@ class SubscriptionItem extends React.Component {
 
   handleItemQuantity = async ({ target: { value } }) => {
     if (Number(value) || value === '') {
-      this.setState(({ itemQuantity }) => ({
+      this.setState(() => ({
         itemQuantity: value,
-        prevItemQuantity: itemQuantity,
         openSaveCancelMenu: true,
         saveChangesTxt: 'Save/Update quantity changes?',
         saveAction: 'quantity'
@@ -69,7 +68,10 @@ class SubscriptionItem extends React.Component {
     }
   };
 
-  handleExtendedMenu = () => {
+  handleExtendedMenu = (subscription) => {
+    if (subscription.Status === 'C' || subscription.status === 'Closed') {
+      return;
+    }
     this.setState(({ openExtendedMenu }) => ({
       openExtendedMenu: !openExtendedMenu
     }));
@@ -114,9 +116,12 @@ class SubscriptionItem extends React.Component {
             value: itemQuantity
           }
         );
-        this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success('Quantity updated.');
-        });
+        this.setState(
+          { openSaveCancelMenu: false, prevItemQuantity: itemQuantity },
+          () => {
+            toast.success('Quantity updated.');
+          }
+        );
       } catch (error) {
         toast.error('Quantity update failed.');
       }
@@ -180,7 +185,10 @@ class SubscriptionItem extends React.Component {
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
+              this.appData = appData;
+              this.subscription = subscription;
               this.isLocalAPI = appData.localAPI;
+              // console.log(subscription);
               const {
                 closeDate = '',
                 isItem,
@@ -237,7 +245,7 @@ class SubscriptionItem extends React.Component {
                           {isItem
                             ? `${shortDescription
                                 .split(' ')
-                                .slice(1, 12)
+                                .slice(1, 15)
                                 .join(' ')}...`
                             : itemDescription}
                         </span>
@@ -257,12 +265,14 @@ class SubscriptionItem extends React.Component {
                       </li>
                       <li
                         className={`d-mob ${
-                          subscription.isItem ? 'item__quantity-container' : ''
+                          subscription.isItem && subscription.Status === 'A'
+                            ? 'item__quantity-container'
+                            : ''
                         }`}
                       >
                         <label
                           className={`item__label ${
-                            subscription.isItem
+                            subscription.isItem && subscription.Status === 'A'
                               ? 'item__quantity-container'
                               : ''
                           }`}
@@ -270,7 +280,7 @@ class SubscriptionItem extends React.Component {
                           {appData.content.Quantity}
                         </label>
                         <br />
-                        {subscription.isItem ? (
+                        {subscription.isItem && subscription.Status === 'A' ? (
                           <input
                             className="item__quantity"
                             onChange={this.handleItemQuantity}
@@ -287,7 +297,7 @@ class SubscriptionItem extends React.Component {
                           {appData.content.FrequencyLabel}
                         </label>
                         <br />
-                        {subscription.isItem ? (
+                        {subscription.isItem && subscription.Status === 'A' ? (
                           <Dropdown
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}
@@ -309,10 +319,24 @@ class SubscriptionItem extends React.Component {
                         </li>
                     */}
                       <li
-                        className="cursor__pointer"
-                        onClick={this.handleExtendedMenu}
+                        className={`cursor__pointer ${
+                          subscription.Status === 'C' ||
+                          subscription.status === 'Closed'
+                            ? 'disable'
+                            : ''
+                        }`}
+                        onClick={() => {
+                          this.handleExtendedMenu(subscription);
+                        }}
                       >
-                        <a className="open_drop">
+                        <a
+                          className={`open_drop ${
+                            subscription.Status === 'C' ||
+                            subscription.status === 'Closed'
+                              ? 'disable'
+                              : ''
+                          }`}
+                        >
                           <span className="menu__ellipses">.</span>
                           <span className="menu__ellipses">.</span>
                           <span className="menu__ellipses">.</span>

@@ -79,7 +79,7 @@ class DownloadServiceSection extends React.Component {
                       </a>
                     </div>
                   )}
-                  <hr />
+                  <hr className="download__end" />
                 </React.Fragment>
               );
             }}

@@ -20,6 +20,7 @@ class DetailsSection extends React.Component {
   render() {
     const { showSubDetailsMobile, isMobile } = this.state;
     const { itemInfo } = this.props;
+    console.log(itemInfo);
     return (
       <AppContext.Consumer>
         {(appData) => (
@@ -33,7 +34,7 @@ class DetailsSection extends React.Component {
                   >
                     {appData.content.SubscriptionDetails}
                   </h3>
-                  <hr className="d-block d-md-none d-lg-none" />
+                  {/* <hr className="d-block" /> */}
                   {(showSubDetailsMobile || !isMobile) && (
                     <ul
                       className={`list-inline list-unstyled list_price ${
@@ -52,11 +53,9 @@ class DetailsSection extends React.Component {
                               : appData.content.TotalPrice}
                           </h3>
                           <p>
-                            {formatPrice(
-                              itemInfo
-                                ? itemInfo.Price
-                                : subscription.unitPrice || '00'
-                            )}
+                            {itemInfo
+                              ? itemInfo.Price.replace(/^0+/, '')
+                              : formatPrice(subscription.unitPrice)}
                           </p>
                         </div>
                       </li>
@@ -67,8 +66,11 @@ class DetailsSection extends React.Component {
                           <div className="total_box">
                             <h3>{appData.content.SubscriptionDiscount}:</h3>
                             <p>
-                              <span>Subscribing saves you ##%</span>
-                              <span>Discount Expires, 12/12/2018</span>
+                              <span className="subscribing__txt">
+                                Subscribing saves you {itemInfo.IncPercent}%
+                              </span>
+                              <br />
+                              <span>Expires: {itemInfo.IncEndDate}</span>
                             </p>
                           </div>
                         </li>

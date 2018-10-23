@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../node_modules/font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { toast } from 'react-toastify';
@@ -177,18 +176,12 @@ class App extends Component {
 
     try {
       const itemsSubs = await getItemSubscriptions(localAPI, status);
-      if (
-        !itemsSubs.responseObject ||
-        !(
-          itemsSubs.responseObject &&
-          itemsSubs.responseObject.jsonObjectResponse &&
-          itemsSubs.responseObject.jsonObjectResponse.GetSubListDetail
-        )
-      ) {
+      if (!itemsSubs.success) {
         this.setState({
           itemsAndServices: services,
           subscriptionsToShow: subscriptionsToShow || services,
-          filtering: false
+          filtering: false,
+          initialAppLoading: false
         });
       } else {
         this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);

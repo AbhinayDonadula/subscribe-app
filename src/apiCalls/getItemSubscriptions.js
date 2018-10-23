@@ -2,7 +2,7 @@ import { getDefaultHeaders } from '../components/utils';
 
 const getItemSubscriptions = (
   localAPI,
-  statusCode = 'A',
+  statusCode,
   sortBy = 'D',
   dirFlag = 'T'
 ) => {

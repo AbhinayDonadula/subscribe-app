@@ -2,9 +2,9 @@ import React from 'react';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import Img from '../../SharedComponents/Img';
 import {
-  FireFetch,
   formatDate,
-  beautifyBillingHistoryResponse
+  beautifyBillingHistoryResponse,
+  getBillingHistory
 } from '../../utils';
 import AppContext from '../../Context/AppContext';
 
@@ -16,7 +16,7 @@ class BillingInfoSection extends React.Component {
   };
 
   componentDidMount() {
-    FireFetch(
+    getBillingHistory(
       this.localAPI
         ? 'http://localhost:3004/billingHistory'
         : this.billingHistoryUrl,
@@ -25,12 +25,23 @@ class BillingInfoSection extends React.Component {
     );
   }
 
-  handleSuccess = (response) => {
-    window.setTimeout(() => {
-      this.setState({
-        billingHistory: beautifyBillingHistoryResponse(response)
-      });
-    }, 3000);
+  handleSuccess = ({ data }) => {
+    let billingHistory = [];
+    if (
+      data.billingHistoryResponse &&
+      data.billingHistoryResponse.billingHistoryRecord &&
+      data.billingHistoryResponse.billingHistoryRecord.length > 0
+    ) {
+      billingHistory = beautifyBillingHistoryResponse(data);
+      this.setState({ billingHistory });
+    }
+    if (
+      data.billingHistoryResponse &&
+      data.billingHistoryResponse.billingHistoryRecord &&
+      data.billingHistoryResponse.billingHistoryRecord.length === 0
+    ) {
+      this.setState({ billingHistory });
+    }
   };
 
   handleFailure = () => {
@@ -151,9 +162,9 @@ class BillingInfoSection extends React.Component {
                                 <tr>
                                   <td />
                                   <td />
-                                  <td>
+                                  <td className="billing__err">
                                     {noBillingHistory && billingHistoryError
-                                      ? 'Billing History unvailable'
+                                      ? 'Billing History unavailable'
                                       : 'Your first recurring bill has not been generated'}
                                   </td>
                                   <td />
