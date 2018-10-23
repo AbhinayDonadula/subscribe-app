@@ -40,8 +40,8 @@ class SubscriptionItem extends React.Component {
     });
   }
 
-  handleViewDetails = (event) => {
-    event.preventDefault();
+  handleViewDetails = () => {
+    // event.preventDefault();
     this.setState(({ viewDetailsOpen }) => ({
       viewDetailsOpen: !viewDetailsOpen
     }));

@@ -20,7 +20,6 @@ class DetailsSection extends React.Component {
   render() {
     const { showSubDetailsMobile, isMobile } = this.state;
     const { itemInfo } = this.props;
-    console.log(itemInfo);
     return (
       <AppContext.Consumer>
         {(appData) => (

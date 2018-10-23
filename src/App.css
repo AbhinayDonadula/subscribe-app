@@ -2287,6 +2287,41 @@ div.unexpected__error {
   color: #b30000;
 }
 
+.arrow {
+  width: 1.25rem;
+  height: 10px;
+  display: inline-block;
+  position: relative;
+  margin: 0 1rem;
+}
+.arrow span {
+  top: 0.5rem;
+  position: absolute;
+  width: 0.75rem;
+  height: 0.1rem;
+  background-color: #1e5a99;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+.arrow span:first-of-type {
+  left: 0;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.arrow span:last-of-type {
+  right: 0;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.arrow.active span:first-of-type {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.arrow.active span:last-of-type {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
@@ -2393,4 +2428,3 @@ div.unexpected__error {
   }
   
 }
-
