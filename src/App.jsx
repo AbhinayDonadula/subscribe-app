@@ -176,7 +176,10 @@ class App extends Component {
 
     try {
       const itemsSubs = await getItemSubscriptions(localAPI, status);
-      if (!itemsSubs.success) {
+      if (
+        (itemsSubs.success !== undefined && !itemsSubs.success) ||
+        !itemsSubs.responseObject.success
+      ) {
         this.setState({
           itemsAndServices: services,
           subscriptionsToShow: subscriptionsToShow || services,
