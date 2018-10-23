@@ -242,12 +242,13 @@ class SubscriptionItem extends React.Component {
                       </li>
                       <li>
                         <span className="main_txt desc">
-                          {isItem
+                          {isItem && shortDescription
                             ? `${shortDescription
                                 .split(' ')
                                 .slice(1, 15)
                                 .join(' ')}...`
-                            : itemDescription}
+                            : 'N/A'}
+                          {!isItem ? itemDescription : 'N/A'}
                         </span>
                         <br />
                         <TextLink
