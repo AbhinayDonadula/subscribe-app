@@ -29,8 +29,12 @@ class PaymentSection extends React.Component {
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
-              const { loyaltyMember = 'N/A' } = subscription;
-              // console.log(subscription);
+              const { loyaltyMember = 'N/A', paymentDetails } = subscription;
+              const cardType =
+                paymentDetails && paymentDetails.paymentCard
+                  ? paymentDetails.paymentCard.cardType
+                  : 'N/A';
+
               return (
                 <React.Fragment>
                   <div className="table-responsive d-mob">
@@ -56,7 +60,7 @@ class PaymentSection extends React.Component {
                       <tbody>
                         <tr>
                           <td>
-                            Visa - xxxxxx
+                            {cardType} - xxxxxx
                             <br />
                             <a
                               href="/"

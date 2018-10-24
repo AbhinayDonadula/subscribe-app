@@ -19,7 +19,7 @@ const updateItemSubscription = (localAPI, RecordKey, LstChgTS, action) => {
       ...(LstChgTS ? { LstChgTS } : { LstChgTS: 'N/A' }),
       ...(name === 'skip' ? { SkipNext: '1' } : undefined),
       ...(name === 'quantity' ? { QtyOrd: value } : undefined),
-      ...(name === 'cancel' ? { Cancel: '1' } : undefined),
+      ...(name === 'cancel' ? { Cancel: 'C' } : undefined),
       ...(name === 'freq' ? { Freq: value } : undefined),
       ...(name === 'email' ? { Email: value } : undefined),
       ...(name === 'rewards' ? { WLRNumber: value } : undefined)

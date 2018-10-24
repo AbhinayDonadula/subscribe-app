@@ -374,6 +374,7 @@ margin-left: 10px;
   font-size: 14px;
   letter-spacing: 0.5px;
   color: #4e555d;
+  text-align: center;
 }
 .list_price{
 background: #f5f8fd;
@@ -2390,10 +2391,6 @@ a.email__address, span.email__address {
     margin-top: 2px;
   }
   
-  /* .item__quantity-container {
-    padding-top: 18px !important;
-  } */
-  
   .item__quantity-label {
     margin-bottom: 30px !important;
   }
@@ -2403,6 +2400,19 @@ a.email__address, span.email__address {
     letter-spacing: 0.5px;
     color: #273039;
   }
+
+  div.data-table ul li:nth-child(3) {
+    width: 180px;
+  }
+
+  div.data-table ul li:nth-child(4) {
+    width: 13%;
+  }
+
+  div.freq__options.custom-select {
+    width: 90%;
+  }
+
 }
 
 /* phone , tablet, large tablets */

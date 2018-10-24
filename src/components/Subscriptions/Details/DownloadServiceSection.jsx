@@ -16,20 +16,13 @@ class DownloadServiceSection extends React.Component {
   }
 
   handleSuccess = (response) => {
-    // console.log('ASI call success for download section', response);
+    const emailAddress = response.data ? response.data.emailAddress : '';
     this.setState(({ downloadLink }) => ({
-      downloadLink: downloadLink + response.data.emailAddress
+      downloadLink: downloadLink + emailAddress
     }));
   };
 
-  handleFailure = () => {
-    // handleFailure = (error, isJWTFailed) => {
-    // if (isJWTFailed) {
-    //   console.log('JWT failed in download section', error.status, error);
-    // } else {
-    //   console.log('Download Section Error', error);
-    // }
-  };
+  handleFailure = () => {};
 
   showDownloadDetailsSection = () => {
     this.setState(({ showDownloadDetailsMobile }) => ({
@@ -66,7 +59,7 @@ class DownloadServiceSection extends React.Component {
                     <div className="dnload_div show">
                       <p className="dn_txt">
                         Please download the following agent:{' '}
-                        {subscription.itemDescription}
+                        {`"${subscription.itemDescription}"`}
                       </p>
                       <a className="dnload__txt" href={downloadLink}>
                         <button type="button" className="btn_dnload">

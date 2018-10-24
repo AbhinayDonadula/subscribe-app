@@ -94,59 +94,48 @@ export default {
   FrequencyOptions: [
     {
       id: 0,
-      title: 'Every Other Month',
-      value: 'Every Other Month'
+      title: 'Weekly',
+      value: 'Weekly',
+      serverVal: 'W'
     },
     {
       id: 1,
-      title: 'Weekly',
-      value: 'Weekly'
+      title: 'Every other week',
+      value: 'Every other week',
+      serverVal: 'B'
     },
     {
       id: 2,
-      title: 'Every Other Week',
-      value: 'Every Other Week'
+      title: 'Every 3 weeks',
+      value: 'Every 3 weeks',
+      serverVal: 'T'
     },
     {
       id: 3,
       title: 'Monthly',
-      value: 'Monthly'
+      value: 'Monthly',
+      serverVal: 'M'
     },
     {
       id: 4,
-      title: 'Every 3 Weeks',
-      value: 'Every 3 Weeks'
+      title: 'Every other month',
+      value: 'Every other month',
+      serverVal: 'I'
     },
     {
       id: 5,
       title: 'Quarterly',
-      value: 'Quarterly'
+      value: 'Quarterly',
+      serverVal: 'Q'
     },
     {
       id: 6,
       title: 'Every 6 Months',
-      value: 'Every 6 Months'
-    }
-  ],
-  QuantityOptions: [
-    {
-      id: 0,
-      title: '1',
-      value: '1'
-    },
-    {
-      id: 1,
-      title: '2',
-      value: '2'
-    },
-    {
-      id: 2,
-      title: '3',
-      value: '3'
+      value: 'Every 6 Months',
+      serverVal: 'S'
     }
   ],
   ExtendedMenuOptions: [
-    // { id: 1, label: 'Go To Order History' },
     { id: 2, label: 'Cancel Subscription' },
     { id: 3, label: 'Order Now' }
   ]

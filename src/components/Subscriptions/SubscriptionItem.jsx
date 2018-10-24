@@ -148,15 +148,24 @@ class SubscriptionItem extends React.Component {
     }
 
     try {
-      await updateItemSubscription(
+      const response = await updateItemSubscription(
         this.isLocalAPI,
         RecordKey,
         LstChgTmpStmp,
         updateAction
       );
-      this.setState({ openSaveCancelMenu: false }, () => {
-        toast.success(`Item ${saveAction} is successful.`);
-      });
+      if (
+        (response.success !== undefined && !response.success) ||
+        !response.responseObject.success
+      ) {
+        this.setState({ openSaveCancelMenu: false }, () => {
+          toast.success(`Item ${saveAction} is failed.`);
+        });
+      } else {
+        this.setState({ openSaveCancelMenu: false }, () => {
+          toast.success(`Item ${saveAction} is Successful.`);
+        });
+      }
     } catch (error) {
       toast.error('Item Subscription skip failed.');
     }
@@ -220,6 +229,8 @@ class SubscriptionItem extends React.Component {
 
               const isSteamSub =
                 subscription.isItem && subscription.SKU === '8400226';
+
+              // console.log(subscription);
 
               return (
                 <React.Fragment>
@@ -301,12 +312,14 @@ class SubscriptionItem extends React.Component {
                           </label>
                         )}
                       </li>
-                      <li className="d-mob">
+                      <li className="d-mob select_Box">
                         <label className="item__label">
                           {appData.content.FrequencyLabel}
                         </label>
                         <br />
-                        {subscription.isItem && subscription.Status === 'A' ? (
+                        {subscription.isItem &&
+                        subscription.Status === 'A' &&
+                        !isSteamSub ? (
                           <Dropdown
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}
@@ -321,12 +334,6 @@ class SubscriptionItem extends React.Component {
                           </span>
                         )}
                       </li>
-                      {/*
-                      This is used when Notifications are implemented
-                        <li className="org_bg">
-                            <img src="img/correct2.jpg" />
-                        </li>
-                    */}
                       <li
                         className={`cursor__pointer ${
                           disableExtendedMenu ? 'disable' : ''
@@ -364,52 +371,40 @@ class SubscriptionItem extends React.Component {
                                   );
                                 }}
                               >
-                                {subscription.isItem &&
-                                subscription.AllowSkip === '1'
+                                {subscription.isItem
                                   ? appData.content.SkipNextDelivery
-                                  : null}
-                                {!subscription.isItem
-                                  ? 'Cancel Subscription'
-                                  : null}
+                                  : 'Cancel Subscription'}
                               </p>
                             </div>
-                            <div className="dropbody">
-                              <ul className="list-unstyled subscription__extended-menu">
-                                {appData.content.ExtendedMenuOptions.map(
-                                  (each) => {
-                                    if (
-                                      each.id === 2 &&
-                                      !subscription.isItem &&
-                                      subscription.AllowCancel === '0'
-                                    ) {
-                                      return undefined;
+                            {subscription.isItem ? (
+                              <div className="dropbody">
+                                <ul className="list-unstyled subscription__extended-menu">
+                                  {appData.content.ExtendedMenuOptions.map(
+                                    (each) => {
+                                      if (each.id === 3 && isSteamSub) {
+                                        return undefined;
+                                      }
+                                      return (
+                                        <li key={each.id}>
+                                          <a
+                                            href="/"
+                                            data-value={each.label}
+                                            onClick={(event) => {
+                                              this.handleExtendeMenuSelection(
+                                                event,
+                                                subscription
+                                              );
+                                            }}
+                                          >
+                                            {each.label}
+                                          </a>
+                                        </li>
+                                      );
                                     }
-                                    if (
-                                      (each.id === 3 && !subscription.isItem) ||
-                                      (each.id === 3 && isSteamSub)
-                                    ) {
-                                      return undefined;
-                                    }
-                                    return (
-                                      <li key={each.id}>
-                                        <a
-                                          href="/"
-                                          data-value={each.label}
-                                          onClick={(event) => {
-                                            this.handleExtendeMenuSelection(
-                                              event,
-                                              subscription
-                                            );
-                                          }}
-                                        >
-                                          {each.label}
-                                        </a>
-                                      </li>
-                                    );
-                                  }
-                                )}
-                              </ul>
-                            </div>
+                                  )}
+                                </ul>
+                              </div>
+                            ) : null}
                           </div>
                         </li>
                       </ul>

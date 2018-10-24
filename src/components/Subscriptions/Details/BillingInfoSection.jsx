@@ -160,15 +160,11 @@ class BillingInfoSection extends React.Component {
                               )}
                               {showBillingTable && !isLoading ? (
                                 <tr>
-                                  <td />
-                                  <td />
-                                  <td className="billing__err">
+                                  <td className="billing__err" colSpan="5">
                                     {noBillingHistory && billingHistoryError
                                       ? 'Billing History unavailable'
                                       : 'Your first recurring bill has not been generated'}
                                   </td>
-                                  <td />
-                                  <td className="zui-sticky-col mob" />
                                 </tr>
                               ) : (
                                 <React.Fragment>

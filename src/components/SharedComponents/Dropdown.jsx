@@ -29,7 +29,7 @@ class Dropdown extends React.Component {
     const { listOpen, selected } = this.state;
     return (
       <div
-        className={`custom-select ${frequencyDropDown ? 'custom-select1' : ''}`}
+        className={`custom-select ${frequencyDropDown ? 'freq__options' : ''}`}
         onClick={this.toggleList}
       >
         <div
