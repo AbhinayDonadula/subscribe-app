@@ -28,9 +28,9 @@ class Header extends React.Component {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-sm-12">
-                  <p className="sub_txt greeting__msg">
+                  {/* <p className="sub_txt greeting__msg">
                     {this.greetUser()}, <b>{appData.userName}!</b>
-                  </p>
+                  </p> */}
                   <h3 className="sub_head">{appData.content.AppTitle}</h3>
                 </div>
               </div>

@@ -47,6 +47,7 @@ class SubscriptionItem extends React.Component {
   };
 
   handleFrequencyDropDown = (selected) => {
+    console.log(selected);
     this.setState(({ frequencySelected }) => ({
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
@@ -230,6 +231,9 @@ class SubscriptionItem extends React.Component {
               const isSteamSub =
                 subscription.isItem && subscription.SKU === '8400226';
 
+              const isActiveItemSubscription =
+                subscription.isItem && subscription.Status === 'A';
+
               // console.log(subscription);
 
               return (
@@ -280,19 +284,21 @@ class SubscriptionItem extends React.Component {
                       <li className="d-mob">
                         <label className="item__label">STATUS</label> <br />
                         <label className="pad_span">
-                          {formatStatus(subscription.status)}
+                          {isItem
+                            ? `Delivery by: ${subscription.NextDlvDt}`
+                            : formatStatus(subscription.status)}
                         </label>
                       </li>
                       <li
                         className={`d-mob ${
-                          subscription.isItem && subscription.Status === 'A'
+                          isActiveItemSubscription
                             ? 'item__quantity-container'
                             : ''
                         }`}
                       >
                         <label
                           className={`item__label ${
-                            subscription.isItem && subscription.Status === 'A'
+                            isActiveItemSubscription
                               ? 'item__quantity-container'
                               : ''
                           }`}
@@ -300,7 +306,7 @@ class SubscriptionItem extends React.Component {
                           {appData.content.Quantity}
                         </label>
                         <br />
-                        {subscription.isItem && subscription.Status === 'A' ? (
+                        {isActiveItemSubscription ? (
                           <input
                             className="item__quantity"
                             onChange={this.handleItemQuantity}
@@ -325,7 +331,9 @@ class SubscriptionItem extends React.Component {
                             options={appData.content.FrequencyOptions}
                             updateParentState={this.handleFrequencyDropDown}
                             selected={getFrequency(
-                              subscription.billingFrequency
+                              isItem
+                                ? subscription.Freq
+                                : subscription.billingFrequency
                             )}
                           />
                         ) : (

@@ -84,16 +84,43 @@ export const getImageBySKU = (itemNum) => {
 };
 
 export const getFrequency = (frequency) => {
-  if (frequency === 'MON' || frequency === 'M') {
-    return 'Monthly';
+  switch (frequency) {
+    case 'W':
+      return 'Weekly';
+    case 'B':
+      return 'Every other week';
+    case 'T':
+      return 'Every 3 weeks';
+    case 'M':
+      return 'Monthly';
+    case 'MON':
+      return 'Monthly';
+    case 'I':
+      return 'Quarterly';
+    case 'Q':
+      return 'Every 6 Months';
+    default:
+      return 'Annually';
   }
-  if (frequency === 'W') {
-    return 'Weekly';
+};
+
+export const getFrequencyForAPI = (frequency) => {
+  switch (frequency) {
+    case 'Weekly':
+      return 'W';
+    case 'Every other week':
+      return 'B';
+    case 'Every 3 weeks':
+      return 'T';
+    case 'Monthly':
+      return 'M';
+    case 'Quarterly':
+      return 'I';
+    case 'Every 6 Months':
+      return 'Q';
+    default:
+      return 'N/A';
   }
-  if (frequency === 'YR') {
-    return 'Annually';
-  }
-  return 'Quarterly';
 };
 
 export const formatPrice = (price) => `$${parseFloat(price).toFixed(2)}`;

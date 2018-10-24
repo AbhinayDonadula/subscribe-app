@@ -648,7 +648,7 @@ display: block;
   height: 155px;
 }
 .data-table ul li:first-child {
-  width: 15%;
+  width: 13%;
 }
 .data-table ul li:nth-child(2) {
   width: 35%;
@@ -2402,11 +2402,11 @@ a.email__address, span.email__address {
   }
 
   div.data-table ul li:nth-child(3) {
-    width: 180px;
+    width: 200px;
   }
 
   div.data-table ul li:nth-child(4) {
-    width: 13%;
+    width: 11%;
   }
 
   div.freq__options.custom-select {
