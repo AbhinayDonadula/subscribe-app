@@ -24,7 +24,16 @@ export const beautifyGetSubListResponse = (response) => {
     const contractLines = _contract.contractLines || [];
     contractLines.forEach((contractLine) => {
       // skip BS(Bussiness-Select) contracts
-      if (contractLine.serviceType !== 'BS') {
+      if (
+        contractLine.serviceType !== 'BS' &&
+        !(
+          contractLine.status === 'Under amendment' ||
+          contractLine.status === 'Pending signature' ||
+          contractLine.status === 'Pending approval' ||
+          contractLine.status === 'Sent for signature' ||
+          contractLine.status === 'Hold'
+        )
+      ) {
         subscriptions.push(
           Object.assign({
             ...header,
@@ -265,19 +274,14 @@ export const formatPhoneNumber = (phoneNumberString) => {
 };
 
 export const formatStatus = (status) => {
-  if (status === 'A') {
-    return 'Active';
-  }
   if (status === 'C') {
     return 'Cancelled';
   }
-
-  return status;
+  return 'Active';
 };
 
 export const beautifyBillingHistoryResponse = (response, lineNumber) => {
   let records = [];
-  // const records = response.billingHistoryResponse.billingHistoryRecord;
   if (
     response.billingHistoryResponse &&
     response.billingHistoryResponse.billingHistoryRecord
