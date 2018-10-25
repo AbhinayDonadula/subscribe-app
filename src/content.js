@@ -77,8 +77,8 @@ export default {
   SortOptions: [
     {
       id: 0,
-      title: 'Sort By: Next Delivery Date',
-      value: 'Sort By: Next Delivery Date'
+      title: 'Next Delivery Date',
+      value: 'Next Delivery Date'
     },
     {
       id: 1,

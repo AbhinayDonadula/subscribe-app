@@ -29,11 +29,19 @@ class PaymentSection extends React.Component {
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
-              const { loyaltyMember = 'N/A', paymentDetails } = subscription;
+              const {
+                loyaltyMember = 'N/A',
+                paymentDetails,
+                closeDate,
+                isItem,
+                Status
+              } = subscription;
               const cardType =
                 paymentDetails && paymentDetails.paymentCard
                   ? paymentDetails.paymentCard.cardType
                   : 'N/A';
+              const isCancelledSub =
+                (closeDate && closeDate.length) || (isItem && Status === 'C');
 
               return (
                 <React.Fragment>
@@ -47,7 +55,7 @@ class PaymentSection extends React.Component {
                           <th className="payment__header">
                             {appData.content.PaymentSection.PaymentMethod}
                           </th>
-                          {subscription.isItem ? (
+                          {isItem ? (
                             <th className="payment__header">
                               {appData.content.PaymentSection.ContactEmail}
                             </th>
@@ -60,15 +68,20 @@ class PaymentSection extends React.Component {
                       <tbody>
                         <tr>
                           <td>
-                            {cardType} - xxxxxx
+                            {cardType} - xxxx
                             <br />
-                            <a
-                              href="/"
-                              onClick={this.editPayment}
-                              className="edit_txt"
-                            >
-                              {appData.content.PaymentSection.EditPaymentMethod}
-                            </a>
+                            {!isCancelledSub ? (
+                              <a
+                                href="/"
+                                onClick={this.editPayment}
+                                className="edit_txt"
+                              >
+                                {
+                                  appData.content.PaymentSection
+                                    .EditPaymentMethod
+                                }
+                              </a>
+                            ) : null}
                           </td>
                           {subscription.isItem ? (
                             <td>
@@ -76,16 +89,18 @@ class PaymentSection extends React.Component {
                                 {itemInfo ? itemInfo.Email : 'N/A'}
                               </span>
                               <br />
-                              <a
-                                href="/"
-                                onClick={this.editContactEmail}
-                                className="edit_txt"
-                              >
-                                {
-                                  appData.content.PaymentSection
-                                    .EditContactEmail
-                                }
-                              </a>
+                              {!isCancelledSub ? (
+                                <a
+                                  href="/"
+                                  onClick={this.editContactEmail}
+                                  className="edit_txt"
+                                >
+                                  {
+                                    appData.content.PaymentSection
+                                      .EditContactEmail
+                                  }
+                                </a>
+                              ) : null}
                             </td>
                           ) : null}
                           <td>
@@ -121,7 +136,7 @@ class PaymentSection extends React.Component {
                           className="img-resp visa_img"
                           alt=""
                         /> */}
-                        VISA - xxxxxx
+                        VISA - xxxx
                       </li>
                       <li>
                         <a

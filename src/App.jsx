@@ -109,6 +109,8 @@ class App extends Component {
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
 
+    // console.log(this.state.itemsAndServices);
+    // console.log(sortedByDate);
     this.setState(
       {
         initialAppLoading: false,
@@ -117,6 +119,7 @@ class App extends Component {
         subscriptionsToShow: sortedByDate
       },
       () => {
+        // console.log(this.state.itemsAndServices);
         if (status) {
           toast.success(`Showing ${status} Subscriptions.`);
         }
@@ -145,7 +148,6 @@ class App extends Component {
     this.setState(
       {
         userName: getSubscriptionDetailsListResponse.customer.fullName,
-        // subscriptionsToShow: services,
         subscriptionsToShow: activeServices,
         services: activeServices,
         activeServices,
@@ -158,25 +160,25 @@ class App extends Component {
     );
   };
 
-  getItems = async (status) => {
-    let subscriptionsToShow = null;
-    const {
-      localAPI,
-      services,
-      activeServices,
-      cancelledServices,
-      itemsAndServices
-    } = this.state;
+  getItems = (status) => {
+    this.setState({ filtering: true }, async () => {
+      let subscriptionsToShow = null;
+      const {
+        localAPI,
+        services,
+        activeServices,
+        cancelledServices,
+        itemsAndServices
+      } = this.state;
 
-    if (status === 'Active') {
-      subscriptionsToShow = activeServices;
-    } else if (status === 'Cancelled') {
-      subscriptionsToShow = cancelledServices;
-    } else {
-      subscriptionsToShow = itemsAndServices;
-    }
+      if (status === 'Active') {
+        subscriptionsToShow = activeServices;
+      } else if (status === 'Cancelled') {
+        subscriptionsToShow = cancelledServices;
+      } else {
+        subscriptionsToShow = itemsAndServices;
+      }
 
-    try {
       const itemsSubs = await getItemSubscriptions(localAPI, status);
       if (
         (itemsSubs.success !== undefined && !itemsSubs.success) ||
@@ -189,11 +191,11 @@ class App extends Component {
           initialAppLoading: false
         });
       } else {
-        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
+        window.setTimeout(() => {
+          this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
+        }, 1000);
       }
-    } catch (error) {
-      this.setState({ itemsAndServices: services });
-    }
+    });
   };
 
   handleGetSubListFailure = (error) => {
@@ -227,7 +229,8 @@ class App extends Component {
         value={{
           ...this.state,
           handleAllFilter: this.filterSubscriptions,
-          handleSortFilter: this.sortSubscriptions
+          handleSortFilter: this.sortSubscriptions,
+          getItems: this.getItems
         }}
       >
         <SnackBar>

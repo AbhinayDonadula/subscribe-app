@@ -758,53 +758,40 @@ font-size: 11px
 .custom-select1 .select-selected.select-arrow-active:after {
   right: 14%;
 }
-/*style the items (options), including the selected item:*/
 .select-items div,.select-selected {
-color: #495057;
-padding: 13px 16px 13px 26px;
-border: 1px solid transparent;
-border: 0;
-box-shadow: none;
-cursor: pointer;
-user-select: none;
-position: relative;
-text-transform: capitalize;
-z-index: 9;
-    
-
-}
-.select-items div {
-  border-top: 1px solid #cccccc8c;
+  color: #273039;
+  position: relative;
+  z-index: 9;
 }
 .select-selected {
   padding: 13px 0px;
 }
 .select-items {
   position: absolute;
-  background-color: DodgerBlue;
   top: 100%;
   left: -27px;
   right: 0;
   z-index: 99999;
   background: #fff;
-  box-shadow: 0px 4px 10px #d6cfcf;
+  border: solid 1px #cccccc;
+  border-top-width: 0;
+  border-top: hidden;
+  border-radius: 0 0 4px 4px;
 }
 /*hide the items when the select box is closed:*/
 .select-hide {
 display: none;
 }
 .select-items div:hover, .same-as-selected {
-  background-color: transparent;
-  color: #848080;
-  font-weight: 300;
-  letter-spacing: 1px;
-  font-style: italic;
-   padding-left: 40px;
+  font-weight: bold;
+  color: #273039;
+  background-color: #f1f3f4;
+  letter-spacing: 0.5px;
+  font-size: 13px;
 }
 .select-arrow-active {
   background: #fff;
   padding: 13px 16px 13px 26px;
-  box-shadow: 0px 0px 6px 0px #b6b0b0;
 }
 .show_Div {
   display: none;
@@ -996,7 +983,7 @@ display: block;
 }
 .select_Box .select-selected {
   border: 1px solid #ccc;
-  font-size: 13px;
+  font-size: 12px;
   padding: 13px 15px;
   border-radius: 4px;
   white-space: nowrap;
@@ -1005,10 +992,6 @@ display: block;
   height: 44px;
   letter-spacing: 0.5px;
   color: #273039;
-}
-.select_Box .select-selected.select-arrow-active{
-border: 0;
-border-radius: 0;
 }
 .select_Box  .select-items{
 width: 100%;
@@ -1056,22 +1039,6 @@ display: none;
 }
 .btn_sv:hover{
 color: #fff;
-}
-.select-items div:after,.select-items div.same-as-selected:after {
-  background: url(./img/tick.jpg) no-repeat;
-  background-size: 16px;
-  width: 16px;
-  height: 15px;
-  content: '';
-  position: absolute;
-  left: 17px;
-  top: 50%;
-  transform: translate(0,-50%);
-  display: none;
-}
-
-.select-items div:hover:after,.same-as-selected:after {
-display: block;
 }
 .pad_span {
   display: block;
@@ -2229,7 +2196,7 @@ div.dropbody ul.subscription__extended-menu {
 }
 
 div.data-table label.pad_span {
-  font-size: 14px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   color: #273039;
 }
@@ -2327,6 +2294,17 @@ a.email__address, span.email__address {
   text-transform: lowercase
 }
 
+label.pad_span.mgb0 {
+  margin-bottom:0;
+}
+
+div.select-selected.select-arrow-active {
+  border: solid 1px #cccccc;
+    background-color: #ffffff;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
@@ -2383,7 +2361,7 @@ a.email__address, span.email__address {
   .item__quantity {
     width: 50px;
     height: 44px;
-    font-size: 13px;
+    font-size: 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
     background: #fff;
@@ -2411,6 +2389,27 @@ a.email__address, span.email__address {
 
   div.freq__options.custom-select {
     width: 90%;
+  }
+
+  div.filter__label {
+    padding-right: 0;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    justify-content: flex-end;
+  }
+  div.sort__label {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    justify-content: flex-end;
+  }
+  div.filter__label, div.sort__label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #273039;
   }
 
 }

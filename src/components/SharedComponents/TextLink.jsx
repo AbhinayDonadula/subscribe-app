@@ -9,7 +9,8 @@ class TextLink extends React.Component {
     const { active } = this.state;
     const { handleClick: parentHandleClick } = this.props;
     this.setState({ active: !active }, () => {
-      parentHandleClick();
+      const { active: a } = this.state;
+      parentHandleClick(a);
     });
   };
 

@@ -40,14 +40,11 @@ class SubscriptionItem extends React.Component {
     });
   }
 
-  handleViewDetails = () => {
-    this.setState(({ viewDetailsOpen }) => ({
-      viewDetailsOpen: !viewDetailsOpen
-    }));
+  handleViewDetails = (open) => {
+    this.setState(() => ({ viewDetailsOpen: open }));
   };
 
   handleFrequencyDropDown = (selected) => {
-    console.log(selected);
     this.setState(({ frequencySelected }) => ({
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
@@ -163,8 +160,11 @@ class SubscriptionItem extends React.Component {
           toast.success(`Item ${saveAction} is failed.`);
         });
       } else {
+        if (updateAction.name === 'cancel') {
+          this.appData.getItems('Active');
+        }
         this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success(`Item ${saveAction} is Successful.`);
+          toast.success(`Item ${saveAction} is successful.`);
         });
       }
     } catch (error) {
@@ -229,7 +229,7 @@ class SubscriptionItem extends React.Component {
                 (subscription.closeDate && subscription.closeDate.length > 0);
 
               const isSteamSub =
-                subscription.isItem && subscription.SKU === '8400226';
+                subscription.isItem && subscription.SubType === 'S';
 
               const isActiveItemSubscription =
                 subscription.isItem && subscription.Status === 'A';
@@ -283,10 +283,17 @@ class SubscriptionItem extends React.Component {
                       </li>
                       <li className="d-mob">
                         <label className="item__label">STATUS</label> <br />
-                        <label className="pad_span">
-                          {isItem
+                        <label
+                          className={`pad_span ${
+                            isActiveItemSubscription ? 'mgb0' : ''
+                          }`}
+                        >
+                          {isActiveItemSubscription
                             ? `Delivery by: ${subscription.NextDlvDt}`
-                            : formatStatus(subscription.status)}
+                            : null}
+                          {!isActiveItemSubscription
+                            ? formatStatus(subscription.status)
+                            : null}
                         </label>
                       </li>
                       <li

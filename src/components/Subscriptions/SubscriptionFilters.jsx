@@ -11,20 +11,18 @@ class SubscriptionFilters extends React.Component {
         {(appData) => (
           <div className="row">
             <div className="col-md-12">
-              {/* <h3 className="notif_head">
-                {appData.content.MySubscriptionsHeader}
-              </h3> 
-              <div className="space20" /> */}
               <div className="row row_sub">
                 <div className="col-lg-8 col-md-6 col-sm-10 col-xs-12">
                   <div className="row select_Box">
-                    <div className="col-sm-6 col-xs-7">
+                    <div className="filter__label col-xs-1">Filter:</div>
+                    <div className="filter__options col-xs-4">
                       <Dropdown
                         options={appData.content.ShowOptions}
                         updateParentState={appData.handleAllFilter}
                       />
                     </div>
-                    <div className="col-sm-6 col-xs-5">
+                    <div className="sort__label col-xs-1">Sort by:</div>
+                    <div className="sort__options col-xs-4">
                       <Dropdown
                         options={appData.content.SortOptions}
                         updateParentState={appData.handleSortFilter}
