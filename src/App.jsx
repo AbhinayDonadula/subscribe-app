@@ -191,9 +191,7 @@ class App extends Component {
           initialAppLoading: false
         });
       } else {
-        window.setTimeout(() => {
-          this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
-        }, 1000);
+        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
       }
     });
   };

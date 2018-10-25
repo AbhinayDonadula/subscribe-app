@@ -1,7 +1,7 @@
 import React from 'react';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { FireFetch } from '../../utils';
+import { getEmailFromASI } from '../../utils';
 
 class DownloadServiceSection extends React.Component {
   state = {
@@ -12,7 +12,7 @@ class DownloadServiceSection extends React.Component {
   };
 
   componentDidMount() {
-    FireFetch(this.apiUrl, this.handleSuccess, this.handleFailure);
+    getEmailFromASI(this.apiUrl, this.handleSuccess, this.handleFailure);
   }
 
   handleSuccess = (response) => {
