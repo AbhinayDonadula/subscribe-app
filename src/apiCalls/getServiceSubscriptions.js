@@ -11,8 +11,8 @@ const getServiceSubscriptions = (localAPI) => {
 
   const data = {
     REQUEST: {
-      NAME: 'SERVICE_LIST',
-      TYPE: 'LIST'
+      NAME: 'SUBSCRIPTION',
+      TYPE: 'SERVICE_LIST'
     },
     INPUT: {}
   };

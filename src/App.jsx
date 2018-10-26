@@ -12,6 +12,7 @@ import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
 import getItemSubscriptions from './apiCalls/getItemSubscriptions';
 import SpinnerPortal from './components/SharedComponents/SpinnerPortal';
+import getServiceSubscriptions from './apiCalls/getServiceSubscriptions';
 
 class App extends Component {
   state = {
@@ -28,10 +29,14 @@ class App extends Component {
   };
 
   componentDidMount() {
+    const { localAPI } = this.state;
     if (document.getElementById('actualContent')) {
       document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
     }
     this.getSubscriptionsAndItemsList();
+    getServiceSubscriptions(localAPI).then((response) => {
+      this.setState({ servicesByNewAPI: response });
+    });
   }
 
   sortItemsAndSubs = async (
@@ -39,14 +44,15 @@ class App extends Component {
     subscriptionsToShow,
     status
   ) => {
+    let itemSkus = [];
+    let itemsAndServices = [];
     const { services, localAPI } = this.state;
-    const itemSkus = [];
     const {
       jsonObjectResponse: { GetSubListDetail }
     } = responseObject;
     const itemsList = GetSubListDetail || [];
 
-    // sort out just item services from the response
+    // filter out just item services from the response which has non-empty record key
     const itemsArray = Object.values(itemsList).filter(
       (each) => each.RecordKey.length > 0
     );
@@ -64,7 +70,10 @@ class App extends Component {
         sortDate: item.NextDlvDt
       };
     });
-    let itemsAndServices = [];
+
+    // remove duplicate skus
+    itemSkus = Array.from(new Set(itemSkus));
+
     try {
       // below call will give image info for a given sku or array of skus
       const response = await getImageInfoBySku(localAPI, itemSkus);
@@ -77,14 +86,19 @@ class App extends Component {
             el.skuId.replace(/^0+/, '') === eachItem.SKU.replace(/^0+/, '')
           );
         });
-        // once we found the item, merge with all the needed properties with item as below
-        return {
-          smallImageUrl: itemWithSku.imageUrl + itemWithSku.smallImageUrl,
-          mediumImageUrl: itemWithSku.imageUrl + itemWithSku.mediumImageUrl,
-          shortDescription: itemWithSku.shortDescription,
-          skuUrl: itemWithSku.skuUrl,
-          ...eachItem
-        };
+
+        // once we find the item, merge with all the needed properties with item as below
+        if (itemWithSku) {
+          return {
+            smallImageUrl: itemWithSku.imageUrl + itemWithSku.smallImageUrl,
+            mediumImageUrl: itemWithSku.imageUrl + itemWithSku.mediumImageUrl,
+            shortDescription: itemWithSku.shortDescription,
+            skuUrl: itemWithSku.skuUrl,
+            ...eachItem
+          };
+        }
+
+        return eachItem;
       });
 
       // filter cancel/active subscriptions
@@ -104,13 +118,10 @@ class App extends Component {
       }
     }
 
-    // console.log(itemsAndServices);
     const sortedByDate = itemsAndServices.sort(
       (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
     );
 
-    // console.log(this.state.itemsAndServices);
-    // console.log(sortedByDate);
     this.setState(
       {
         initialAppLoading: false,
@@ -119,7 +130,6 @@ class App extends Component {
         subscriptionsToShow: sortedByDate
       },
       () => {
-        // console.log(this.state.itemsAndServices);
         if (status) {
           toast.success(`Showing ${status} Subscriptions.`);
         }

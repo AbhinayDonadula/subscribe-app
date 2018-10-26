@@ -199,41 +199,40 @@ class SubscriptionItem extends React.Component {
               this.appData = appData;
               this.subscription = subscription;
               this.isLocalAPI = appData.localAPI;
-              this.subscription = subscription;
+
               const {
                 closeDate = '',
                 isItem,
                 skuUrl,
                 itemNumber,
                 itemDescription = 'N/A',
-                shortDescription = ''
+                shortDescription = '',
+                mediumImageUrl,
+                vendorNumber,
+                SubType,
+                Status
               } = subscription;
 
               let subscriptionImage = '';
-              if (subscription.isItem) {
-                subscriptionImage = subscription.mediumImageUrl
-                  ? subscription.mediumImageUrl
-                  : appData.content.defaultItemImg;
-              } else if (subscription.vendorNumber === '01242135') {
-                subscriptionImage = getImageBySKU(subscription.itemNumber);
+              if (isItem) {
+                subscriptionImage =
+                  mediumImageUrl || appData.content.defaultItemImg;
+              } else if (vendorNumber === '01242135') {
+                subscriptionImage = getImageBySKU(itemNumber);
               } else {
                 subscriptionImage = getSubscriptionImg(
-                  subscription.itemNumber,
+                  itemNumber,
                   closeDate.length > 0
                 );
               }
 
               const disableExtendedMenu =
-                subscription.Status === 'C' ||
+                Status === 'C' ||
                 subscription.status === 'Closed' ||
-                (subscription.closeDate && subscription.closeDate.length > 0);
-
-              const isSteamSub =
-                subscription.isItem && subscription.SubType === 'S';
-
-              const isActiveItemSubscription =
-                subscription.isItem && subscription.Status === 'A';
-
+                (closeDate && closeDate.length > 0);
+              const isSteamSub = isItem && SubType === 'S';
+              const isActiveItemSubscription = isItem && Status === 'A';
+              const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
               // console.log(subscription);
 
               return (
@@ -251,13 +250,22 @@ class SubscriptionItem extends React.Component {
                     <ul className="list-unstyled list-inline main_ul">
                       <li>
                         <a
+                          onClick={(event) => {
+                            if (isItem && !skuUrl) {
+                              event.preventDefault();
+                            }
+                            return true;
+                          }}
                           href={`${
                             isItem
-                              ? skuUrl
+                              ? skuUrl || ''
                               : '/catalog/search.do?Ntt=itemNumber'.replace(
                                   'itemNumber',
                                   itemNumber
                                 )
+                          }`}
+                          className={`${
+                            isItem && !skuUrl ? 'default_cursor' : ''
                           }`}
                         >
                           <Img src={subscriptionImage} />
@@ -271,6 +279,7 @@ class SubscriptionItem extends React.Component {
                                 .slice(1, 15)
                                 .join(' ')}...`
                             : ''}
+                          {isItem && !shortDescription ? itemDescription : ''}
                           {!isItem ? itemDescription : ''}
                         </span>
                         <br />
@@ -325,14 +334,16 @@ class SubscriptionItem extends React.Component {
                           </label>
                         )}
                       </li>
-                      <li className="d-mob select_Box">
+                      <li
+                        className={`${
+                          !showFreqDropDown ? 'no__Dropdown' : ''
+                        } d-mob select_Box`}
+                      >
                         <label className="item__label">
                           {appData.content.FrequencyLabel}
                         </label>
                         <br />
-                        {subscription.isItem &&
-                        subscription.Status === 'A' &&
-                        !isSteamSub ? (
+                        {showFreqDropDown ? (
                           <Dropdown
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}

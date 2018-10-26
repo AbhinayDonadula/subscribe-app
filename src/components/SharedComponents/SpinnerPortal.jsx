@@ -19,7 +19,7 @@ class SpinnerPortal extends React.Component {
     modalPortalRoot.appendChild(this.el);
     if (filtering) {
       document
-        .getElementById('spinner-modal')
+        .getElementById('spinner__portal-subscriptions')
         .setAttribute('class', 'filtering__spinner');
     }
   }
