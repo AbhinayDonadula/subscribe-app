@@ -10,7 +10,8 @@ import {
   getFrequency,
   getImageBySKU,
   formatStatus,
-  getOrderNowURL
+  getOrderNowURL,
+  getFrequencyForAPI
 } from '../utils';
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
@@ -58,7 +59,7 @@ class SubscriptionItem extends React.Component {
     if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
-        openSaveCancelMenu: true,
+        openSaveCancelMenu: value !== '',
         saveChangesTxt: 'Save/Update quantity changes?',
         saveAction: 'quantity'
       }));
@@ -129,7 +130,7 @@ class SubscriptionItem extends React.Component {
       case 'frequency':
         updateAction = {
           name: 'freq',
-          value: frequencySelected
+          value: getFrequencyForAPI(frequencySelected)
         };
         break;
       case 'cancel':

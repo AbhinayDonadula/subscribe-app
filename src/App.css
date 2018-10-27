@@ -673,10 +673,10 @@ div.app__loader {
   height: 155px;
 }
 .data-table ul li:first-child {
-  width: 13%;
+  width: 15%;
 }
 .data-table ul li:nth-child(2) {
-  width: 35%;
+  width: 33%;
 }
 .data-table ul li:nth-child(3) {
   width: 223px;
@@ -2372,6 +2372,12 @@ div.select-selected.select-arrow-active {
 
 .default_cursor {
   cursor: default;
+}
+
+.no__subs {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 /* 

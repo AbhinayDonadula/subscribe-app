@@ -49,11 +49,11 @@ class DownloadServiceSection extends React.Component {
                     onClick={this.showDownloadDetailsSection}
                   >
                     {appData.content.DownloadSectionHeader}
-                    <img
+                    {/* <img
                       src="./img/down.jpg"
                       className="img-resp down_img1"
                       alt=""
-                    />
+                    /> */}
                   </h3>
                   {(showDownloadDetailsMobile || !isMobile) && (
                     <div className="dnload_div show">

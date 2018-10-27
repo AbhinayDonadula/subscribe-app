@@ -7,7 +7,10 @@ import Notifications from './components/Notifications/Notifications';
 import content from './content';
 import AppContext from './components/Context/AppContext';
 import Subscriptions from './components/Subscriptions/Subscriptions';
-import { beautifyGetSubListResponse, FireFetch } from './components/utils';
+import {
+  beautifyGetSubListResponse,
+  filterActiveCancel
+} from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
 import getItemSubscriptions from './apiCalls/getItemSubscriptions';
@@ -29,14 +32,10 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const { localAPI } = this.state;
     if (document.getElementById('actualContent')) {
       document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
     }
-    this.getSubscriptionsAndItemsList();
-    getServiceSubscriptions(localAPI).then((response) => {
-      this.setState({ servicesByNewAPI: response });
-    });
+    this.getServicesAndItems();
   }
 
   sortItemsAndSubs = async (
@@ -80,13 +79,11 @@ class App extends Component {
 
       // go through each item and find the relevant sku from response above and merge obj
       const beautifiedItemsWithImages = beautifiedItems.map((eachItem) => {
-        // take the sku from repsonse and find the same item inside items array
-        const itemWithSku = Object.values(response).find((el) => {
-          return (
+        // take the sku from response and find the same item inside items array
+        const itemWithSku = Object.values(response).find(
+          (el) =>
             el.skuId.replace(/^0+/, '') === eachItem.SKU.replace(/^0+/, '')
-          );
-        });
-
+        );
         // once we find the item, merge with all the needed properties with item as below
         if (itemWithSku) {
           return {
@@ -97,7 +94,6 @@ class App extends Component {
             ...eachItem
           };
         }
-
         return eachItem;
       });
 
@@ -133,39 +129,6 @@ class App extends Component {
         if (status) {
           toast.success(`Showing ${status} Subscriptions.`);
         }
-      }
-    );
-  };
-
-  handleGetSubListSuccess = (response) => {
-    const {
-      data: { getSubscriptionDetailsListResponse }
-    } = response;
-    const services = beautifyGetSubListResponse(
-      getSubscriptionDetailsListResponse
-    );
-
-    // filter all active
-    const activeServices = services.filter(
-      (each) => !each.isItem && !each.closeDate
-    );
-
-    // filter all cancelled
-    const cancelledServices = services.filter(
-      (each) => !each.isItem && each.closeDate
-    );
-
-    this.setState(
-      {
-        userName: getSubscriptionDetailsListResponse.customer.fullName,
-        subscriptionsToShow: activeServices,
-        services: activeServices,
-        activeServices,
-        cancelledServices,
-        itemsAndServices: null
-      },
-      () => {
-        this.getItems();
       }
     );
   };
@@ -206,18 +169,36 @@ class App extends Component {
     });
   };
 
-  handleGetSubListFailure = (error) => {
-    this.setState({ getSubListError: error });
-    this.getItems();
-  };
-
-  getSubscriptionsAndItemsList = () => {
+  getServicesAndItems = () => {
     const { localAPI } = this.state;
-    FireFetch(
-      localAPI,
-      this.handleGetSubListSuccess,
-      this.handleGetSubListFailure
-    );
+    getServiceSubscriptions(localAPI).then((response) => {
+      if (
+        (response.success !== undefined && !response.success) ||
+        !response.responseObject.success
+      ) {
+        // if get services call failed then get items
+        this.getItems();
+      } else {
+        const servicesFromEAI = response.responseObject.jsonObjectResponse;
+        const services = beautifyGetSubListResponse(servicesFromEAI);
+        const [activeServices, cancelledServices] = filterActiveCancel(
+          services
+        );
+        this.setState(
+          {
+            userName: servicesFromEAI.customer.fullName,
+            subscriptionsToShow: activeServices,
+            services: activeServices,
+            activeServices,
+            cancelledServices,
+            itemsAndServices: null
+          },
+          () => {
+            this.getItems();
+          }
+        );
+      }
+    });
   };
 
   sortSubscriptions = (selected) => {
@@ -231,7 +212,12 @@ class App extends Component {
   };
 
   render() {
-    const { enableNotifications, filtering, initialAppLoading } = this.state;
+    const {
+      enableNotifications,
+      filtering,
+      initialAppLoading,
+      subscriptionsToShow
+    } = this.state;
     return (
       <AppContext.Provider
         value={{
@@ -244,7 +230,10 @@ class App extends Component {
         <SnackBar>
           <Header />
           {enableNotifications ? <Notifications /> : null}
-          <Subscriptions />
+          {subscriptionsToShow ? <Subscriptions /> : null}
+          {subscriptionsToShow === null && !initialAppLoading ? (
+            <div className="no__subs">You have no subscriptions to view.</div>
+          ) : null}
           {!initialAppLoading && filtering ? <SpinnerPortal filtering /> : null}
         </SnackBar>
       </AppContext.Provider>

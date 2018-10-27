@@ -82,11 +82,11 @@ class BillingInfoSection extends React.Component {
                     onClick={this.toggleShowHide}
                   >
                     {appData.content.BillingSection.BillingInfoSectionHeader}
-                    <img
+                    {/* <img
                       src="img/down.jpg"
                       className="img-resp down_img1"
                       alt=""
-                    />
+                    /> */}
                   </h3>
                   {(show || !isMobile) && (
                     <div className="bill_Div show">
