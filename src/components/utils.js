@@ -238,7 +238,8 @@ export const formatPhoneNumber = (phoneNumberString) => {
   return null;
 };
 
-export const formatStatus = (status) => {
+export const formatStatus = (status, sub) => {
+  console.log(status, sub);
   if (status === 'C') {
     return 'Cancelled';
   }

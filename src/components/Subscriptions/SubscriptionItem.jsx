@@ -302,7 +302,9 @@ class SubscriptionItem extends React.Component {
                             ? `Delivery by: ${subscription.NextDlvDt}`
                             : null}
                           {!isActiveItemSubscription
-                            ? formatStatus(subscription.status)
+                            ? formatStatus(
+                                closeDate.length > 0 ? 'C' : 'Active'
+                              )
                             : null}
                         </label>
                       </li>
