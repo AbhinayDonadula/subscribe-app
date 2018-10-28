@@ -235,6 +235,7 @@ class App extends Component {
             <div className="no__subs">You have no subscriptions to view.</div>
           ) : null}
           {!initialAppLoading && filtering ? <SpinnerPortal filtering /> : null}
+          {initialAppLoading && !filtering ? <SpinnerPortal /> : null}
         </SnackBar>
       </AppContext.Provider>
     );
