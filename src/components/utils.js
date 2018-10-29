@@ -96,6 +96,8 @@ export const getFrequency = (frequency) => {
   switch (frequency) {
     case 'W':
       return 'Weekly';
+    case 'I':
+      return 'Every other month';
     case 'B':
       return 'Every other week';
     case 'T':
@@ -104,9 +106,9 @@ export const getFrequency = (frequency) => {
       return 'Monthly';
     case 'MON':
       return 'Monthly';
-    case 'I':
-      return 'Quarterly';
     case 'Q':
+      return 'Quarterly';
+    case 'S':
       return 'Every 6 Months';
     default:
       return 'Annually';
@@ -124,9 +126,11 @@ export const getFrequencyForAPI = (frequency) => {
     case 'Monthly':
       return 'M';
     case 'Quarterly':
-      return 'I';
-    case 'Every 6 Months':
       return 'Q';
+    case 'Every 6 Months':
+      return 'S';
+    case 'Every other month':
+      return 'I';
     default:
       return 'N/A';
   }
