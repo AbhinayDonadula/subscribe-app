@@ -186,7 +186,7 @@ class App extends Component {
         );
         this.setState(
           {
-            userName: servicesFromEAI.customer.fullName,
+            // userName: servicesFromEAI.customer.fullName,
             subscriptionsToShow: activeServices,
             services: activeServices,
             activeServices,

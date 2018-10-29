@@ -7,10 +7,25 @@ class Dropdown extends React.Component {
     selected: ''
   };
 
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClick, false);
+  }
+
   componentDidMount() {
     const { selected } = this.props;
     this.setState({ selected });
   }
+
+  componentWillUnmount() {
+    document.addEventListener('mousedown', this.handleClick, false);
+  }
+
+  handleClick = (e) => {
+    if (this.node.contains(e.target)) {
+      return;
+    }
+    this.setState({ listOpen: false });
+  };
 
   handleSelected = (event) => {
     const { updateParentState } = this.props;
@@ -31,6 +46,9 @@ class Dropdown extends React.Component {
       <div
         className={`custom-select ${frequencyDropDown ? 'freq__options' : ''}`}
         onClick={this.toggleList}
+        ref={(node) => {
+          this.node = node;
+        }}
       >
         <div
           className={`select-selected ${

@@ -157,12 +157,10 @@ class DetailsSection extends React.Component {
                           <div className="total_box">
                             <h3>{appData.content.ContractNumber}</h3>
                             <p>
-                              <a href="/">
-                                {getContractNumber(
-                                  subscription.contractId,
-                                  subscription.lineNumber
-                                )}
-                              </a>
+                              {getContractNumber(
+                                subscription.contractId,
+                                subscription.lineNumber
+                              )}
                             </p>
                           </div>
                         </li>

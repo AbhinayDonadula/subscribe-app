@@ -55,7 +55,7 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleItemQuantity = async ({ target: { value } }) => {
+  handleItemQuantity = ({ target: { value } }) => {
     if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
@@ -63,6 +63,13 @@ class SubscriptionItem extends React.Component {
         saveChangesTxt: 'Save/Update quantity changes?',
         saveAction: 'quantity'
       }));
+    }
+  };
+
+  test = ({ target: { value } }) => {
+    const { prevItemQuantity } = this.state;
+    if (value === '') {
+      this.setState({ itemQuantity: prevItemQuantity });
     }
   };
 
@@ -330,6 +337,7 @@ class SubscriptionItem extends React.Component {
                             className="item__quantity"
                             onChange={this.handleItemQuantity}
                             value={itemQuantity}
+                            onBlur={this.test}
                           />
                         ) : (
                           <label className="item__label pad_span margin__left-25">
