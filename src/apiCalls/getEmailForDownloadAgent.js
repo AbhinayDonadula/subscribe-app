@@ -1,12 +1,11 @@
 import { getDefaultHeaders } from '../components/utils';
 
-const getBillingHistory = (localAPI, contractId) => {
+const getEmailForDownloadAgent = (localAPI, contractId) => {
   let url = '';
-
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
-      TYPE: 'SERVICE_CONTRACT'
+      TYPE: 'SERVICE_DOWNLOAD'
     },
     INPUT: { contractId }
   };
@@ -32,4 +31,4 @@ const getBillingHistory = (localAPI, contractId) => {
     .catch(() => {});
 };
 
-export default getBillingHistory;
+export default getEmailForDownloadAgent;
