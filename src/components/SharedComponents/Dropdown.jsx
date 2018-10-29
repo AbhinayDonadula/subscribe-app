@@ -21,10 +21,13 @@ class Dropdown extends React.Component {
   }
 
   handleClick = (e) => {
-    if (this.node.contains(e.target)) {
+    // console.log(e.target);
+    if (this.node && this.node.contains(e.target)) {
       return;
     }
-    this.setState({ listOpen: false });
+    if (this.node) {
+      this.setState({ listOpen: false });
+    }
   };
 
   handleSelected = (event) => {

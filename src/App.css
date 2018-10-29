@@ -147,7 +147,7 @@
   font-size: 30px;
 }
 .list_sub li a {
-  color: #2478ce;
+  color: #1e5a99;
   font-size: 16px;
   text-align: center;
   margin: 12px auto;
@@ -165,7 +165,7 @@
   font-size: 18px;
   margin-left: 33px;
   text-transform: capitalize;
-  color: #2478ce;
+  color: #1e5a99;
   cursor: pointer;
 }
 .view_txt .fa {
@@ -231,7 +231,7 @@
   font-size: 18px;
   margin-left: 33px;
   text-transform: capitalize;
-  color: #2478ce;
+  color: #1e5a99;
   margin: 22px auto;
   display: block;
   text-align: center;
@@ -314,7 +314,7 @@
 .data-table .view_txt {
   font-size: 13px;
   margin-left: 0;
-  color: #2478ce !important;
+  color: #1e5a99 !important;
   display: block;
   margin-top: 20px;
   line-height: 22px;
@@ -351,7 +351,7 @@
   background-color: #f5f8fc;
   text-align: center;
   padding: 17px;
-  color: #2478ce;
+  color: #1e5a99;
   font-size: 23px;
 }
 .table1 > tbody > tr {
@@ -434,7 +434,7 @@
 .list_price li:nth-child(5) .total_box p,
 .list_price li:nth-child(6) .total_box p,
 .list_price li:nth-child(7) .total_box p {
-  color: #2478ce;
+  color: #1e5a99;
 }
 .total_box h3 {
   font-size: 14px;
@@ -525,7 +525,7 @@ div.total_box p {
   margin-right: 10px;
 }
 .edit_txt {
-  color: #2478ce;
+  color: #1e5a99;
   display: block;
   margin-top: 24px;
 }
@@ -900,7 +900,7 @@ li.btn_cncl-container {
   color: #fff;
 }
 .drophead {
-  background: #2478ce;
+  background: #1e5a99;
   color: #fff;
   font-size: 18px;
   text-transform: capitalize;
@@ -914,7 +914,7 @@ li.btn_cncl-container {
   box-shadow: 0 7px 13px 0 rgba(0, 0, 0, 0.1), 0 1px 14px 0 rgba(0, 0, 0, 0.17);
   padding: 6px 0px 5px;
   text-align: center;
-  color: #2478ce;
+  color: #1e5a99;
   text-transform: capitalize;
   background: #fff;
 }
@@ -972,7 +972,7 @@ li.btn_cncl-container {
   height: 0;
   border-left: 11px solid transparent;
   border-right: 11px solid transparent;
-  border-bottom: 12px solid #2478ce;
+  border-bottom: 12px solid #1e5a99;
   right: 18px;
   margin: 0 auto;
   top: -11px;
