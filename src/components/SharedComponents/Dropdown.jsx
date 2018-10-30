@@ -21,7 +21,6 @@ class Dropdown extends React.Component {
   }
 
   handleClick = (e) => {
-    // console.log(e.target);
     if (this.node && this.node.contains(e.target)) {
       return;
     }

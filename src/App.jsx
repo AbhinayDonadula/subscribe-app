@@ -127,7 +127,7 @@ class App extends Component {
       },
       () => {
         if (status) {
-          toast.success(`Showing ${status} Subscriptions.`);
+          toast.success(`Showing ${status}.`);
         }
       }
     );
@@ -144,9 +144,9 @@ class App extends Component {
         itemsAndServices
       } = this.state;
 
-      if (status === 'Active') {
+      if (status === 'Active Subscriptions') {
         subscriptionsToShow = activeServices;
-      } else if (status === 'Cancelled') {
+      } else if (status === 'Cancelled Subscriptions') {
         subscriptionsToShow = cancelledServices;
       } else {
         subscriptionsToShow = itemsAndServices;

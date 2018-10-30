@@ -2380,6 +2380,32 @@ div.select-selected.select-arrow-active {
   margin-top: 20px;
 }
 
+/* filter-mobile */
+.filters__container {
+  display: flex !important;
+  justify-content: center;
+}
+
+.filters__container > .filter__mob > .filter_options {
+  padding-right: 0;
+}
+
+.filter__mob, .sort__mob {
+  flex:1;
+}
+
+.filter__mob .select-selected:after {
+  right: 4%;
+}
+
+.filter__mob > .filter__label, .sort__mob > .sort__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #273039;
+  margin-bottom: 5px;
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
@@ -2508,7 +2534,6 @@ div.select-selected.select-arrow-active {
   div.data-table {
     margin: 15px 0;
   }
-
   .dropdown_div {
     position: absolute;
     z-index: 99999;
@@ -2517,5 +2542,8 @@ div.select-selected.select-arrow-active {
     top: 110px;
     right: -4px;
     display: none;
+  }
+  .select_Box .select-selected {
+    padding: 12px 8px;
   }
 }
