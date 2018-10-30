@@ -66,12 +66,12 @@ export default {
     {
       id: 1,
       title: 'Active Subscriptions',
-      value: 'Active Subscriptions'
+      value: 'Active'
     },
     {
       id: 2,
       title: 'Cancelled Subscriptions',
-      value: 'Cancelled Subscriptions'
+      value: 'Cancelled'
     }
   ],
   SortOptions: [

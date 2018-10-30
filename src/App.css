@@ -1025,7 +1025,7 @@ li.btn_cncl-container {
   width: 100%;
 }
 .select_Box .custom-select .select-selected.select-arrow-active:after {
-  right: 6%;
+  right: 4%;
   top: 43%;
 }
 .select_Box .select-selected:after {
@@ -1885,7 +1885,7 @@ li.btn_cncl-container {
   .select-items div,
   .select-selected.select-arrow-active {
     padding: 8px 10px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .org_bg {
     display: none;
@@ -2398,12 +2398,24 @@ div.select-selected.select-arrow-active {
   right: 4%;
 }
 
+.sort__mob .select-selected:after {
+  right: 4%;
+}
+
 .filter__mob > .filter__label, .sort__mob > .sort__label {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.5px;
   color: #273039;
   margin-bottom: 5px;
+}
+
+.sort__mob > .sort__options {
+  padding-left: 7.5px;
+}
+
+.filter__mob .filter__options {
+  padding-right: 7.5px;
 }
 
 /* 

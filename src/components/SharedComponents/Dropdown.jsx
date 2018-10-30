@@ -57,7 +57,7 @@ class Dropdown extends React.Component {
             !listOpen ? '' : 'select-arrow-active'
           }`}
         >
-          {selected && selected.length ? selected : options[0].title}
+          {selected && selected.length ? selected : options[0].value}
         </div>
         <div className={`select-items ${!listOpen ? 'select-hide' : ''}`}>
           {options.map((each) => (
