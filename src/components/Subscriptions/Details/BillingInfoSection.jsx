@@ -7,6 +7,7 @@ import {
   getBillingHistory
 } from '../../utils';
 import AppContext from '../../Context/AppContext';
+import getBillingHistoryAPI from '../../../apiCalls/getBillingHistory';
 
 class BillingInfoSection extends React.Component {
   state = {
@@ -23,7 +24,27 @@ class BillingInfoSection extends React.Component {
       this.handleSuccess,
       this.handleFailure
     );
+
+    this.getBillingHistory();
   }
+
+  getBillingHistory = async () => {
+    const billingHistory = await getBillingHistoryAPI(
+      this.localAPI,
+      this.contractId
+    );
+    if (
+      (billingHistory.success !== undefined && !billingHistory.success) ||
+      (billingHistory.responseObject && !billingHistory.responseObject.success)
+    ) {
+      this.setState({ billingHistoryFailed: true });
+    } else {
+      this.setState({
+        billingHistoryFailed: false,
+        newBillingHistory: billingHistory
+      });
+    }
+  };
 
   handleSuccess = ({ data }) => {
     let billingHistory = [];
@@ -75,6 +96,7 @@ class BillingInfoSection extends React.Component {
                 appData.content.apiUrls.getBillingHistory +
                 subscription.contractId;
               this.localAPI = appData.localAPI;
+              this.contractID = subscription.contractId;
               return (
                 <React.Fragment>
                   <h3

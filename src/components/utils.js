@@ -7,12 +7,7 @@ export const getTokenFromCookie = () => {};
 export const setTokenCookie = () => {};
 
 export const formatDate = (date) => {
-  const jsDate = new Date(date);
-  const year = jsDate.getFullYear();
-  return jsDate
-    .toDateString()
-    .slice(4)
-    .replace(` ${year}`, `, ${year}`);
+  return datefns.format(date, 'MMM D, YYYY');
 };
 
 export const beautifyGetSubListResponse = (response) => {

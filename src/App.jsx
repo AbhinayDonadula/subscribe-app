@@ -127,7 +127,7 @@ class App extends Component {
       },
       () => {
         if (status) {
-          toast.success(`Showing ${status} subscriptions.`);
+          toast.success(`Showing ${status} Subscriptions.`);
         }
       }
     );

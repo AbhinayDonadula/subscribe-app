@@ -2,6 +2,7 @@ import React from 'react';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import { getEmailFromASI } from '../../utils';
+import getEmailForDownloadAgent from '../../../apiCalls/getEmailForDownloadAgent';
 
 class DownloadServiceSection extends React.Component {
   state = {
@@ -13,7 +14,26 @@ class DownloadServiceSection extends React.Component {
 
   componentDidMount() {
     getEmailFromASI(this.apiUrl, this.handleSuccess, this.handleFailure);
+    this.getEmailAddressFromASI();
   }
+
+  getEmailAddressFromASI = async () => {
+    const asiResponse = await getEmailForDownloadAgent(
+      this.localAPI,
+      this.contractId
+    );
+    if (
+      (asiResponse.success !== undefined && !asiResponse.success) ||
+      (asiResponse.responseObject && !asiResponse.responseObject.success)
+    ) {
+      this.setState({ asiFailed: true });
+    } else {
+      this.setState({
+        asiFailed: false,
+        asiResponse
+      });
+    }
+  };
 
   handleSuccess = (response) => {
     const emailAddress = response.data ? response.data.emailAddress : '';
@@ -42,6 +62,8 @@ class DownloadServiceSection extends React.Component {
                 'contractId',
                 subscription.contractId
               );
+              this.contractId = subscription.contractId;
+              this.localAPI = appData.localAPI;
               return (
                 <React.Fragment>
                   <h3
