@@ -25,7 +25,7 @@ class App extends Component {
     initialAppLoading: true,
     enableNotifications: false,
     enableEmailCampaign: false,
-    services: null,
+    services: [],
     subscriptionsToShow: null,
     itemsAndServices: null,
     localAPI: true
@@ -153,10 +153,7 @@ class App extends Component {
       }
 
       const itemsSubs = await getItemSubscriptions(localAPI, status);
-      if (
-        (itemsSubs.success !== undefined && !itemsSubs.success) ||
-        !itemsSubs.responseObject.success
-      ) {
+      if (itemsSubs.hasErrorResponse === 'true') {
         this.setState({
           itemsAndServices: services,
           subscriptionsToShow: subscriptionsToShow || services,
@@ -172,10 +169,8 @@ class App extends Component {
   getServicesAndItems = () => {
     const { localAPI } = this.state;
     getServiceSubscriptions(localAPI).then((response) => {
-      if (
-        (response.success !== undefined && !response.success) ||
-        !response.responseObject.success
-      ) {
+      // console.log(response);
+      if (response.hasErrorResponse === 'true') {
         // if get services call failed then get items
         this.getItems();
       } else {
