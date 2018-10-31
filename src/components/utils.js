@@ -13,7 +13,9 @@ export const formatDate = (date, format) => {
   return datefns.format(date, 'MMM D, YYYY');
 };
 
-export const beautifyGetSubListResponse = (response) => {
+export const beautifyGetSubListResponse = ({
+  getSubscriptionDetailsListResponse: response
+}) => {
   const subscriptions = [];
   const { contractList } = response;
   const contract = contractList ? contractList.contract : [];
