@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react";
+import React from 'react';
 
 class NotificationBar extends React.Component {
   state = {};
@@ -21,16 +21,16 @@ class NotificationBar extends React.Component {
                   </li>
                   <li className="list-inline-item">
                     Thank you for your recent auto-payment of $19.99 for Monthly
-                    S.T.E.A.M Subscription Kit{" "}
+                    S.T.E.A.M Subscription Kit{' '}
                   </li>
                   <li className="list-inline-item">
                     <a
                       href="/"
                       className="view_txt d-none d-md-block d-lg-block"
                     >
-                      View details{" "}
+                      View details{' '}
                       <i className="fa fa-angle-right" aria-hidden="true" />
-                    </a>{" "}
+                    </a>{' '}
                     <a
                       href="/"
                       className="view_txt d-block d-md-none d-lg-none"

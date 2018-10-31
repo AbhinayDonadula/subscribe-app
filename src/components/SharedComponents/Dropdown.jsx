@@ -42,11 +42,13 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const { frequencyDropDown, options } = this.props;
+    const { frequencyDropDown, options, mobile } = this.props;
     const { listOpen, selected } = this.state;
     return (
       <div
-        className={`custom-select ${frequencyDropDown ? 'freq__options' : ''}`}
+        className={`custom-select ${frequencyDropDown ? 'freq__options' : ''} ${
+          mobile ? 'mob__freq' : ''
+        }`}
         onClick={this.toggleList}
         ref={(node) => {
           this.node = node;
@@ -80,6 +82,7 @@ class Dropdown extends React.Component {
 
 Dropdown.propTypes = {
   frequencyDropDown: PropTypes.bool,
+  mobile: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -93,6 +96,7 @@ Dropdown.propTypes = {
 
 Dropdown.defaultProps = {
   frequencyDropDown: false,
+  mobile: false,
   selected: ''
 };
 

@@ -6,7 +6,10 @@ export const getTokenFromCookie = () => {};
 
 export const setTokenCookie = () => {};
 
-export const formatDate = (date) => {
+export const formatDate = (date, format) => {
+  if (format) {
+    return datefns.format(date, format);
+  }
   return datefns.format(date, 'MMM D, YYYY');
 };
 

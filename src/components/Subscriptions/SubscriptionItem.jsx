@@ -41,10 +41,6 @@ class SubscriptionItem extends React.Component {
     });
   }
 
-  handleViewDetails = (open) => {
-    this.setState(() => ({ viewDetailsOpen: open }));
-  };
-
   handleFrequencyDropDown = (selected) => {
     this.setState(({ frequencySelected }) => ({
       prevFrequencySelected: frequencySelected,
@@ -66,7 +62,7 @@ class SubscriptionItem extends React.Component {
     }
   };
 
-  test = ({ target: { value } }) => {
+  resetQuantity = ({ target: { value } }) => {
     const { prevItemQuantity } = this.state;
     if (value === '') {
       this.setState({ itemQuantity: prevItemQuantity });
@@ -241,6 +237,20 @@ class SubscriptionItem extends React.Component {
               const isSteamSub = isItem && SubType === 'S';
               const isActiveItemSubscription = isItem && Status === 'A';
               const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
+
+              let subscriptionDescription = '';
+              if (isItem && shortDescription) {
+                subscriptionDescription = `${shortDescription
+                  .split(' ')
+                  .slice(1, 12)
+                  .join(' ')}...`;
+              } else if (isItem && !shortDescription) {
+                subscriptionDescription = itemDescription;
+              } else if (!isItem) {
+                subscriptionDescription = itemDescription;
+              } else {
+                subscriptionDescription = 'N/A';
+              }
               // console.log(subscription);
 
               return (
@@ -280,7 +290,13 @@ class SubscriptionItem extends React.Component {
                         </a>
                       </li>
                       <li>
-                        <span className="main_txt desc">
+                        <span
+                          className="main_txt desc"
+                          dangerouslySetInnerHTML={{
+                            __html: subscriptionDescription
+                          }}
+                        />
+                        {/* <span className="main_txt desc">
                           {isItem && shortDescription
                             ? `${shortDescription
                                 .split(' ')
@@ -289,13 +305,15 @@ class SubscriptionItem extends React.Component {
                             : ''}
                           {isItem && !shortDescription ? itemDescription : ''}
                           {!isItem ? itemDescription : ''}
-                        </span>
+                        </span> */}
                         <br />
                         <TextLink
                           label={`${
-                            viewDetailsOpen ? 'Close Details' : 'View Details'
+                            viewDetailsOpen ? 'Close details' : 'View details'
                           }`}
-                          handleClick={this.handleViewDetails}
+                          handleClick={(open) => {
+                            this.setState(() => ({ viewDetailsOpen: open }));
+                          }}
                         />
                       </li>
                       <li className="d-mob">
@@ -337,7 +355,7 @@ class SubscriptionItem extends React.Component {
                             className="item__quantity"
                             onChange={this.handleItemQuantity}
                             value={itemQuantity}
-                            onBlur={this.test}
+                            onBlur={this.resetQuantity}
                           />
                         ) : (
                           <label className="item__label pad_span margin__left-25">
