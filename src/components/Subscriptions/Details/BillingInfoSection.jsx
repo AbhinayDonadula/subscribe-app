@@ -8,6 +8,7 @@ import {
 } from '../../utils';
 import AppContext from '../../Context/AppContext';
 import getBillingHistoryAPI from '../../../apiCalls/getBillingHistory';
+import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
 
 class BillingInfoSection extends React.Component {
   state = {
@@ -98,43 +99,49 @@ class BillingInfoSection extends React.Component {
               this.localAPI = appData.localAPI;
               this.contractID = subscription.contractId;
               return (
-                <React.Fragment>
-                  <h3
-                    className="head_txt dnload_txt"
+                <div className="full__width-mob">
+                  <div
+                    className="head_txt sub_txt"
                     onClick={this.toggleShowHide}
                   >
-                    {appData.content.BillingSection.BillingInfoSectionHeader}
-                    {/* <img
-                      src="img/down.jpg"
-                      className="img-resp down_img1"
-                      alt=""
-                    /> */}
-                  </h3>
+                    <span className="section__title-mob">
+                      {appData.content.BillingSection.BillingInfoSectionHeader}
+                    </span>
+                    {isMobile ? (
+                      <span>
+                        <AnimatedArrow
+                          clicked={show}
+                          handleClick={this.toggleShowHide}
+                        />
+                      </span>
+                    ) : null}
+                  </div>
                   {(show || !isMobile) && (
                     <div className="bill_Div show">
                       {!showBillingTable ? (
-                        <p className="pay_txt">
+                        <p className="pay_txt nxt__billing-mob">
                           <label>
                             {
                               appData.content.BillingSection
                                 .NextScheduledPayment
                             }
                           </label>{' '}
-                          {billingHistory.items[0]
-                            ? formatDate(
-                                billingHistory.items[0].nextBillingDate
-                              )
-                            : 'N/A'}
+                          <span className="nxt__billing-date">
+                            {billingHistory.items[0]
+                              ? formatDate(
+                                  billingHistory.items[0].nextBillingDate
+                                )
+                              : 'N/A'}
+                          </span>
                         </p>
                       ) : null}
-
-                      <a
+                      {/* <a
                         href="/"
                         className="view_txt d-block d-md-none d-lg-none"
                       >
                         {appData.content.BillingSection.ViewAllBillingHistory}
                         <i className="fa fa-angle-right" aria-hidden="true" />
-                      </a>
+                      </a> */}
                       <div
                         className="pos_rel"
                         style={{ height: !showBillingTable ? '100%' : 'auto' }}
@@ -219,7 +226,9 @@ class BillingInfoSection extends React.Component {
 
                         <div
                           className="fix d-mob1"
-                          style={{ height: !showBillingTable ? 226 : 'auto' }}
+                          style={{
+                            height: !showBillingTable ? '100%' : 'auto'
+                          }}
                         >
                           <table
                             className="table table2 table-striped zui-table"
@@ -233,23 +242,16 @@ class BillingInfoSection extends React.Component {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>{!showBillingTable ? '$15' : 'N/A'}</td>
-                              </tr>
                               {!showBillingTable ? (
                                 <React.Fragment>
-                                  <tr>
-                                    <td>$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>$15</td>
-                                  </tr>
-                                  <tr>
-                                    <td>$15</td>
-                                  </tr>
+                                  {billingHistory &&
+                                    billingHistory.items.map((each) => {
+                                      return (
+                                        <tr key={each.invoiceNumber}>
+                                          <td>{each.total}</td>
+                                        </tr>
+                                      );
+                                    })}
                                 </React.Fragment>
                               ) : null}
                             </tbody>
@@ -258,8 +260,8 @@ class BillingInfoSection extends React.Component {
                       </div>
                     </div>
                   )}
-                  <div style={{ marginTop: 40 }} />
-                </React.Fragment>
+                  <hr />
+                </div>
               );
             }}
           </SubscriptionContext.Consumer>

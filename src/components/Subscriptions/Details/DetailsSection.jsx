@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import { formatPrice, formatDate, getContractNumber } from '../../utils';
+import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
 
 class DetailsSection extends React.Component {
   state = {
@@ -11,10 +12,11 @@ class DetailsSection extends React.Component {
   };
 
   showSubDetailsSection = () => {
-    this.setState(({ showSubDetailsMobile }) => ({
+    const { showSubDetailsMobile } = this.state;
+    this.setState({
       showSubDetailsMobile: !showSubDetailsMobile,
       isMobile: window.innerWidth <= 750
-    }));
+    });
   };
 
   render() {
@@ -26,14 +28,23 @@ class DetailsSection extends React.Component {
           <SubscriptionContext.Consumer>
             {(subscription) => {
               return (
-                <React.Fragment>
-                  <h3
+                <div className="sub__details--container-mob full__width-mob">
+                  <div
                     className="head_txt sub_txt"
                     onClick={this.showSubDetailsSection}
                   >
-                    {appData.content.SubscriptionDetails}
-                  </h3>
-                  {/* <hr className="d-block" /> */}
+                    <span className="section__title-mob">
+                      {appData.content.SubscriptionDetails}
+                    </span>
+                    {isMobile ? (
+                      <span>
+                        <AnimatedArrow
+                          clicked={showSubDetailsMobile}
+                          handleClick={this.showSubDetailsSection}
+                        />
+                      </span>
+                    ) : null}
+                  </div>
                   {(showSubDetailsMobile || !isMobile) && (
                     <ul
                       className={`list-inline list-unstyled list_price ${
@@ -63,13 +74,16 @@ class DetailsSection extends React.Component {
                       {itemInfo ? (
                         <li className="list-inline-item">
                           <div className="total_box">
-                            <h3>{appData.content.SubscriptionDiscount}:</h3>
-                            <p>
+                            <h3>{appData.content.SubscriptionDiscount}</h3>
+                            <p className="sub__discount">
                               <span className="subscribing__txt">
                                 Subscribing saves you {itemInfo.IncPercent}%
                               </span>
-                              <br />
-                              <span>Expires: {itemInfo.IncEndDate}</span>
+                              {isMobile ? null : <br />}
+                              <span>
+                                {' '}
+                                Discount Expires: {itemInfo.IncEndDate}
+                              </span>
                             </p>
                           </div>
                         </li>
@@ -167,8 +181,9 @@ class DetailsSection extends React.Component {
                       ) : null}
                     </ul>
                   )}
-                  <div className="space30 d-none d-md-block d-lg-block" />
-                </React.Fragment>
+                  <hr />
+                  {/* <div className="space30 d-none d-md-block d-lg-block" /> */}
+                </div>
               );
             }}
           </SubscriptionContext.Consumer>

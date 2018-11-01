@@ -1558,7 +1558,6 @@ li.btn_cncl-container {
   .pay_txt label {
     font-size: 11px;
     display: inline-block;
-    width: 59%;
     margin-bottom: 0;
   }
 
@@ -2071,7 +2070,7 @@ li.btn_cncl-container {
 }
 
 .services__img {
-  width: 60%;
+  width: 70% !important;
   height: 60px;
 }
 
@@ -2445,10 +2444,10 @@ div.select-selected.select-arrow-active {
   width: 60%;
 }
 
-input.item__qty-mob {
+input.item__qty-mob#item--qty {
   width: 50px;
   height: 44px;
-  border-radius: 4px;
+  border-radius: 4px !important;
   border: solid 1px #cccccc;
   background-color: #ffffff;
   text-align: center;
@@ -2457,11 +2456,11 @@ input.item__qty-mob {
   line-height: normal;
   letter-spacing: normal;
   color: #4e555d;
+  padding: 0;
+  display: inline-block;
 }
 
 hr {
-  margin-top: 20px;
-  margin-bottom: 20px;
   border: 0;
   border-top: 2px solid #e3e7e9;
 }
@@ -2527,6 +2526,46 @@ hr {
   color: #1e5a99;
 }
 
+.sub__details--container-mob {
+  height: 100%;
+  /* border-bottom: 2px solid red; */
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.9px;
+  color: #000000;
+}
+
+.section__title-mob {
+  margin-right: 33%;
+  margin-left: 15px;
+  display: inline-block;
+  width: 173px;
+}
+
+.full__width-mob {
+  margin: 0px -12px 18px;
+}
+
+.sub__discount {
+  width: 100%;
+}
+
+.nxt__billing-mob {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #b3bdc1;
+  margin-left: 15px;
+}
+.nxt__billing-date {
+  font-size: 13px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.9px;
+  color: #273039;
+}
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
@@ -2673,5 +2712,60 @@ hr {
 
   .head_txt.sub_txt {
     margin-top: 0;
+  }
+
+  .animated__arrow {
+    width: 20px;
+    height: 11px;
+    display: inline-block;
+    position: relative;
+    margin: 1px 6px;
+  }
+
+  .img-responsive {
+    width: inherit;
+  }
+
+  div#spinner__portal-subscriptions {
+    width: auto;
+    position: absolute;
+    top: 50%;
+    left: 42%;
+  }
+
+  img.img-responsive {
+    width: auto;
+  }
+
+  div.total_box p {
+    text-align: left;
+  }
+
+  .total_box h3 {
+    width: 150px;
+  }
+
+  .list_price li {
+    border-bottom: 1px solid #e3e7e9
+  }
+
+  .sub__discount {
+    width: 100px;
+  }
+
+  .sub__details--container-mob.full__width-mob {
+    margin-bottom: 0;
+  }
+
+  p.dn_txt, a.dnload__txt {
+    margin-left: 15px;
+  }
+
+  hr.download__end {
+    margin-bottom: 0;
+  }
+
+  .table-responsive.zui-scroller {
+    margin-left: 5px;
   }
 }

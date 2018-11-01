@@ -179,7 +179,7 @@ class SubscriptionDetails extends React.Component {
 
               return (
                 <div className="expand_box" style={{ display: 'block' }}>
-                  <div className="d-block d-md-none d-lg-none status_box">
+                  <div className="d-block d-md-none d-lg-none status_box full__width-mob">
                     <ul className="list-unstyled details__mobile">
                       <li className="status__item-mob">
                         <span className="status mobile">STATUS</span>
@@ -204,6 +204,7 @@ class SubscriptionDetails extends React.Component {
                             <input
                               type="text"
                               className="item__qty-mob"
+                              id="item--qty"
                               value={itemQuantity || ''}
                               onChange={this.handleItemQuantity}
                               onBlur={this.resetQuantity}

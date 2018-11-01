@@ -3,6 +3,7 @@ import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import { getEmailFromASI } from '../../utils';
 import getEmailForDownloadAgent from '../../../apiCalls/getEmailForDownloadAgent';
+import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
 
 class DownloadServiceSection extends React.Component {
   state = {
@@ -65,18 +66,23 @@ class DownloadServiceSection extends React.Component {
               this.contractId = subscription.contractId;
               this.localAPI = appData.localAPI;
               return (
-                <React.Fragment>
-                  <h3
-                    className="head_txt dnload_txt"
+                <div className="full__width-mob">
+                  <div
+                    className="head_txt sub_txt"
                     onClick={this.showDownloadDetailsSection}
                   >
-                    {appData.content.DownloadSectionHeader}
-                    {/* <img
-                      src="./img/down.jpg"
-                      className="img-resp down_img1"
-                      alt=""
-                    /> */}
-                  </h3>
+                    <span className="section__title-mob">
+                      Download Available
+                    </span>
+                    {isMobile ? (
+                      <span>
+                        <AnimatedArrow
+                          clicked={showDownloadDetailsMobile}
+                          handleClick={this.showDownloadDetailsSection}
+                        />
+                      </span>
+                    ) : null}
+                  </div>
                   {(showDownloadDetailsMobile || !isMobile) && (
                     <div className="dnload_div show">
                       <p className="dn_txt">
@@ -94,8 +100,8 @@ class DownloadServiceSection extends React.Component {
                       </a>
                     </div>
                   )}
-                  <hr className="download__end" />
-                </React.Fragment>
+                  <hr />
+                </div>
               );
             }}
           </SubscriptionContext.Consumer>
