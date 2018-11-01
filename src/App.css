@@ -2578,6 +2578,7 @@ hr {
   ul.sub__details--section-item {
     display: flex;
     justify-content: space-evenly;
+    margin-left: 0;
   }
   ul.sub__details--section-sub {
     display: flex;

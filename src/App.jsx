@@ -25,6 +25,7 @@ class App extends Component {
     initialAppLoading: true,
     enableNotifications: false,
     enableEmailCampaign: false,
+    envDown: false,
     services: [],
     subscriptionsToShow: null,
     itemsAndServices: null,
@@ -32,8 +33,19 @@ class App extends Component {
   };
 
   componentDidMount() {
+    const { localAPI } = this.state;
     if (document.getElementById('actualContent')) {
       document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
+    }
+    if (!localAPI) {
+      document.querySelector('.my_cart > .toolbar_section_content').className =
+        'toolbar_section_content is_collapsed clear';
+      document.querySelector(
+        '.my_store_details.toolbar_section_content.hide.pt12.clear'
+      ).className = 'my_store_details toolbar_section_content pt12 clear';
+      document.querySelector(
+        '.my_orders > .toolbar_section_content'
+      ).className = 'toolbar_section_content is_collapsed clear';
     }
     this.getServicesAndItems();
   }
@@ -122,6 +134,7 @@ class App extends Component {
       {
         initialAppLoading: false,
         filtering: false,
+        envDown: false,
         itemsAndServices: sortedByDate,
         subscriptionsToShow: sortedByDate
       },
@@ -153,12 +166,15 @@ class App extends Component {
       }
 
       const itemsSubs = await getItemSubscriptions(localAPI, status);
-      if (itemsSubs.hasErrorResponse === 'true') {
+      if (itemsSubs.hasErrorResponse === undefined) {
+        this.setState({ envDown: true });
+      } else if (itemsSubs.hasErrorResponse === 'true') {
         this.setState({
           itemsAndServices: services,
           subscriptionsToShow: subscriptionsToShow || services,
           filtering: false,
-          initialAppLoading: false
+          initialAppLoading: false,
+          envDown: false
         });
       } else {
         this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
@@ -170,7 +186,10 @@ class App extends Component {
     const { localAPI } = this.state;
     getServiceSubscriptions(localAPI).then((response) => {
       // console.log(response);
-      if (response.hasErrorResponse === 'true') {
+      if (
+        response.hasErrorResponse === undefined ||
+        response.hasErrorResponse === 'true'
+      ) {
         // if get services call failed then get items
         this.getItems();
       } else {
@@ -210,7 +229,8 @@ class App extends Component {
       enableNotifications,
       filtering,
       initialAppLoading,
-      subscriptionsToShow
+      subscriptionsToShow,
+      envDown
     } = this.state;
     return (
       <AppContext.Provider
@@ -223,13 +243,23 @@ class App extends Component {
       >
         <SnackBar>
           <Header />
-          {enableNotifications ? <Notifications /> : null}
-          {subscriptionsToShow ? <Subscriptions /> : null}
-          {subscriptionsToShow === null && !initialAppLoading ? (
+          {enableNotifications && !envDown ? <Notifications /> : null}
+          {subscriptionsToShow && !envDown ? <Subscriptions /> : null}
+          {subscriptionsToShow === null && !initialAppLoading && !envDown ? (
             <div className="no__subs">You have no subscriptions to view.</div>
           ) : null}
-          {!initialAppLoading && filtering ? <SpinnerPortal filtering /> : null}
-          {initialAppLoading && !filtering ? <SpinnerPortal /> : null}
+          {envDown ? (
+            <div className="no__subs">
+              We are experiencing some techinal difficulties, Please refresh
+              page to try again.
+            </div>
+          ) : null}
+          {!initialAppLoading && filtering && !envDown ? (
+            <SpinnerPortal filtering />
+          ) : null}
+          {initialAppLoading && !filtering && !envDown ? (
+            <SpinnerPortal />
+          ) : null}
         </SnackBar>
       </AppContext.Provider>
     );

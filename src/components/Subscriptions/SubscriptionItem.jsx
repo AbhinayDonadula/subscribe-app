@@ -22,23 +22,23 @@ class SubscriptionItem extends React.Component {
     saveAction: '',
     viewDetailsOpen: false,
     openExtendedMenu: false,
-    // frequencySelected: '',
+    frequencySelected: '',
+    prevFrequencySelected: '',
     itemQuantity: '',
     prevItemQuantity: '',
     saveChangesTxt: ''
   };
 
   componentDidMount() {
-    this.setState({
-      // frequencySelected: getFrequency(this.subscription.billingFrequency),
-      // prevFrequencySelected: getFrequency(this.subscription.billingFrequency),
-      itemQuantity: this.subscription.isItem
-        ? this.subscription.quantity.replace(/^0+/, '')
-        : '',
-      prevItemQuantity: this.subscription.isItem
-        ? this.subscription.quantity.replace(/^0+/, '')
-        : ''
-    });
+    window.setTimeout(() => {
+      const { billingFrequency, quantity, isItem, Freq } = this.subscription;
+      this.setState({
+        frequencySelected: getFrequency(isItem ? Freq : billingFrequency),
+        prevFrequencySelected: getFrequency(isItem ? Freq : billingFrequency),
+        itemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
+        prevItemQuantity: isItem ? quantity.replace(/^0+/, '') : ''
+      });
+    }, 1);
   }
 
   handleFrequencyDropDown = (selected) => {
@@ -52,10 +52,11 @@ class SubscriptionItem extends React.Component {
   };
 
   handleItemQuantity = ({ target: { value } }) => {
+    const { prevItemQuantity } = this.state;
     if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
-        openSaveCancelMenu: value !== '',
+        openSaveCancelMenu: value !== '' && value !== prevItemQuantity,
         saveChangesTxt: 'Save/Update quantity changes?',
         saveAction: 'quantity'
       }));
@@ -82,7 +83,7 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  handleExtendeMenuSelection = (event, subscription) => {
+  handleExtendedMenuSelection = (event, subscription) => {
     event.preventDefault();
     const { SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
     const selected = event.target.getAttribute('data-value');
@@ -178,8 +179,9 @@ class SubscriptionItem extends React.Component {
 
   handleCancelSave = (event) => {
     event.preventDefault();
-    this.setState(({ prevItemQuantity }) => ({
+    this.setState(({ prevItemQuantity, prevFrequencySelected }) => ({
       itemQuantity: prevItemQuantity,
+      frequencySelected: prevFrequencySelected,
       openSaveCancelMenu: false
     }));
   };
@@ -192,7 +194,7 @@ class SubscriptionItem extends React.Component {
       openSaveCancelMenu,
       saveChangesTxt
       // frequencySelected,
-      // prevFrequencySelected,
+      // prevFrequencySelected
     } = this.state;
 
     return (
@@ -296,16 +298,6 @@ class SubscriptionItem extends React.Component {
                             __html: subscriptionDescription
                           }}
                         />
-                        {/* <span className="main_txt desc">
-                          {isItem && shortDescription
-                            ? `${shortDescription
-                                .split(' ')
-                                .slice(1, 15)
-                                .join(' ')}...`
-                            : ''}
-                          {isItem && !shortDescription ? itemDescription : ''}
-                          {!isItem ? itemDescription : ''}
-                        </span> */}
                         <br />
                         <TextLink
                           label={`${
@@ -377,6 +369,7 @@ class SubscriptionItem extends React.Component {
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}
                             updateParentState={this.handleFrequencyDropDown}
+                            // selected={this.state.frequencySelected}
                             selected={getFrequency(
                               isItem
                                 ? subscription.Freq
@@ -420,7 +413,7 @@ class SubscriptionItem extends React.Component {
                               <p
                                 data-value={appData.content.SkipNextDelivery}
                                 onClick={(event) => {
-                                  this.handleExtendeMenuSelection(
+                                  this.handleExtendedMenuSelection(
                                     event,
                                     subscription
                                   );
@@ -445,7 +438,7 @@ class SubscriptionItem extends React.Component {
                                             href="/"
                                             data-value={each.label}
                                             onClick={(event) => {
-                                              this.handleExtendeMenuSelection(
+                                              this.handleExtendedMenuSelection(
                                                 event,
                                                 subscription
                                               );

@@ -35,15 +35,21 @@ class BillingInfoSection extends React.Component {
       this.contractId
     );
     if (
-      (billingHistory.success !== undefined && !billingHistory.success) ||
-      (billingHistory.responseObject && !billingHistory.responseObject.success)
+      billingHistory.hasErrorResponse === undefined ||
+      billingHistory.hasErrorResponse === 'true'
     ) {
-      this.setState({ billingHistoryFailed: true });
+      this.setState({ billingHistoryFailed: true, newBillingHistory: [] });
     } else {
-      this.setState({
-        billingHistoryFailed: false,
-        newBillingHistory: billingHistory
-      });
+      let newBillingHistory = [];
+      if (
+        Object.keys(billingHistory.responseObject.jsonObjectResponse).length ===
+        0
+      ) {
+        newBillingHistory = [];
+      } else {
+        newBillingHistory = billingHistory.responseObject.jsonObjectResponse;
+      }
+      this.setState({ billingHistoryFailed: false, newBillingHistory });
     }
   };
 

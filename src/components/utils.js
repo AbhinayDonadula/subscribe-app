@@ -169,7 +169,7 @@ export const getBillingHistory = async (url, handleSuccess, handleError) => {
     });
 };
 
-export const getEmailFromASI = async (url, handleSuccess, handleError) => {
+export const getCancellationFee = async (url, handleSuccess, handleError) => {
   const axiosInstance = axios.create({ baseURL: url });
   const tokenFromCookie = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,

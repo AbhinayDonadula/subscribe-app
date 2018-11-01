@@ -1,7 +1,6 @@
 import React from 'react';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { getEmailFromASI } from '../../utils';
 import getEmailForDownloadAgent from '../../../apiCalls/getEmailForDownloadAgent';
 import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
 
@@ -14,7 +13,6 @@ class DownloadServiceSection extends React.Component {
   };
 
   componentDidMount() {
-    getEmailFromASI(this.apiUrl, this.handleSuccess, this.handleFailure);
     this.getEmailAddressFromASI();
   }
 
@@ -23,27 +21,19 @@ class DownloadServiceSection extends React.Component {
       this.localAPI,
       this.contractId
     );
+
     if (
-      (asiResponse.success !== undefined && !asiResponse.success) ||
-      (asiResponse.responseObject && !asiResponse.responseObject.success)
+      asiResponse.hasErrorResponse === undefined ||
+      asiResponse.hasErrorResponse === 'true'
     ) {
       this.setState({ asiFailed: true });
     } else {
       this.setState({
         asiFailed: false,
-        asiResponse
+        asiResponse: asiResponse.responseObject.jsonObjectResponse
       });
     }
   };
-
-  handleSuccess = (response) => {
-    const emailAddress = response.data ? response.data.emailAddress : '';
-    this.setState(({ downloadLink }) => ({
-      downloadLink: downloadLink + emailAddress
-    }));
-  };
-
-  handleFailure = () => {};
 
   showDownloadDetailsSection = () => {
     this.setState(({ showDownloadDetailsMobile }) => ({

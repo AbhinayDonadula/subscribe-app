@@ -67,10 +67,11 @@ class SubscriptionDetails extends React.Component {
   };
 
   handleItemQuantity = ({ target: { value } }) => {
+    const { prevItemQuantity } = this.state;
     if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
-        openSaveCancelMenu: value !== '',
+        openSaveCancelMenu: value !== '' && value !== prevItemQuantity,
         saveChangesTxt: 'Save/Update quantity changes?',
         saveAction: 'quantity'
       }));

@@ -2,13 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { formatPrice, formatDate, getContractNumber } from '../../utils';
+import {
+  formatPrice,
+  formatDate,
+  getContractNumber,
+  getCancellationFee
+} from '../../utils';
 import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
 
 class DetailsSection extends React.Component {
   state = {
     showSubDetailsMobile: false,
-    isMobile: window.innerWidth <= 750
+    isMobile: window.innerWidth <= 750,
+    cancelFees: 'N/A'
+  };
+
+  componentDidMount() {
+    if (!this.subscription.isItem) {
+      const { contractId, lineNumber } = this.subscription;
+      getCancellationFee(
+        this.appData.localAPI
+          ? 'http://localhost:3004/getCancellationFee'
+          : `https://dev.odplabs.com/services/subscription-management-service-ext/eaiapi/getCancellationFee?contractNumber=${contractId}&cancellingLine=${lineNumber}`,
+        this.cancellationFeeSuccess,
+        this.cancellationFeeErr
+      );
+    }
+  }
+
+  cancellationFeeSuccess = ({ data }) => {
+    this.setState({ cancelFees: data.CancellationFee });
+  };
+
+  cancellationFeeErr = (response) => {
+    console.log(response);
   };
 
   showSubDetailsSection = () => {
@@ -20,15 +47,23 @@ class DetailsSection extends React.Component {
   };
 
   render() {
-    const { showSubDetailsMobile, isMobile } = this.state;
+    const { showSubDetailsMobile, isMobile, cancelFees } = this.state;
     const { itemInfo } = this.props;
     return (
       <AppContext.Consumer>
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
+              this.subscription = subscription;
+              this.appData = appData;
               return (
-                <div className="sub__details--container-mob full__width-mob">
+                <div
+                  className={
+                    isMobile
+                      ? 'sub__details--container-mob full__width-mob'
+                      : ''
+                  }
+                >
                   <div
                     className="head_txt sub_txt"
                     onClick={this.showSubDetailsSection}
@@ -133,7 +168,11 @@ class DetailsSection extends React.Component {
                         <li className="list-inline-item">
                           <div className="total_box">
                             <h3>{appData.content.FeeToCancel}</h3>
-                            <p>N/A</p>
+                            <p>
+                              {cancelFees === 'N/A'
+                                ? cancelFees
+                                : `$${cancelFees}`}
+                            </p>
                           </div>
                         </li>
                       ) : null}
@@ -181,7 +220,7 @@ class DetailsSection extends React.Component {
                       ) : null}
                     </ul>
                   )}
-                  <hr />
+                  {isMobile ? <hr /> : null}
                   {/* <div className="space30 d-none d-md-block d-lg-block" /> */}
                 </div>
               );

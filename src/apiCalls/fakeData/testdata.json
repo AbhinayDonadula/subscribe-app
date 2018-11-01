@@ -1,4 +1,8 @@
 {
+  "cancellationFee": {
+    "CancellationFee": 115,
+    "__DecisionID__": "1234-1"
+  },
   "newData": {
     "statusCode": 0,
     "hasErrorResponse": "false",
