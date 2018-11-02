@@ -364,3 +364,25 @@ export const filterActiveCancel = (services) => {
 
   return [activeServices, cancelledServices];
 };
+
+export const cleanUp = () => {
+  if (document.getElementById('actualContent')) {
+    document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
+  }
+
+  if (
+    document.querySelector('.my_cart > .toolbar_section_content') &&
+    document.querySelector(
+      '.my_store_details.toolbar_section_content.hide.pt12.clear'
+    ) &&
+    document.querySelector('.my_orders > .toolbar_section_content')
+  ) {
+    document.querySelector('.my_cart > .toolbar_section_content').className =
+      'toolbar_section_content is_collapsed clear';
+    document.querySelector(
+      '.my_store_details.toolbar_section_content.hide.pt12.clear'
+    ).className = 'my_store_details toolbar_section_content pt12 clear';
+    document.querySelector('.my_orders > .toolbar_section_content').className =
+      'toolbar_section_content is_collapsed clear';
+  }
+};

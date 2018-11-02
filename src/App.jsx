@@ -9,7 +9,8 @@ import AppContext from './components/Context/AppContext';
 import Subscriptions from './components/Subscriptions/Subscriptions';
 import {
   beautifyGetSubListResponse,
-  filterActiveCancel
+  filterActiveCancel,
+  cleanUp
 } from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
@@ -33,21 +34,8 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const { localAPI } = this.state;
-    if (document.getElementById('actualContent')) {
-      document.getElementById('actualContent').className = 'col-md-9 col-sm-12';
-    }
-    if (!localAPI) {
-      document.querySelector('.my_cart > .toolbar_section_content').className =
-        'toolbar_section_content is_collapsed clear';
-      document.querySelector(
-        '.my_store_details.toolbar_section_content.hide.pt12.clear'
-      ).className = 'my_store_details toolbar_section_content pt12 clear';
-      document.querySelector(
-        '.my_orders > .toolbar_section_content'
-      ).className = 'toolbar_section_content is_collapsed clear';
-    }
     this.getServicesAndItems();
+    cleanUp();
   }
 
   sortItemsAndSubs = async (

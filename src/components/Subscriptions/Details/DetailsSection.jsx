@@ -34,8 +34,8 @@ class DetailsSection extends React.Component {
     this.setState({ cancelFees: data.CancellationFee });
   };
 
-  cancellationFeeErr = (response) => {
-    console.log(response);
+  cancellationFeeErr = () => {
+    this.setState({ cancellationFeeErr: true });
   };
 
   showSubDetailsSection = () => {

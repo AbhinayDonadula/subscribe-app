@@ -29,6 +29,10 @@ class SubscriptionItem extends React.Component {
     saveChangesTxt: ''
   };
 
+  componentWillMount() {
+    document.addEventListener('mousedown', this.handleClick, false);
+  }
+
   componentDidMount() {
     window.setTimeout(() => {
       const { billingFrequency, quantity, isItem, Freq } = this.subscription;
@@ -40,6 +44,19 @@ class SubscriptionItem extends React.Component {
       });
     }, 1);
   }
+
+  componentWillUnmount() {
+    document.addEventListener('mousedown', this.handleClick, false);
+  }
+
+  handleClick = (e) => {
+    if (this.node && this.node.contains(e.target)) {
+      return;
+    }
+    if (this.node) {
+      this.setState({ openExtendedMenu: false });
+    }
+  };
 
   handleFrequencyDropDown = (selected) => {
     this.setState(({ frequencySelected }) => ({
@@ -265,6 +282,9 @@ class SubscriptionItem extends React.Component {
                       if (openExtendedMenu)
                         this.setState({ openExtendedMenu: false });
                     }}
+                    ref={(node) => {
+                      this.node = node;
+                    }}
                   >
                     {/* each item */}
                     <ul className="list-unstyled list-inline main_ul">
@@ -487,6 +507,7 @@ class SubscriptionItem extends React.Component {
                       </ul>
                     </div>
                   )}
+
                   {/* Subscription Details Section */}
                   {viewDetailsOpen && <SubscriptionDetails />}
                 </React.Fragment>

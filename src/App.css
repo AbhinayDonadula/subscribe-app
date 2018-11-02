@@ -2566,6 +2566,17 @@ hr {
   letter-spacing: 0.9px;
   color: #273039;
 }
+
+.btn:hover, .btn:focus, .btn.focus {
+  color: #fff;
+}
+a.btn {
+  line-height: 2.5;
+  border: none;
+}
+#myOfficeToolbar .toolbar_cart_count {
+  padding: 2px 7px;
+}
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
