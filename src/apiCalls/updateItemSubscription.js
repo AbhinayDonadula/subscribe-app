@@ -12,7 +12,8 @@ const updateItemSubscription = (localAPI, RecordKey, LstChgTS, action) => {
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
-      TYPE: 'MAINTAIN'
+      ...(name === 'skip' ? { TYPE: 'MAINTAIN.INFO' } : { TYPE: 'MAINTAIN' })
+      // TYPE: 'MAINTAIN'
     },
     INPUT: {
       ...(RecordKey ? { RecordKey } : { RecordKey: 'N/A' }),
