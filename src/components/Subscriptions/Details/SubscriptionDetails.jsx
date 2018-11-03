@@ -22,17 +22,15 @@ class SubscriptionDetails extends React.Component {
   };
 
   componentDidMount() {
-    const { isItem } = this.subscription;
+    const { billingFrequency, quantity, isItem, Freq } = this.subscription;
     if (isItem) {
       this.setState(
         {
           loading: true,
-          itemQuantity: this.subscription.isItem
-            ? this.subscription.quantity.replace(/^0+/, '')
-            : '',
-          prevItemQuantity: this.subscription.isItem
-            ? this.subscription.quantity.replace(/^0+/, '')
-            : ''
+          itemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
+          prevItemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
+          frequencySelected: getFrequency(isItem ? Freq : billingFrequency),
+          prevFrequencySelected: getFrequency(isItem ? Freq : billingFrequency)
         },
         () => {
           this.getDetails();
@@ -61,19 +59,26 @@ class SubscriptionDetails extends React.Component {
     }
   };
 
-  handleFrequencyDropDown = () => {
-    // handleFrequencyDropDown = (selected) => {
-    // this.setState({ frequencySelected: selected });
+  handleFrequencyDropDown = (selected) => {
+    this.setState(({ frequencySelected, prevItemQuantity }) => ({
+      prevFrequencySelected: frequencySelected,
+      frequencySelected: selected,
+      openSaveCancelMenu: true,
+      saveChangesTxt: 'Save/Update frequency changes?',
+      saveAction: 'frequency',
+      itemQuantity: prevItemQuantity
+    }));
   };
 
   handleItemQuantity = ({ target: { value } }) => {
-    const { prevItemQuantity } = this.state;
+    const { prevItemQuantity, prevFrequencySelected } = this.state;
     if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
         openSaveCancelMenu: value !== '' && value !== prevItemQuantity,
         saveChangesTxt: 'Save/Update quantity changes?',
-        saveAction: 'quantity'
+        saveAction: 'quantity',
+        frequencySelected: prevFrequencySelected
       }));
     }
   };
@@ -144,8 +149,22 @@ class SubscriptionDetails extends React.Component {
     }
   };
 
+  handleCancelSave = (event) => {
+    event.preventDefault();
+    this.setState(({ prevItemQuantity, prevFrequencySelected }) => ({
+      itemQuantity: prevItemQuantity,
+      frequencySelected: prevFrequencySelected,
+      openSaveCancelMenu: false
+    }));
+  };
+
   render() {
-    const { itemInfo, loading, gettingDetailsError } = this.state;
+    const {
+      frequencySelected,
+      itemInfo,
+      loading,
+      gettingDetailsError
+    } = this.state;
     return (
       <AppContext.Consumer>
         {(appData) => (
@@ -223,6 +242,7 @@ class SubscriptionDetails extends React.Component {
                           <Dropdown
                             options={appData.content.FrequencyOptions}
                             updateParentState={this.handleFrequencyDropDown}
+                            selected={frequencySelected}
                             mobile
                           />
                         ) : (
@@ -242,13 +262,15 @@ class SubscriptionDetails extends React.Component {
                         </div>
                         <div>
                           <a
-                            onClick={(e) => {
-                              e.preventDefault();
-                              this.setState(({ prevItemQuantity }) => ({
-                                itemQuantity: prevItemQuantity,
-                                openSaveCancelMenu: false
-                              }));
-                            }}
+                            onClick={this.handleCancelSave}
+                            // onClick={(e) => {
+                            //   e.preventDefault();
+                            //   // this.setState(({ prevItemQuantity }) => ({
+                            //   //   itemQuantity: prevItemQuantity,
+                            //   //   openSaveCancelMenu: false
+                            //   // }));
+                            //   this.handleCancelSave()
+                            // }}
                           >
                             Cancel
                           </a>

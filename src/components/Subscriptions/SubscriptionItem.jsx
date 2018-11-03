@@ -34,48 +34,51 @@ class SubscriptionItem extends React.Component {
   }
 
   componentDidMount() {
-    window.setTimeout(() => {
-      const { billingFrequency, quantity, isItem, Freq } = this.subscription;
-      this.setState({
-        frequencySelected: getFrequency(isItem ? Freq : billingFrequency),
-        prevFrequencySelected: getFrequency(isItem ? Freq : billingFrequency),
-        itemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
-        prevItemQuantity: isItem ? quantity.replace(/^0+/, '') : ''
-      });
-    }, 1);
+    const { billingFrequency, quantity, isItem, Freq } = this.subscription;
+    this.setState({
+      frequencySelected: getFrequency(isItem ? Freq : billingFrequency),
+      prevFrequencySelected: getFrequency(isItem ? Freq : billingFrequency),
+      itemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
+      prevItemQuantity: isItem ? quantity.replace(/^0+/, '') : ''
+    });
   }
 
   componentWillUnmount() {
     document.addEventListener('mousedown', this.handleClick, false);
   }
 
-  handleClick = (e) => {
-    if (this.node && this.node.contains(e.target)) {
-      return;
-    }
-    if (this.node) {
-      this.setState({ openExtendedMenu: false });
+  handleClick = ({ target }) => {
+    const { className } = target;
+    if (className !== 'extended__menu-click') {
+      if (this.node && this.node.contains(target)) {
+        return;
+      }
+      if (this.node) {
+        this.setState({ openExtendedMenu: false });
+      }
     }
   };
 
   handleFrequencyDropDown = (selected) => {
-    this.setState(({ frequencySelected }) => ({
+    this.setState(({ frequencySelected, prevItemQuantity }) => ({
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
       openSaveCancelMenu: true,
       saveChangesTxt: 'Save/Update frequency changes?',
-      saveAction: 'frequency'
+      saveAction: 'frequency',
+      itemQuantity: prevItemQuantity
     }));
   };
 
   handleItemQuantity = ({ target: { value } }) => {
-    const { prevItemQuantity } = this.state;
+    const { prevItemQuantity, prevFrequencySelected } = this.state;
     if ((Number(value) || value === '') && value < 10000) {
       this.setState(() => ({
         itemQuantity: value,
         openSaveCancelMenu: value !== '' && value !== prevItemQuantity,
         saveChangesTxt: 'Save/Update quantity changes?',
-        saveAction: 'quantity'
+        saveAction: 'quantity',
+        frequencySelected: prevFrequencySelected
       }));
     }
   };
@@ -185,9 +188,12 @@ class SubscriptionItem extends React.Component {
         if (updateAction.name === 'cancel') {
           this.appData.getItems('Active');
         }
-        this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success(`Item ${saveAction} is successful.`);
-        });
+        this.setState(
+          { openSaveCancelMenu: false, prevItemQuantity: itemQuantity },
+          () => {
+            toast.success(`Item ${saveAction} is successful.`);
+          }
+        );
       }
     } catch (error) {
       toast.error('Item Subscription skip failed.');
@@ -209,9 +215,8 @@ class SubscriptionItem extends React.Component {
       viewDetailsOpen,
       itemQuantity,
       openSaveCancelMenu,
-      saveChangesTxt
-      // frequencySelected,
-      // prevFrequencySelected
+      saveChangesTxt,
+      frequencySelected
     } = this.state;
 
     return (
@@ -389,12 +394,7 @@ class SubscriptionItem extends React.Component {
                             frequencyDropDown
                             options={appData.content.FrequencyOptions}
                             updateParentState={this.handleFrequencyDropDown}
-                            // selected={this.state.frequencySelected}
-                            selected={getFrequency(
-                              isItem
-                                ? subscription.Freq
-                                : subscription.billingFrequency
-                            )}
+                            selected={frequencySelected}
                           />
                         ) : (
                           <span className="pad_span margin__left-10">
@@ -457,6 +457,7 @@ class SubscriptionItem extends React.Component {
                                           <a
                                             href="/"
                                             data-value={each.label}
+                                            className="extended__menu-click"
                                             onClick={(event) => {
                                               this.handleExtendedMenuSelection(
                                                 event,

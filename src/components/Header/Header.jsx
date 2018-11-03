@@ -4,19 +4,6 @@ import AppContext from '../Context/AppContext';
 class Header extends React.Component {
   state = {};
 
-  greetUser = () => {
-    const today = new Date();
-    const curHr = today.getHours();
-
-    if (curHr < 12) {
-      return 'Good Morning';
-    }
-    if (curHr < 18) {
-      return 'Good Afternoon';
-    }
-    return 'Good Evening';
-  };
-
   render() {
     return (
       <AppContext.Consumer>
@@ -24,16 +11,12 @@ class Header extends React.Component {
           <section
             className="heading_sec"
             style={{
-              marginBottom:
-                appData.enableNotifications || appData.isMobile ? 90 : 0
+              marginBottom: appData.enableNotifications ? 90 : 0
             }}
           >
             <div className="container-fluid">
               <div className="row">
                 <div className="col-sm-12">
-                  {/* <p className="sub_txt greeting__msg">
-                    {this.greetUser()}, <b>{appData.userName}!</b>
-                  </p> */}
                   <h3 className="sub_head">{appData.content.AppTitle}</h3>
                 </div>
               </div>

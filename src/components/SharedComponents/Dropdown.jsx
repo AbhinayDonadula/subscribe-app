@@ -16,6 +16,13 @@ class Dropdown extends React.Component {
     this.setState({ selected });
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { selected } = this.props;
+    if (JSON.stringify(selected) !== JSON.stringify(nextProps.selected)) {
+      this.setState({ selected: nextProps.selected });
+    }
+  }
+
   componentWillUnmount() {
     document.addEventListener('mousedown', this.handleClick, false);
   }
