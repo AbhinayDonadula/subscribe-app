@@ -82,13 +82,8 @@ export default {
     },
     {
       id: 1,
-      title: 'Select 1',
-      value: 'Select 1'
-    },
-    {
-      id: 2,
-      title: 'Select 2',
-      value: 'Select 2'
+      title: 'Frequency',
+      value: 'Frequency'
     }
   ],
   FrequencyOptions: [

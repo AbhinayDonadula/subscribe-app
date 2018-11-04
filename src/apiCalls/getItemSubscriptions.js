@@ -1,13 +1,9 @@
 import { getDefaultHeaders } from '../components/utils';
 
-const getItemSubscriptions = (
-  localAPI,
-  statusCode,
-  sortBy = 'D',
-  dirFlag = 'T'
-) => {
+const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
   let url = '';
   let StsCode = 'A';
+  let SortBy = 'D';
 
   if (localAPI) {
     url = 'http://localhost:3004/getItems';
@@ -22,6 +18,15 @@ const getItemSubscriptions = (
     StsCode = 'C';
   }
 
+  if (sortBy === 'Next Delivery Date') {
+    SortBy = 'D';
+  }
+  if (sortBy === 'Frequency') {
+    SortBy = 'F';
+  }
+
+  console.log(StsCode, SortBy);
+
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
@@ -31,7 +36,7 @@ const getItemSubscriptions = (
       StsCode,
       DirFlag: dirFlag,
       PONo: '',
-      SortBy: sortBy,
+      SortBy,
       ItemNum: '',
       Freq: '',
       CostCenter: '',

@@ -275,7 +275,6 @@ class SubscriptionItem extends React.Component {
               } else {
                 subscriptionDescription = 'N/A';
               }
-              // console.log(subscription);
 
               return (
                 <React.Fragment>
@@ -345,7 +344,10 @@ class SubscriptionItem extends React.Component {
                             : null}
                           {!isActiveItemSubscription
                             ? formatStatus(
-                                closeDate.length > 0 ? 'C' : 'Active'
+                                closeDate.length > 0 ||
+                                (!isActiveItemSubscription && isItem)
+                                  ? 'C'
+                                  : 'Active'
                               )
                             : null}
                         </label>

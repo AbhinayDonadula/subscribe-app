@@ -23,6 +23,7 @@ class DownloadServiceSection extends React.Component {
     );
 
     if (
+      !asiResponse ||
       asiResponse.hasErrorResponse === undefined ||
       asiResponse.hasErrorResponse === 'true'
     ) {

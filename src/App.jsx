@@ -22,14 +22,16 @@ class App extends Component {
   state = {
     content,
     userName: '',
+    sortBy: 'Next Delivery Date',
+    filterBy: 'Active',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
     enableNotifications: false,
     enableEmailCampaign: false,
     envDown: false,
     services: [],
-    subscriptionsToShow: null,
-    itemsAndServices: null,
+    subscriptionsToShow: [],
+    itemsAndServices: [],
     localAPI: true
   };
 
@@ -38,10 +40,25 @@ class App extends Component {
     cleanUp();
   }
 
+  sortSubscriptions = (selected) => {
+    this.setState({ sortBy: selected, filtering: true }, () => {
+      const { filterBy, sortBy } = this.state;
+      this.getItems(filterBy, sortBy);
+    });
+  };
+
+  filterSubscriptions = (selected) => {
+    this.setState({ filterBy: selected, filtering: true }, () => {
+      const { filterBy, sortBy } = this.state;
+      this.getItems(filterBy, sortBy);
+    });
+  };
+
   sortItemsAndSubs = async (
     { responseObject },
     subscriptionsToShow,
-    status
+    status,
+    sortBy
   ) => {
     let itemSkus = [];
     let itemsAndServices = [];
@@ -114,9 +131,14 @@ class App extends Component {
       }
     }
 
-    const sortedByDate = itemsAndServices.sort(
-      (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-    );
+    let sortedByDate = [];
+    if (sortBy === 'Frequency') {
+      sortedByDate = itemsAndServices;
+    } else {
+      sortedByDate = itemsAndServices.sort(
+        (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+      );
+    }
 
     this.setState(
       {
@@ -134,7 +156,7 @@ class App extends Component {
     );
   };
 
-  getItems = (status) => {
+  getItems = (filterStatus, sortBy) => {
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
@@ -145,16 +167,20 @@ class App extends Component {
         itemsAndServices
       } = this.state;
 
-      if (status === 'Active') {
+      if (filterStatus === 'Active') {
         subscriptionsToShow = activeServices;
-      } else if (status === 'Cancelled') {
+      } else if (filterStatus === 'Cancelled') {
         subscriptionsToShow = cancelledServices;
       } else {
         subscriptionsToShow = itemsAndServices;
       }
 
-      const itemsSubs = await getItemSubscriptions(localAPI, status);
-      if (itemsSubs.hasErrorResponse === undefined) {
+      const itemsSubs = await getItemSubscriptions(
+        localAPI,
+        filterStatus,
+        sortBy
+      );
+      if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
         this.setState({ envDown: true });
       } else if (itemsSubs.hasErrorResponse === 'true') {
         this.setState({
@@ -165,7 +191,12 @@ class App extends Component {
           envDown: false
         });
       } else {
-        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, status);
+        this.sortItemsAndSubs(
+          itemsSubs,
+          subscriptionsToShow,
+          filterStatus,
+          sortBy
+        );
       }
     });
   };
@@ -199,16 +230,6 @@ class App extends Component {
           }
         );
       }
-    });
-  };
-
-  sortSubscriptions = (selected) => {
-    this.setState({ selectedFilter: selected });
-  };
-
-  filterSubscriptions = (selected) => {
-    this.setState({ sortFilter: selected, filtering: true }, () => {
-      this.getItems(selected);
     });
   };
 

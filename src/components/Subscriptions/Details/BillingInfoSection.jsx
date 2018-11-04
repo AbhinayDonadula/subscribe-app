@@ -35,6 +35,7 @@ class BillingInfoSection extends React.Component {
       this.contractId
     );
     if (
+      !billingHistory ||
       billingHistory.hasErrorResponse === undefined ||
       billingHistory.hasErrorResponse === 'true'
     ) {
