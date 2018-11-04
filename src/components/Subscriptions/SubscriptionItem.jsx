@@ -432,6 +432,7 @@ class SubscriptionItem extends React.Component {
                             <div className="drophead">
                               <p
                                 data-value={appData.content.SkipNextDelivery}
+                                className="extended__menu-click"
                                 onClick={(event) => {
                                   this.handleExtendedMenuSelection(
                                     event,
