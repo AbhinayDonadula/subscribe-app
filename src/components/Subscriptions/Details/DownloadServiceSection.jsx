@@ -33,7 +33,12 @@ class DownloadServiceSection extends React.Component {
       this.setState({
         asiFailed: false,
         asiResponse: asiResponse.responseObject.jsonObjectResponse,
-        downloadLink: downloadLink + asiResponse.Email ? asiResponse.Email : ''
+        downloadLink:
+          downloadLink +
+          (asiResponse.responseObject.jsonObjectResponse &&
+          asiResponse.responseObject.jsonObjectResponse.emailAddress
+            ? asiResponse.responseObject.jsonObjectResponse.emailAddress
+            : '')
       });
     }
   };

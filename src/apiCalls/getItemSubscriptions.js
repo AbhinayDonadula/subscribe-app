@@ -25,8 +25,6 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
     SortBy = 'F';
   }
 
-  console.log(StsCode, SortBy);
-
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
