@@ -177,7 +177,7 @@ class PaymentSection extends React.Component {
                           onClick={this.editMemberNumber}
                           className="test_txt"
                         >
-                          {loyaltyMember}
+                          {itemInfo ? itemInfo.AdvantageNum : loyaltyMember}
                         </a>
                       </li>
                       <li>
