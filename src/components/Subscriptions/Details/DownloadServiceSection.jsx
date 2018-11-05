@@ -17,6 +17,7 @@ class DownloadServiceSection extends React.Component {
   }
 
   getEmailAddressFromASI = async () => {
+    const { downloadLink } = this.state;
     const asiResponse = await getEmailForDownloadAgent(
       this.localAPI,
       this.contractId
@@ -31,7 +32,8 @@ class DownloadServiceSection extends React.Component {
     } else {
       this.setState({
         asiFailed: false,
-        asiResponse: asiResponse.responseObject.jsonObjectResponse
+        asiResponse: asiResponse.responseObject.jsonObjectResponse,
+        downloadLink: downloadLink + asiResponse.Email ? asiResponse.Email : ''
       });
     }
   };

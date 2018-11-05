@@ -1,11 +1,7 @@
 import React from 'react';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import Img from '../../SharedComponents/Img';
-import {
-  formatDate,
-  beautifyBillingHistoryResponse,
-  getBillingHistory
-} from '../../utils';
+import { formatDate, beautifyBillingHistoryResponse } from '../../utils';
 import AppContext from '../../Context/AppContext';
 import getBillingHistoryAPI from '../../../apiCalls/getBillingHistory';
 import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
@@ -18,14 +14,6 @@ class BillingInfoSection extends React.Component {
   };
 
   componentDidMount() {
-    getBillingHistory(
-      this.localAPI
-        ? 'http://localhost:3004/billingHistory'
-        : this.billingHistoryUrl,
-      this.handleSuccess,
-      this.handleFailure
-    );
-
     this.getBillingHistory();
   }
 
@@ -39,7 +27,7 @@ class BillingInfoSection extends React.Component {
       billingHistory.hasErrorResponse === undefined ||
       billingHistory.hasErrorResponse === 'true'
     ) {
-      this.setState({ billingHistoryFailed: true, newBillingHistory: [] });
+      this.setState({ billingHistoryFailed: true, billingHistory: [] });
     } else {
       let newBillingHistory = [];
       if (
@@ -48,33 +36,27 @@ class BillingInfoSection extends React.Component {
       ) {
         newBillingHistory = [];
       } else {
-        newBillingHistory = billingHistory.responseObject.jsonObjectResponse;
+        const data = billingHistory.responseObject.jsonObjectResponse;
+        if (
+          data.billingHistoryResponse &&
+          data.billingHistoryResponse.billingHistoryRecord &&
+          data.billingHistoryResponse.billingHistoryRecord.length > 0
+        ) {
+          newBillingHistory = beautifyBillingHistoryResponse(data);
+        }
+        if (
+          data.billingHistoryResponse &&
+          data.billingHistoryResponse.billingHistoryRecord &&
+          data.billingHistoryResponse.billingHistoryRecord.length === 0
+        ) {
+          newBillingHistory = [];
+        }
       }
-      this.setState({ billingHistoryFailed: false, newBillingHistory });
+      this.setState({
+        billingHistoryFailed: false,
+        billingHistory: newBillingHistory
+      });
     }
-  };
-
-  handleSuccess = ({ data }) => {
-    let billingHistory = [];
-    if (
-      data.billingHistoryResponse &&
-      data.billingHistoryResponse.billingHistoryRecord &&
-      data.billingHistoryResponse.billingHistoryRecord.length > 0
-    ) {
-      billingHistory = beautifyBillingHistoryResponse(data);
-      this.setState({ billingHistory });
-    }
-    if (
-      data.billingHistoryResponse &&
-      data.billingHistoryResponse.billingHistoryRecord &&
-      data.billingHistoryResponse.billingHistoryRecord.length === 0
-    ) {
-      this.setState({ billingHistory });
-    }
-  };
-
-  handleFailure = () => {
-    this.setState({ billingHistory: [] });
   };
 
   toggleShowHide = () => {

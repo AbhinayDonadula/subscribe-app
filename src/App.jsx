@@ -26,6 +26,7 @@ class App extends Component {
     filterBy: 'Active',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
+    filtering: true,
     enableNotifications: false,
     enableEmailCampaign: false,
     envDown: false,

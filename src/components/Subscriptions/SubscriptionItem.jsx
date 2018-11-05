@@ -185,7 +185,7 @@ class SubscriptionItem extends React.Component {
           toast.success(`Item ${saveAction} is failed.`);
         });
       } else {
-        if (updateAction.name === 'cancel') {
+        if (updateAction.name === 'cancel' || updateAction.name === 'skip') {
           this.appData.getItems('Active');
         }
         this.setState(
