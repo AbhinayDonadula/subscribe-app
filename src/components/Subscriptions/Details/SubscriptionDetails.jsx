@@ -261,19 +261,7 @@ class SubscriptionDetails extends React.Component {
                           </button>
                         </div>
                         <div>
-                          <a
-                            onClick={this.handleCancelSave}
-                            // onClick={(e) => {
-                            //   e.preventDefault();
-                            //   // this.setState(({ prevItemQuantity }) => ({
-                            //   //   itemQuantity: prevItemQuantity,
-                            //   //   openSaveCancelMenu: false
-                            //   // }));
-                            //   this.handleCancelSave()
-                            // }}
-                          >
-                            Cancel
-                          </a>
+                          <a onClick={this.handleCancelSave}>Cancel</a>
                         </div>
                       </div>
                     ) : null}

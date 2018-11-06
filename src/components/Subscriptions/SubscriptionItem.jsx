@@ -485,7 +485,7 @@ class SubscriptionItem extends React.Component {
 
                   {/* Save/Update confirmation  */}
                   {openSaveCancelMenu && (
-                    <div className="show_Div show">
+                    <div className="show_Div hidden-xs show">
                       <ul className="list-inline list-unstyled">
                         <li className="update__save--cancel-conf">
                           {saveChangesTxt.length ? saveChangesTxt : null}
@@ -511,6 +511,23 @@ class SubscriptionItem extends React.Component {
                       </ul>
                     </div>
                   )}
+
+                  {openSaveCancelMenu ? (
+                    <div
+                      className="visible-xs-block save__update-mob"
+                      style={{ margin: '-15px 0' }}
+                    >
+                      <div className="title">{saveChangesTxt}</div>
+                      <div>
+                        <button type="button" onClick={this.handleSaveUpdate}>
+                          Save/Update
+                        </button>
+                      </div>
+                      <div>
+                        <a onClick={this.handleCancelSave}>Cancel</a>
+                      </div>
+                    </div>
+                  ) : null}
 
                   {/* Subscription Details Section */}
                   {viewDetailsOpen && <SubscriptionDetails />}

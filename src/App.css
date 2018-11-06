@@ -833,7 +833,7 @@ div.app__loader {
   margin-bottom: 0 !important;
 }
 .show_Div.show {
-  display: block !important;
+  display: block;
   padding: 28px 0;
   background: #ddd;
   margin-top: -12px;
@@ -2358,6 +2358,10 @@ span.email__address {
   text-transform: lowercase;
 }
 
+a.edit_txt.email__address {
+  text-transform: inherit;
+}
+
 label.pad_span.mgb0 {
   margin-bottom: 0;
 }
@@ -2777,7 +2781,16 @@ a.btn {
     margin-bottom: 0;
   }
 
-  .table-responsive.zui-scroller {
+  ul.sub__details--section-item > li.list-inline-item {
+    min-width: 80%;
+  }
+
+  div.table-responsive.zui-scroller {
     margin-left: 5px;
+    width: 69%
+  }
+
+  div.fix.d-mob1 {
+    width: 29%;
   }
 }

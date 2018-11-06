@@ -148,27 +148,25 @@ class PaymentSection extends React.Component {
                         </a>
                       </li>
                     </ul>
-                    <h3>CONTACT EMAIL:</h3>
-                    <ul className="list-unstyled">
-                      <li>
-                        <a
-                          href="/"
-                          onClick={this.editContactEmail}
-                          className="test_txt email__address"
-                        >
-                          TESTlongnamehere@OFFICEDEPOT.COM
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="/"
-                          onClick={this.editContactEmail}
-                          className="edit_txt email__address"
-                        >
-                          {appData.content.PaymentSection.EditContactEmail}
-                        </a>
-                      </li>
-                    </ul>
+                    {isItem ? <h3>CONTACT EMAIL:</h3> : null}
+                    {isItem ? (
+                      <ul className="list-unstyled">
+                        <li>
+                          <span className="test_txt  email__address">
+                            {itemInfo ? itemInfo.Email : 'N/A'}
+                          </span>
+                        </li>
+                        <li>
+                          <a
+                            href="/"
+                            onClick={this.editContactEmail}
+                            className="edit_txt email__address"
+                          >
+                            {appData.content.PaymentSection.EditContactEmail}
+                          </a>
+                        </li>
+                      </ul>
+                    ) : null}
                     <h3>REWARDS MEMBER NUMBER:</h3>
                     <ul className="list-unstyled">
                       <li>
