@@ -99,14 +99,14 @@ class DetailsSection extends React.Component {
                           </h3>
                           <p>
                             {itemInfo
-                              ? itemInfo.Price.replace(/^0+/, '')
+                              ? `$${itemInfo.Price.replace(/^0+/, '')}`
                               : formatPrice(subscription.unitPrice)}
                           </p>
                         </div>
                       </li>
 
                       {/* discount, item service only */}
-                      {itemInfo ? (
+                      {itemInfo && Number(itemInfo.IncPercent) > 0 ? (
                         <li className="list-inline-item">
                           <div className="total_box">
                             <h3>{appData.content.SubscriptionDiscount}</h3>
