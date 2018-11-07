@@ -1,4 +1,7 @@
 /* =========== SPACE CLASSES=========== */
+body {
+  overflow-x: hidden;
+}
 .space5 {
   margin-top: 5px;
 }
