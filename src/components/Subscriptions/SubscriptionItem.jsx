@@ -182,21 +182,20 @@ class SubscriptionItem extends React.Component {
         !response.responseObject.success
       ) {
         this.setState({ openSaveCancelMenu: false }, () => {
-          toast.success(`Item ${saveAction} is failed.`);
+          toast.warn(`Update item ${saveAction} is failed.`);
         });
       } else {
-        if (updateAction.name === 'cancel' || updateAction.name === 'skip') {
-          this.appData.getItems('Active');
-        }
         this.setState(
           { openSaveCancelMenu: false, prevItemQuantity: itemQuantity },
           () => {
-            toast.success(`Item ${saveAction} is successful.`);
+            toast.success(`Update item ${saveAction} is successful.`);
+            // pass true to not to show extra toast msg
+            this.appData.getItems(null, null, true);
           }
         );
       }
     } catch (error) {
-      toast.error('Item Subscription skip failed.');
+      toast.error('Item update failed.');
     }
   };
 

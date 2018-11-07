@@ -157,7 +157,7 @@ class App extends Component {
     );
   };
 
-  getItems = (filterStatus, sortBy) => {
+  getItems = (filterStatus, sortBy, itemUpdates = false) => {
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
@@ -168,7 +168,7 @@ class App extends Component {
         itemsAndServices
       } = this.state;
 
-      if (filterStatus === 'Active') {
+      if (filterStatus === 'Active' || itemUpdates) {
         subscriptionsToShow = activeServices;
       } else if (filterStatus === 'Cancelled') {
         subscriptionsToShow = cancelledServices;
