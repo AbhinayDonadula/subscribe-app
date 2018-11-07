@@ -11,7 +11,7 @@ class NotificationBar extends React.Component {
           <div className="col-sm-12">
             <div className="media">
               <div className="media_img">
-                <img src="img/correct.jpg" alt="" className="img-resp" />
+                <img src="" alt="" className="img-resp" />
               </div>
               <div className="media-body">
                 <ul className="list-inline list-unstyled mb-0">

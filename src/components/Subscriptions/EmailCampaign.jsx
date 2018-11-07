@@ -8,11 +8,7 @@ class EmailCampaign extends React.Component {
       <div className="data-table data-table1">
         <ul className="list-unstyled list-inline">
           <li>
-            <img
-              alt=""
-              src="img/add.jpg"
-              className="img-responsive center-block"
-            />
+            <img alt="" src="" className="img-responsive center-block" />
           </li>
 
           <li>
@@ -24,7 +20,7 @@ class EmailCampaign extends React.Component {
             </button>
           </li>
           <li>
-            <img alt="" src="img/final.jpg" className="img-resp final_img" />
+            <img alt="" src="" className="img-resp final_img" />
           </li>
         </ul>
       </div>
