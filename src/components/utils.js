@@ -179,9 +179,7 @@ export const cancelSubscription = async (
   handleError
 ) => {
   const customerId = document.querySelector("input[name='accountId']").value;
-  const url =
-    `https://staging.odplabs.com/services/subscription-management-async-broker/eaiapi/subscriptions/submitCancelSubscription?customerId=${ 
-    customerId}`;
+  const url = `https://staging.odplabs.com/services/subscription-management-async-broker/eaiapi/subscriptions/submitCancelSubscription?customerId=${customerId}`;
   const axiosInstance = axios.create({ baseURL: url });
   const tokenFromCookie = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
@@ -365,6 +363,13 @@ export const getOrderNowURL = (
   subscriptionId = ''
 ) => {
   return `/catalog/addSkuByButtonSetAction.do?addingToCartFromSubscriptionManager=true&qty=1&sku=${sku}&subscriptionIncentivePercent=${subscriptionIncentivePercent}&subscriptionHasFreeDelivery=${subscriptionHasFreeDelivery}&subscriptionWlrPercent=${subscriptionWlrPercent}&subscriptionId=${subscriptionId}`;
+};
+
+export const getOrderNowMobileURL = (sku) => {
+  return `/mb/addSkuByButton.do?entryFormList[0].qty=1&entryFormList[0].sku=${sku.replace(
+    /^0+/,
+    ''
+  )}&quickAdd=true`;
 };
 
 export const getServiceSubscriptionsURL = (localAPI) => {

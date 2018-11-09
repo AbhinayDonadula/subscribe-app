@@ -206,22 +206,37 @@ class PaymentSection extends React.Component {
                           {isItem ? (
                             <ul className="list-unstyled">
                               <li>
-                                <span className="test_txt  email__address">
-                                  {itemInfo ? itemInfo.Email : 'N/A'}
-                                </span>
+                                {editingEmail && !resetEdit ? (
+                                  <input
+                                    className={`email__edit ${
+                                      invalidEmail ? 'invalid' : ''
+                                    }`}
+                                    value={email}
+                                    onChange={this.handleEmail}
+                                  />
+                                ) : (
+                                  <span className="test_txt  email__address">
+                                    {itemInfo ? itemInfo.Email : 'N/A'}
+                                  </span>
+                                )}
                               </li>
-                              <li>
-                                <a
-                                  href="/"
-                                  onClick={this.editContactEmail}
-                                  className="edit_txt email__address"
-                                >
-                                  {
-                                    appData.content.PaymentSection
-                                      .EditContactEmail
-                                  }
-                                </a>
-                              </li>
+                              {!isCancelledSub ? (
+                                <li>
+                                  <a
+                                    href="/"
+                                    onClick={(event) => {
+                                      event.preventDefault();
+                                      handleEditEmailMobile();
+                                    }}
+                                    className="edit_txt email__address"
+                                  >
+                                    {
+                                      appData.content.PaymentSection
+                                        .EditContactEmail
+                                    }
+                                  </a>
+                                </li>
+                              ) : null}
                             </ul>
                           ) : null}
                           <h3>REWARDS MEMBER NUMBER:</h3>

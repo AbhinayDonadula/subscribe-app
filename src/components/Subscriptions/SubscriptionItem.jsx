@@ -14,7 +14,8 @@ import {
   getFrequencyForAPI,
   getCancellationFee,
   getCancelReasonServerVal,
-  cancelSubscription
+  cancelSubscription,
+  getOrderNowMobileURL
 } from '../utils';
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
@@ -124,13 +125,10 @@ class SubscriptionItem extends React.Component {
     const selected = event.target.getAttribute('data-value');
     this.setState({ openExtendedMenu: false }, async () => {
       if (selected === 'Order Now') {
-        window.location.href = getOrderNowURL(
-          SKU,
-          IncPct,
-          FreeSku,
-          WlrPct,
-          RecordKey
-        );
+        window.location.href =
+          window.innerWidth <= 750
+            ? getOrderNowMobileURL(SKU)
+            : getOrderNowURL(SKU, IncPct, FreeSku, WlrPct, RecordKey);
       } else if (selected === 'Cancel Subscription') {
         this.setState({
           openSaveCancelMenu: true,
