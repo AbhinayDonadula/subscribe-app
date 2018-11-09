@@ -58,20 +58,30 @@ export default {
   defaultItemImg:
     'https://officedepot.scene7.com/is/image/officedepot/sku-image-default',
   ShowOptions: [
-    // {
-    //   id: 0,
-    //   title: 'Show All Subscriptions',
-    //   value: 'All'
-    // },
     {
       id: 1,
-      title: 'Active Subscriptions',
+      title: 'Active',
       value: 'Active'
     },
     {
       id: 2,
-      title: 'Cancelled Subscriptions',
+      title: 'Cancelled',
       value: 'Cancelled'
+    },
+    {
+      id: 3,
+      title: 'Products',
+      value: 'Products'
+    },
+    {
+      id: 4,
+      title: 'Services',
+      value: 'Services'
+    },
+    {
+      id: 5,
+      title: 'All',
+      value: 'All'
     }
   ],
   SortOptions: [

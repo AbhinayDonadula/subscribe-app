@@ -33,7 +33,8 @@ class App extends Component {
     services: [],
     subscriptionsToShow: [],
     itemsAndServices: [],
-    localAPI: true
+    localAPI: true,
+    loadingServicesFailed: false
   };
 
   componentDidMount() {
@@ -50,8 +51,43 @@ class App extends Component {
 
   filterSubscriptions = (selected) => {
     this.setState({ filterBy: selected, filtering: true }, () => {
-      const { filterBy, sortBy } = this.state;
-      this.getItems(filterBy, sortBy);
+      const {
+        filterBy,
+        sortBy,
+        products,
+        activeAndCancelledServices
+      } = this.state;
+
+      if (selected === 'Products') {
+        this.setState(
+          { subscriptionsToShow: products, filtering: false },
+          () => {
+            toast.success('Showing Product subscriptions.');
+          }
+        );
+      } else if (selected === 'Services') {
+        this.setState(
+          {
+            subscriptionsToShow: activeAndCancelledServices,
+            filtering: false
+          },
+          () => {
+            toast.success('Showing Service subscriptions.');
+          }
+        );
+      } else if (selected === 'All') {
+        this.setState(
+          {
+            subscriptionsToShow: [...products, ...activeAndCancelledServices],
+            filtering: false
+          },
+          () => {
+            toast.success('Showing All subscriptions.');
+          }
+        );
+      } else {
+        this.getItems(filterBy, sortBy);
+      }
     });
   };
 
@@ -63,6 +99,7 @@ class App extends Component {
   ) => {
     let itemSkus = [];
     let itemsAndServices = [];
+    let products = [];
     const { services, localAPI } = this.state;
     const {
       jsonObjectResponse: { GetSubListDetail }
@@ -124,6 +161,7 @@ class App extends Component {
       } else {
         itemsAndServices = [...beautifiedItemsWithImages, ...services];
       }
+      products = beautifiedItemsWithImages;
     } catch (error) {
       if (subscriptionsToShow) {
         itemsAndServices = [...beautifiedItems, ...subscriptionsToShow];
@@ -146,8 +184,10 @@ class App extends Component {
         initialAppLoading: false,
         filtering: false,
         envDown: false,
+        loadingProductsFailed: false,
         itemsAndServices: sortedByDate,
-        subscriptionsToShow: sortedByDate
+        subscriptionsToShow: sortedByDate,
+        products
       },
       () => {
         if (status) {
@@ -189,7 +229,8 @@ class App extends Component {
           subscriptionsToShow: subscriptionsToShow || services,
           filtering: false,
           initialAppLoading: false,
-          envDown: false
+          envDown: false,
+          loadingProductsFailed: true
         });
       } else {
         this.sortItemsAndSubs(
@@ -211,7 +252,9 @@ class App extends Component {
         response.hasErrorResponse === 'true'
       ) {
         // if get services call failed then get items
-        this.getItems();
+        this.setState({ loadingServicesFailed: true }, () => {
+          this.getItems();
+        });
       } else {
         const servicesFromEAI = response.responseObject.jsonObjectResponse;
         const services = beautifyGetSubListResponse(servicesFromEAI);
@@ -220,11 +263,13 @@ class App extends Component {
         );
         this.setState(
           {
+            activeAndCancelledServices: services,
             subscriptionsToShow: activeServices,
             services: activeServices,
             activeServices,
             cancelledServices,
-            itemsAndServices: null
+            itemsAndServices: null,
+            loadingServicesFailed: false
           },
           () => {
             this.getItems();

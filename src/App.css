@@ -2649,6 +2649,11 @@ input:focus {
   outline: none;
 }
 
+div.partial__subs {
+  text-align: center;
+  color: #ad2f2f;
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025

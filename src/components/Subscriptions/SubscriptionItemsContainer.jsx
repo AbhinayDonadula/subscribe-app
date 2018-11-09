@@ -18,6 +18,13 @@ class SubscriptionItemsContainer extends React.Component {
               <div className="col-md-12">
                 <SubscriptionFilters />
                 <div className="space50" />
+                {appData.loadingServicesFailed ||
+                appData.loadingProductsFailed ? (
+                  <div className="partial__subs">
+                    {`Due to some technical issues, we couldn't show all of your
+                    subscriptions. Please try again later.`}
+                  </div>
+                ) : null}
                 {appData.subscriptionsToShow.map((eachSubscription) => (
                   <div
                     className="sub_div"
