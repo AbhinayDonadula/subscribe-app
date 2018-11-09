@@ -170,6 +170,64 @@ export const getCancellationFee = async (url, handleSuccess, handleError) => {
     });
 };
 
+export const cancelSubscription = async (
+  contractNumber,
+  lineNumber,
+  cancelDate,
+  reasonCode,
+  handleSuccess,
+  handleError
+) => {
+  const customerId = document.querySelector("input[name='accountId']").value;
+  const url =
+    `https://staging.odplabs.com/services/subscription-management-async-broker/eaiapi/subscriptions/submitCancelSubscription?customerId=${ 
+    customerId}`;
+  const axiosInstance = axios.create({ baseURL: url });
+  const tokenFromCookie = document.cookie.replace(
+    /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
+    '$1'
+  );
+  if (tokenFromCookie.length === 0) {
+    await getJWToken().then(({ token }) => {
+      const date = new Date();
+      date.setTime(date.getTime() + 540 * 1000);
+      const expires = `; expires= ${date.toGMTString()}`;
+      document.cookie = `token = ${token}${expires}; path=/`;
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    });
+  } else {
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
+  }
+
+  const postBody = {
+    cancelContractRequest: {
+      transactionHeader: {
+        consumer: {
+          consumerName: 'WWW',
+          consumerTransactionID: datefns.format(new Date(), 'MM/DD/YYYY')
+        },
+        timeReceived: datefns.format(new Date(), 'MM/DD/YYYY')
+      },
+      contract: {
+        customerId,
+        contractNumber,
+        lineNumber,
+        cancelDate,
+        reasonCode
+      }
+    }
+  };
+
+  await axiosInstance
+    .post(postBody)
+    .then((response) => {
+      handleSuccess(response);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+};
+
 export const FireGetImageBySku = async (url, handleSuccess, handleError) => {
   const headers = new window.Headers({
     'Content-Type': 'application/json',
@@ -358,4 +416,20 @@ export const cleanUp = () => {
     document.querySelector('.my_orders > .toolbar_section_content').className =
       'toolbar_section_content is_collapsed clear';
   }
+};
+
+export const getCancelReasonServerVal = (reason) => {
+  if (reason === 'Quality did not meet my expectations') {
+    return 'OD_TERMINATED_QUALITY_DID_NOT';
+  }
+  if (reason === 'Better price at a competitor') {
+    return 'OD_TERMINATED_BETTER_PRICE';
+  }
+  if (reason === 'Took too long to set up my account/service') {
+    return 'OD_TERMINATED_TOOK_TOO_LONG';
+  }
+  if (reason === 'Lack of use') {
+    return 'OD_TERMINATED_LACK_OF_USE';
+  }
+  return 'OD_TERMINATED_CHANGE_OF_PLANS';
 };

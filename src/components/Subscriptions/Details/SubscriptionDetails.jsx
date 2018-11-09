@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import AppContext from '../../Context/AppContext';
 import Dropdown from '../../SharedComponents/Dropdown';
@@ -11,6 +12,7 @@ import { formatDate, getFrequencyForAPI, getFrequency } from '../../utils';
 import Img from '../../SharedComponents/Img';
 import getItemDetails from '../../../apiCalls/getItemDetails';
 import updateItemSubscription from '../../../apiCalls/updateItemSubscription';
+import SubDetailsContext from '../../Context/SubDetailsContext';
 
 class SubscriptionDetails extends React.Component {
   state = {
@@ -18,7 +20,10 @@ class SubscriptionDetails extends React.Component {
     gettingDetailsError: false,
     loading: false,
     openSaveCancelMenu: false,
-    itemQuantity: null
+    itemQuantity: null,
+    editingEmail: false,
+    editPayment: false,
+    email: ''
   };
 
   componentDidMount() {
@@ -52,7 +57,12 @@ class SubscriptionDetails extends React.Component {
           : null,
         gettingDetailsError: !responseObject.success,
         loading: false,
-        itemQuantity: this.subscription.quantity.replace(/^0+/, '')
+        itemQuantity: this.subscription.quantity.replace(/^0+/, ''),
+        email:
+          responseObject.jsonObjectResponse &&
+          responseObject.jsonObjectResponse.Email
+            ? responseObject.jsonObjectResponse.Email.toLowerCase()
+            : 'N/A'
       });
     } catch (error) {
       this.setState({ gettingDetailsError: true, loading: false });
@@ -157,13 +167,39 @@ class SubscriptionDetails extends React.Component {
     }));
   };
 
+  handleEditEmailMobile = () => {
+    const { email } = this.state;
+    const { handleEditUserInfo } = this.props;
+    this.setState({
+      editingEmail: true,
+      editPayment: false,
+      openSaveCancelMenu: true,
+      saveChangesTxt: 'Save email changes?',
+      saveAction: 'emailUpdate'
+    });
+    handleEditUserInfo('email', email);
+  };
+
+  editEmailAddress = ({ target: { value } }) => {
+    const { handleEditUserInfo } = this.props;
+    this.setState({ email: value }, () => {
+      handleEditUserInfo('email', value);
+    });
+  };
+
   render() {
     const {
       frequencySelected,
       itemInfo,
       loading,
-      gettingDetailsError
+      gettingDetailsError,
+      editingEmail,
+      editPayment,
+      email
     } = this.state;
+
+    const { resetEdit } = this.props;
+
     return (
       <AppContext.Consumer>
         {(appData) => (
@@ -274,12 +310,26 @@ class SubscriptionDetails extends React.Component {
                   ) : null}
 
                   {!loading && !gettingDetailsError ? (
-                    <React.Fragment>
-                      <DetailsSection itemInfo={itemInfo} />
-                      {showDownloadSection ? <DownloadServiceSection /> : null}
-                      {showBillingSection ? <BillingInfoSection /> : null}
-                      <PaymentSection itemInfo={itemInfo} />
-                    </React.Fragment>
+                    <SubDetailsContext.Provider
+                      value={{
+                        itemInfo,
+                        editingEmail,
+                        editPayment,
+                        email,
+                        handleEditEmailMobile: this.handleEditEmailMobile,
+                        editEmailAddress: this.editEmailAddress,
+                        resetEdit
+                      }}
+                    >
+                      <React.Fragment>
+                        <DetailsSection />
+                        {showDownloadSection ? (
+                          <DownloadServiceSection />
+                        ) : null}
+                        {showBillingSection ? <BillingInfoSection /> : null}
+                        <PaymentSection />
+                      </React.Fragment>
+                    </SubDetailsContext.Provider>
                   ) : null}
 
                   {!loading && gettingDetailsError ? (
@@ -297,5 +347,10 @@ class SubscriptionDetails extends React.Component {
     );
   }
 }
+
+SubscriptionDetails.propTypes = {
+  handleEditUserInfo: PropTypes.func.isRequired,
+  resetEdit: PropTypes.bool.isRequired
+};
 
 export default SubscriptionDetails;

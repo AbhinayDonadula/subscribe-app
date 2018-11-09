@@ -11,10 +11,14 @@ import {
   getImageBySKU,
   formatStatus,
   getOrderNowURL,
-  getFrequencyForAPI
+  getFrequencyForAPI,
+  getCancellationFee,
+  getCancelReasonServerVal,
+  cancelSubscription
 } from '../utils';
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
+import CancelDropdown from '../SharedComponents/CancelDropDown';
 
 class SubscriptionItem extends React.Component {
   state = {
@@ -22,10 +26,13 @@ class SubscriptionItem extends React.Component {
     saveAction: '',
     viewDetailsOpen: false,
     openExtendedMenu: false,
+    cancelService: false,
+    resetEdit: false,
     frequencySelected: '',
     prevFrequencySelected: '',
     itemQuantity: '',
     prevItemQuantity: '',
+    cancelReason: '',
     saveChangesTxt: ''
   };
 
@@ -103,11 +110,19 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
+  cancellationFeeSuccess = ({ data }) => {
+    this.setState({ cancelFees: data.CancellationFee });
+  };
+
+  cancellationFeeErr = () => {
+    this.setState({ cancellationFeeErr: true });
+  };
+
   handleExtendedMenuSelection = (event, subscription) => {
     event.preventDefault();
     const { SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
     const selected = event.target.getAttribute('data-value');
-    this.setState({ openExtendedMenu: false }, () => {
+    this.setState({ openExtendedMenu: false }, async () => {
       if (selected === 'Order Now') {
         window.location.href = getOrderNowURL(
           SKU,
@@ -119,18 +134,36 @@ class SubscriptionItem extends React.Component {
       } else if (selected === 'Cancel Subscription') {
         this.setState({
           openSaveCancelMenu: true,
+          cancelService: false,
           saveChangesTxt: 'Cancel Item Subscription ?',
           saveAction: 'cancel'
+        });
+      } else if (selected === 'Cancel Service Subscription') {
+        await getCancellationFee(
+          this.appData.localAPI
+            ? 'http://localhost:3004/getCancellationFee'
+            : `https://dev.odplabs.com/services/subscription-management-service-ext/eaiapi/getCancellationFee?contractNumber=${
+                this.subscription.contractId
+              }&cancellingLine=${this.subscription.lineNumber}`,
+          this.cancellationFeeSuccess,
+          this.cancellationFeeErr
+        );
+        this.setState({
+          saveAction: 'cancelService',
+          cancelService: true,
+          cancelStep: 1
         });
       } else if (selected === 'Skip Next Delivery') {
         this.setState({
           openSaveCancelMenu: true,
+          cancelService: false,
           saveChangesTxt: 'Skip Item Subscription ?',
           saveAction: 'skip'
         });
       } else if (selected === '') {
         this.setState({
           openSaveCancelMenu: true,
+          cancelService: false,
           saveChangesTxt: 'Change Item Frequency ?',
           saveAction: 'frequency'
         });
@@ -141,61 +174,83 @@ class SubscriptionItem extends React.Component {
   handleSaveUpdate = async (event) => {
     event.preventDefault();
     const { RecordKey, LstChgTmpStmp } = this.subscription;
-    const { itemQuantity, saveAction, frequencySelected } = this.state;
+    const {
+      itemQuantity,
+      saveAction,
+      frequencySelected,
+      emailToSave
+    } = this.state;
     let updateAction = {};
+    const isServiceCancellation = saveAction === 'cancelService';
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const invalidEmail = !re.test(String(emailToSave).toLowerCase());
 
-    switch (saveAction) {
-      case 'quantity':
-        updateAction = {
-          name: 'quantity',
-          value: itemQuantity
-        };
-        break;
-      case 'frequency':
-        updateAction = {
-          name: 'freq',
-          value: getFrequencyForAPI(frequencySelected)
-        };
-        break;
-      case 'cancel':
-        updateAction = { name: 'cancel' };
-        break;
-      case 'skip':
-        updateAction = { name: 'skip' };
-        break;
-      default:
-        updateAction = {
-          name: 'quantity',
-          value: itemQuantity
-        };
-    }
-
-    try {
-      const response = await updateItemSubscription(
-        this.isLocalAPI,
-        RecordKey,
-        LstChgTmpStmp,
-        updateAction
-      );
-      if (
-        (response.success !== undefined && !response.success) ||
-        !response.responseObject.success
-      ) {
-        this.setState({ openSaveCancelMenu: false }, () => {
-          toast.warn(`Update item ${saveAction} is failed.`);
-        });
-      } else {
-        this.setState(
-          { openSaveCancelMenu: false, prevItemQuantity: itemQuantity },
-          () => {
-            toast.success(`Update item ${saveAction} is successful.`);
-            // pass true to not to show extra toast msg
-            this.appData.getItems(null, null, true);
-          }
-        );
+    if (isServiceCancellation) {
+      this.setState({ cancelStep: 2 });
+    } else if (emailToSave && invalidEmail) {
+      toast.warn('please enter a valid email address.');
+    } else {
+      switch (saveAction) {
+        case 'quantity':
+          updateAction = {
+            name: 'quantity',
+            value: itemQuantity
+          };
+          break;
+        case 'frequency':
+          updateAction = {
+            name: 'freq',
+            value: getFrequencyForAPI(frequencySelected)
+          };
+          break;
+        case 'cancel':
+          updateAction = { name: 'cancel' };
+          break;
+        case 'skip':
+          updateAction = { name: 'skip' };
+          break;
+        case 'email':
+          updateAction = { name: 'email', value: emailToSave };
+          // console.log(updateAction);
+          break;
+        default:
+          updateAction = {
+            name: 'quantity',
+            value: itemQuantity
+          };
       }
-    } catch (error) {
-      toast.error('Item update failed.');
+
+      try {
+        const response = await updateItemSubscription(
+          this.isLocalAPI,
+          RecordKey,
+          LstChgTmpStmp,
+          updateAction
+        );
+        if (
+          (response.success !== undefined && !response.success) ||
+          !response.responseObject.success
+        ) {
+          this.setState({ openSaveCancelMenu: false }, () => {
+            toast.warn(`Update item ${saveAction} is failed.`);
+          });
+        } else {
+          this.setState(
+            {
+              openSaveCancelMenu: false,
+              prevItemQuantity: itemQuantity,
+              resetEdit: true
+            },
+            () => {
+              toast.success(`Update item ${saveAction} is successful.`);
+              // pass true to not to show extra toast msg
+              this.appData.getItems(null, null, true);
+            }
+          );
+        }
+      } catch (error) {
+        toast.error('Item update failed.');
+      }
     }
   };
 
@@ -204,8 +259,83 @@ class SubscriptionItem extends React.Component {
     this.setState(({ prevItemQuantity, prevFrequencySelected }) => ({
       itemQuantity: prevItemQuantity,
       frequencySelected: prevFrequencySelected,
-      openSaveCancelMenu: false
+      openSaveCancelMenu: false,
+      cancelService: false,
+      resetEdit: true,
+      cancelStep: 1
     }));
+  };
+
+  handleCancelSubmit = (event) => {
+    event.preventDefault();
+    const { cancelStep, cancelReason } = this.state;
+
+    if (cancelStep === 1) {
+      this.setState({ cancelStep: 2 });
+    }
+
+    if (cancelStep === 2 && cancelReason.length > 0) {
+      const {
+        currentBillingEndDate,
+        contractId,
+        lineNumber
+      } = this.subscription;
+      if (!this.isLocalAPI) {
+        cancelSubscription(
+          contractId,
+          lineNumber,
+          currentBillingEndDate,
+          getCancelReasonServerVal(cancelReason),
+          this.handleCancelSuccess,
+          this.handleCancelErr
+        );
+      } else {
+        this.handleCancelSuccess();
+      }
+    }
+  };
+
+  handleCancelSuccess = () => {
+    this.setState({ cancelService: false, cancelReason: '' }, () => {
+      this.appData.reloadApp();
+      toast.success(`Cancellation subscription is successful.`);
+    });
+  };
+
+  handleCancelErr = (error) => {
+    this.setState({ cancellationFailed: error });
+    toast.warn(`Cancellation item is failed.`);
+  };
+
+  handleEditUserInfo = (editing, value) => {
+    let editPayment = false;
+    let editEmail = false;
+    let editMemberNum = false;
+    let saveChangesTxt = '';
+    let saveAction = '';
+    if (editing === 'email') {
+      editEmail = true;
+      saveChangesTxt = 'Save email changes?';
+      saveAction = 'email';
+    } else if (editing === 'payment') {
+      editPayment = true;
+      saveChangesTxt = 'Save payment changes?';
+      saveAction = 'updatePayment';
+    } else {
+      editMemberNum = true;
+      saveChangesTxt = 'Save member number changes?';
+      saveAction = 'updateMemNum';
+    }
+    this.setState({
+      editEmail,
+      editPayment,
+      editMemberNum,
+      saveChangesTxt,
+      openSaveCancelMenu: true,
+      resetEdit: false,
+      saveAction,
+      emailToSave: value
+    });
   };
 
   render() {
@@ -215,7 +345,12 @@ class SubscriptionItem extends React.Component {
       itemQuantity,
       openSaveCancelMenu,
       saveChangesTxt,
-      frequencySelected
+      frequencySelected,
+      cancelService,
+      cancelFees,
+      cancelStep,
+      cancelReason,
+      resetEdit
     } = this.state;
 
     return (
@@ -432,7 +567,11 @@ class SubscriptionItem extends React.Component {
                           <div className="dropbox">
                             <div className="drophead">
                               <p
-                                data-value={appData.content.SkipNextDelivery}
+                                data-value={
+                                  subscription.isItem
+                                    ? appData.content.SkipNextDelivery
+                                    : 'Cancel Service Subscription'
+                                }
                                 className="extended__menu-click"
                                 onClick={(event) => {
                                   this.handleExtendedMenuSelection(
@@ -482,20 +621,49 @@ class SubscriptionItem extends React.Component {
                     </div>
                   )}
 
+                  {/* Subscription Details Section */}
+                  {viewDetailsOpen && (
+                    <SubscriptionDetails
+                      handleEditUserInfo={this.handleEditUserInfo}
+                      resetEdit={resetEdit}
+                    />
+                  )}
+
                   {/* Save/Update confirmation  */}
-                  {openSaveCancelMenu && (
-                    <div className="show_Div hidden-xs show">
+                  {openSaveCancelMenu && !cancelService ? (
+                    <div
+                      className={`show_Div hidden-xs show ${
+                        viewDetailsOpen ? 'add__margin' : ''
+                      }`}
+                    >
                       <ul className="list-inline list-unstyled">
-                        <li className="update__save--cancel-conf">
-                          {saveChangesTxt.length ? saveChangesTxt : null}
-                        </li>
+                        {cancelService ? (
+                          <li className="update__save--cancel-conf">
+                            <span
+                              style={{ color: '#273039', fontWeight: '600' }}
+                            >
+                              Are you sure you want to cancel? if you cancel
+                              now, your fee to cancel will be:
+                            </span>
+                            <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
+                              {' '}
+                              ${cancelFees}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className="update__save--cancel-conf">
+                            {saveChangesTxt}
+                          </li>
+                        )}
                         <li className="btn_sv-container">
                           <a
                             href="/"
                             className="btn_sv"
                             onClick={this.handleSaveUpdate}
                           >
-                            {appData.content.SaveUpdate}
+                            {cancelService
+                              ? 'Yes, Continue'
+                              : appData.content.SaveUpdate}
                           </a>
                         </li>
                         <li className="btn_cncl-container">
@@ -504,14 +672,140 @@ class SubscriptionItem extends React.Component {
                             className="btn_cncl"
                             onClick={this.handleCancelSave}
                           >
-                            {appData.content.CancelSaveUpdate}
+                            {cancelService ? 'I Changed My Mind' : 'Cancel'}
                           </a>
                         </li>
                       </ul>
                     </div>
-                  )}
+                  ) : null}
 
-                  {openSaveCancelMenu ? (
+                  {/* cancel service */}
+                  {!openSaveCancelMenu && cancelService ? (
+                    <div
+                      className={`show_Div hidden-xs show cancellation ${
+                        viewDetailsOpen ? 'add__margin' : ''
+                      }`}
+                    >
+                      <ul className="list-inline list-unstyled">
+                        {cancelStep === 1 ? (
+                          <li className="update__save--cancel-conf">
+                            <span
+                              style={{ color: '#273039', fontWeight: '600' }}
+                            >
+                              Are you sure you want to cancel? if you cancel
+                              now, your fee to cancel will be:
+                            </span>
+                            <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
+                              {' '}
+                              ${cancelFees}
+                            </span>
+                          </li>
+                        ) : null}
+                        {cancelStep === 2 ? (
+                          <li className="update__save--cancel-conf">
+                            <span
+                              style={{ color: '#273039', fontWeight: '600' }}
+                            >
+                              Before you go, Please select a reason for your
+                              cancellation:
+                            </span>
+                          </li>
+                        ) : null}
+                        {cancelStep === 2 ? (
+                          <CancelDropdown
+                            options={appData.content.cancelReasonOptions}
+                            updateParentState={(reason) => {
+                              if (reason === 'Select your Reason...') {
+                                this.setState({ cancelReason: '' });
+                              } else {
+                                this.setState({ cancelReason: reason });
+                              }
+                            }}
+                          />
+                        ) : null}
+                        <li className="btn_sv-container">
+                          <a
+                            href="/"
+                            className={`btn_sv ${
+                              cancelStep === 2 && cancelReason.length === 0
+                                ? 'disable'
+                                : ''
+                            }`}
+                            onClick={this.handleCancelSubmit}
+                          >
+                            {cancelStep === 1 && 'Yes, Continue'}
+                            {cancelStep === 2 && 'Submit'}
+                          </a>
+                        </li>
+                        <li className="btn_cncl-container">
+                          <a
+                            href="/"
+                            className="btn_cncl"
+                            onClick={this.handleCancelSave}
+                          >
+                            I Changed My Mind
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {/* Mobile */}
+                  {cancelService && !openSaveCancelMenu ? (
+                    <div
+                      className="visible-xs-block save__update-mob cancel__sub"
+                      style={{ margin: '-15px 0' }}
+                    >
+                      <div className="title">
+                        {cancelStep === 1 &&
+                          'Are you sure you want to cancel? if you cancel now, your fee to cancel will be: '}
+                        {cancelStep === 1 && (
+                          <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
+                            ${cancelFees}
+                          </span>
+                        )}
+                        {cancelStep === 2 ? (
+                          <span style={{ color: '#273039', fontWeight: '600' }}>
+                            Before you go, Please select a reason for your
+                            cancellation:
+                          </span>
+                        ) : null}
+                      </div>
+                      {cancelStep === 2 ? (
+                        <CancelDropdown
+                          options={appData.content.cancelReasonOptions}
+                          updateParentState={(reason) => {
+                            if (reason === 'Select your Reason...') {
+                              this.setState({ cancelReason: '' });
+                            } else {
+                              this.setState({ cancelReason: reason });
+                            }
+                          }}
+                        />
+                      ) : null}
+                      <div>
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            this.handleCancelSubmit(event);
+                          }}
+                          className={`${
+                            cancelStep === 2 && cancelReason.length === 0
+                              ? 'disable__btn'
+                              : ''
+                          }`}
+                        >
+                          {cancelStep === 1 && 'Yes, Cancel Subscription'}
+                          {cancelStep === 2 && 'Submit'}
+                        </button>
+                      </div>
+                      <div>
+                        <a onClick={this.handleCancelSave}>I change my mind</a>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {openSaveCancelMenu && !cancelService ? (
                     <div
                       className="visible-xs-block save__update-mob"
                       style={{ margin: '-15px 0' }}
@@ -523,13 +817,10 @@ class SubscriptionItem extends React.Component {
                         </button>
                       </div>
                       <div>
-                        <a onClick={this.handleCancelSave}>Cancel</a>
+                        <a onClick={this.handleCancelSave}>cancel</a>
                       </div>
                     </div>
                   ) : null}
-
-                  {/* Subscription Details Section */}
-                  {viewDetailsOpen && <SubscriptionDetails />}
                 </React.Fragment>
               );
             }}

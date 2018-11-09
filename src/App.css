@@ -838,12 +838,13 @@ div.app__loader {
   background: #ddd;
   margin-top: -12px;
   margin-bottom: -24px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .show_Div li {
   color: #495057;
   font-size: 20px;
   font-weight: 500;
-  text-transform: capitalize;
 }
 .show_Div.hide {
   display: none !important;
@@ -858,6 +859,7 @@ li.btn_sv-container {
   color: #fff;
   font-size: 14px;
   padding: 10px 26px;
+  letter-spacing: 1px;
 }
 li.btn_cncl-container {
   margin-right: 8%;
@@ -2520,7 +2522,7 @@ hr {
     text-align: center;
     color: #ffffff;
     width: 138px;
-    height: 45px;
+    height: 40px;
     margin-bottom: 15px;
 }
 .save__update-mob > div > a {
@@ -2581,12 +2583,83 @@ a.btn {
 #myOfficeToolbar .toolbar_cart_count {
   padding: 2px 7px;
 }
+
+li.update__save--cancel-conf + div.custom-select{
+  display: inline-block;
+  width: 25%;
+  background: #fff;
+  border-radius: 4px;
+}
+
+li.update__save--cancel-conf + div.custom-select > div.select-selected {
+  text-align: left;
+  padding-left: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-left: 0;
+  font-size: 13px;
+}
+
+li.update__save--cancel-conf + div.custom-select > div.select-items {
+  left: 0;
+}
+
+li.update__save--cancel-conf + div.custom-select > div.select-selected.select-arrow-active:after {
+  right: 6%;
+}
+
+li.update__save--cancel-conf + div.custom-select > div.select-selected.select-arrow-active {
+  border-bottom: none;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+li.update__save--cancel-conf + div.custom-select > .select-items {
+  text-align: left;
+}
+
+.btn_sv.disable {
+  background: #f1f3f4;
+  color: #273039;
+  cursor: default;
+}
+
+.show_Div.add__margin {
+  margin-top: 0;
+}
+
+.show_Div.show.cancellation {
+  margin-top: -24px;
+}
+
+input.email__edit {
+  height: 35px;
+  border-radius: 4px;
+  border: solid 1px #cccccc;
+  background-color: #ffffff;
+  padding: 0 10px;
+  width: 60%;
+}
+
+input.email__edit.invalid {
+  border: 2px solid #ad2f2f;
+}
+
+input:focus {
+  outline: none;
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
 */
 
 @media (min-width: 813px) and (max-width: 2000px) {
+
+  .dnload_div.show {
+    margin-left: 15px;
+  }
+
   .img-responsive {
     height: auto;
   }
@@ -2599,6 +2672,9 @@ a.btn {
     display: flex;
     justify-content: space-around;
     margin-bottom: 60px;
+  }
+  ul.sub__details--section-item.list-inline > li {
+    width: 25%;
   }
 
   ul.sub__details--section-item.list-inline > li,
@@ -2793,4 +2869,28 @@ a.btn {
   div.fix.d-mob1 {
     width: 29%;
   }
+
+  .save__update-mob > div > button {
+    width: 200px;
+  }
+
+  .cancel__sub > .custom-select > .select-selected {
+    background: #fff;
+    margin-bottom: 20px;
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 13px;
+    /* border-radius: 4px; */
+  }
+
+  .save__update-mob > div > button.disable__btn {
+    background: #e3e3e3;
+    border: solid 1px #e3e3e3;
+  }
+
+  span.animated__arrow {
+    width: 13px;
+  }
+
 }

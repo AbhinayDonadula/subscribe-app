@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class Dropdown extends React.Component {
+class CancelDropdown extends React.Component {
   state = {
     listOpen: false,
     selected: ''
@@ -49,13 +49,11 @@ class Dropdown extends React.Component {
   };
 
   render() {
-    const { frequencyDropDown, options, mobile } = this.props;
+    const { options, mobile } = this.props;
     const { listOpen, selected } = this.state;
     return (
       <div
-        className={`custom-select ${frequencyDropDown ? 'freq__options' : ''} ${
-          mobile ? 'mob__freq' : ''
-        }`}
+        className={`custom-select ${mobile ? 'mob__freq' : ''}`}
         onClick={this.toggleList}
         ref={(node) => {
           this.node = node;
@@ -87,10 +85,8 @@ class Dropdown extends React.Component {
   }
 }
 
-Dropdown.propTypes = {
-  frequencyDropDown: PropTypes.bool,
+CancelDropdown.propTypes = {
   mobile: PropTypes.bool,
-  cancelDropDown: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -102,11 +98,9 @@ Dropdown.propTypes = {
   selected: PropTypes.string
 };
 
-Dropdown.defaultProps = {
-  frequencyDropDown: false,
-  cancelDropDown: false,
+CancelDropdown.defaultProps = {
   mobile: false,
   selected: ''
 };
 
-export default Dropdown;
+export default CancelDropdown;

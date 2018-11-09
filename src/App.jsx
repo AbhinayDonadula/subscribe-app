@@ -234,6 +234,12 @@ class App extends Component {
     });
   };
 
+  reloadApp = () => {
+    this.setState({ filtering: true }, () => {
+      this.getServicesAndItems();
+    });
+  };
+
   render() {
     const {
       enableNotifications,
@@ -248,7 +254,8 @@ class App extends Component {
           ...this.state,
           handleAllFilter: this.filterSubscriptions,
           handleSortFilter: this.sortSubscriptions,
-          getItems: this.getItems
+          getItems: this.getItems,
+          reloadApp: this.reloadApp
         }}
       >
         <SnackBar>

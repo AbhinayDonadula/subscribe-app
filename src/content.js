@@ -130,6 +130,44 @@ export default {
       serverVal: 'S'
     }
   ],
+  cancelReasonOptions: [
+    {
+      id: 1,
+      value: 'Select your Reason...',
+      title: 'Select your Reason...'
+    },
+    {
+      id: 6,
+      // value: 'OD_TERMINATED_QUALITY_DID_NOT',
+      value: 'Quality did not meet my expectations',
+      title: 'Quality did not meet my expectations'
+    },
+    {
+      id: 2,
+      // value: 'OD_TERMINATED_BETTER_PRICE',
+      value: 'Better price at a competitor',
+      title: 'Better price at a competitor'
+    },
+    {
+      id: 3,
+      // value: 'OD_TERMINATED_TOOK_TOO_LONG',
+      value: 'Took too long to set up my account/service',
+      title: 'Took too long to set up my account/service'
+    },
+    {
+      id: 4,
+      // value: 'OD_TERMINATED_LACK_OF_USE',
+      value: 'Lack of use',
+      title: 'Lack of use'
+    },
+    {
+      id: 5,
+      // value: 'OD_TERMINATED_CHANGE_OF_PLANS',
+      value: 'Change of plans',
+      title: 'Change of plans'
+    }
+  ],
+
   ExtendedMenuOptions: [
     { id: 2, label: 'Cancel Subscription' },
     { id: 3, label: 'Order Now' }

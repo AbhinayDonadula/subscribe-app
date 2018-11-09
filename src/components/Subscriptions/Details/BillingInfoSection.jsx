@@ -71,7 +71,6 @@ class BillingInfoSection extends React.Component {
     const showBillingTable =
       (billingHistory && billingHistory.length === 0) ||
       billingHistory === null;
-
     const { isMobile, show } = this.state;
 
     const isLoading = billingHistory === null;
@@ -168,7 +167,7 @@ class BillingInfoSection extends React.Component {
                                   <td>
                                     <Img
                                       spinner
-                                      styles={{ width: '5%' }}
+                                      styles={{ width: '15%' }}
                                       src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
                                     />
                                   </td>
