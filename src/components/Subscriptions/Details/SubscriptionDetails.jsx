@@ -173,7 +173,7 @@ class SubscriptionDetails extends React.Component {
     this.setState({
       editingEmail: true,
       editPayment: false,
-      openSaveCancelMenu: true,
+      openSaveCancelMenu: false,
       saveChangesTxt: 'Save email changes?',
       saveAction: 'emailUpdate'
     });
