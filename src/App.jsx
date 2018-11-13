@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '@babel/polyfill';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { toast } from 'react-toastify';
@@ -34,7 +35,8 @@ class App extends Component {
     subscriptionsToShow: [],
     itemsAndServices: [],
     localAPI: true,
-    loadingServicesFailed: false
+    loadingServicesFailed: false,
+    showLoadMore: false
   };
 
   componentDidMount() {
@@ -101,9 +103,9 @@ class App extends Component {
     let itemsAndServices = [];
     let products = [];
     const { services, localAPI } = this.state;
-    const {
-      jsonObjectResponse: { GetSubListDetail }
-    } = responseObject;
+    const { jsonObjectResponse } = responseObject;
+    const { GetSubListDetail } = jsonObjectResponse;
+    const showLoadMore = jsonObjectResponse.MoreFlag === '1';
     const itemsList = GetSubListDetail || [];
 
     // filter out just item services from the response which has non-empty record key
@@ -161,6 +163,8 @@ class App extends Component {
       } else {
         itemsAndServices = [...beautifiedItemsWithImages, ...services];
       }
+
+      // when we want to show only products
       products = beautifiedItemsWithImages;
     } catch (error) {
       if (subscriptionsToShow) {
@@ -187,6 +191,7 @@ class App extends Component {
         loadingProductsFailed: false,
         itemsAndServices: sortedByDate,
         subscriptionsToShow: sortedByDate,
+        showLoadMore,
         products
       },
       () => {
@@ -197,7 +202,7 @@ class App extends Component {
     );
   };
 
-  getItems = (filterStatus, sortBy, itemUpdates = false) => {
+  getItems = (filterStatus, sortBy, itemUpdates = false, loadMore = false) => {
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
@@ -219,7 +224,8 @@ class App extends Component {
       const itemsSubs = await getItemSubscriptions(
         localAPI,
         filterStatus,
-        sortBy
+        sortBy,
+        loadMore ? 'F' : 'T'
       );
       if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
         this.setState({ envDown: true });
@@ -285,6 +291,11 @@ class App extends Component {
     });
   };
 
+  handleLoadMore = () => {
+    const { filterBy, sortBy } = this.state;
+    this.getItems(filterBy, sortBy, false, true);
+  };
+
   render() {
     const {
       enableNotifications,
@@ -300,7 +311,8 @@ class App extends Component {
           handleAllFilter: this.filterSubscriptions,
           handleSortFilter: this.sortSubscriptions,
           getItems: this.getItems,
-          reloadApp: this.reloadApp
+          reloadApp: this.reloadApp,
+          handleLoadMore: this.handleLoadMore
         }}
       >
         <SnackBar>

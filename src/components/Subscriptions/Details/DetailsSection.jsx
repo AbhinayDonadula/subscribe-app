@@ -226,7 +226,6 @@ class DetailsSection extends React.Component {
                           </ul>
                         )}
                         {isMobile ? <hr /> : null}
-                        {/* <div className="space30 d-none d-md-block d-lg-block" /> */}
                       </div>
                     );
                   }}

@@ -90,7 +90,6 @@ class Dropdown extends React.Component {
 Dropdown.propTypes = {
   frequencyDropDown: PropTypes.bool,
   mobile: PropTypes.bool,
-  cancelDropDown: PropTypes.bool,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -104,7 +103,6 @@ Dropdown.propTypes = {
 
 Dropdown.defaultProps = {
   frequencyDropDown: false,
-  cancelDropDown: false,
   mobile: false,
   selected: ''
 };

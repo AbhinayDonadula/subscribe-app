@@ -675,30 +675,30 @@ div.app__loader {
   width: 15%;
 }
 .data-table ul li:nth-child(2) {
-  width: 33%;
+  width: 30%;
 }
 .data-table ul li:nth-child(3) {
-  width: 223px;
+  width: 15%;
 }
 .data-table ul li:nth-child(5) {
-  width: 223px;
+  width: 20%;
 }
 .data-table1 ul li:nth-child(4) {
   width: auto;
 }
 
 .data-table ul li:last-child {
-  width: 5.5%;
+  width: 6%;
   position: relative;
 }
-.open_drop {
+/* .open_drop {
   position: absolute;
   left: 0;
   right: 0;
   z-index: 9999;
   top: 50%;
   transform: translate(0, -50%);
-}
+} */
 .open_drop.hover {
   color: #fff;
 }
@@ -1040,7 +1040,7 @@ li.btn_cncl-container {
 .select-items div,
 .select-selected.select-arrow-active {
   padding: 13px 15px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .select-selected:after {
@@ -1095,9 +1095,6 @@ li.btn_cncl-container {
   .subscrip_box {
     padding: 52px 19px 0;
   }
-  .total_box {
-    padding: 17px;
-  }
   .notif_box ul .list-inline-item:not(:last-child) {
     margin-right: 17px;
   }
@@ -1130,9 +1127,6 @@ li.btn_cncl-container {
   .btn_plan {
     font-size: 16px;
     padding: 9px 15px;
-  }
-  .total_box {
-    padding: 10px;
   }
   .table2 thead th {
     padding: 15px 15px;
@@ -2534,7 +2528,6 @@ hr {
 
 .sub__details--container-mob {
   height: 100%;
-  /* border-bottom: 2px solid red; */
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.9px;
@@ -2654,12 +2647,40 @@ div.partial__subs {
   color: #ad2f2f;
 }
 
+
+div.loadmore__container {
+  position: relative;
+  /* height: 100px; */
+  /* background:  */
+}
+
+div.loadmore__container > button{
+  position: relative;
+  width: 22%;
+  left: 40%;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background-color: #1e5a99;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: #ffffff;
+  height: 40px;
+}
+
+div.loadmore__container > a{
+  position: absolute;
+  right: 2%;
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
 */
 
-@media (min-width: 813px) and (max-width: 2000px) {
+@media (min-width: 813px) and (max-width: 3000px) {
 
   .dnload_div.show {
     margin-left: 15px;
@@ -2737,12 +2758,8 @@ div.partial__subs {
     color: #273039;
   }
 
-  div.data-table ul li:nth-child(3) {
-    width: 200px;
-  }
-
   div.data-table ul li:nth-child(4) {
-    width: 11%;
+    width: 14%;
   }
 
   div.freq__options.custom-select {
@@ -2779,15 +2796,19 @@ div.partial__subs {
   }
 }
 
-/* phone , tablet, large tablets */
-@media (min-width: 320px) and (max-width: 1024px) {
+/* ipad */
+@media (min-width: 760px) and (max-width: 1024px) {
+  div.loadmore__container > button {
+    width: 35%;
+    left: 35%;
+  }
   div.data-table {
     margin: 15px 0;
   }
 }
 
 /* phone*/
-@media (min-width: 320px) and (max-width: 812px) {
+@media (min-width: 320px) and (max-width: 760px) {
   div.data-table {
     margin: 15px 0;
   }
@@ -2806,7 +2827,7 @@ div.partial__subs {
   .dropbox {
     width: 100%;
   }
-
+ 
   .head_txt.sub_txt {
     margin-top: 0;
   }
@@ -2896,6 +2917,10 @@ div.partial__subs {
 
   span.animated__arrow {
     width: 13px;
+  }
+  div.loadmore__container > button {
+    width: 50%;
+    left: 25%;
   }
 
 }

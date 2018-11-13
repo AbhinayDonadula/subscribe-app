@@ -42,6 +42,26 @@ class SubscriptionItemsContainer extends React.Component {
                     </SubscriptionContext.Provider>
                   </div>
                 ))}
+                {appData.showLoadMore ? (
+                  <div className="loadmore__container">
+                    <button type="button" onClick={appData.handleLoadMore}>
+                      Show More
+                    </button>
+                    <a
+                      href="/"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        window.scroll({
+                          behavior: 'smooth',
+                          left: 0,
+                          top: document.getElementById('scroll__to').offsetTop
+                        });
+                      }}
+                    >
+                      Top
+                    </a>
+                  </div>
+                ) : null}
                 {appData.enableEmailCampaign ? <EmailCampaign /> : null}
               </div>
             ) : (

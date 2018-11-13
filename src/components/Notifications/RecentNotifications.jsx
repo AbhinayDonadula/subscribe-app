@@ -1,6 +1,6 @@
-import React from "react";
-import AppContext from "../Context/AppContext";
-import NotificationBar from "./NotificationBar";
+import React from 'react';
+import AppContext from '../Context/AppContext';
+import NotificationBar from './NotificationBar';
 
 class RecentNotifications extends React.Component {
   state = {};
@@ -8,7 +8,7 @@ class RecentNotifications extends React.Component {
   render() {
     return (
       <AppContext.Consumer>
-        {appData => (
+        {(appData) => (
           <div className="row">
             <div className="col-sm-12">
               {/* header */}
