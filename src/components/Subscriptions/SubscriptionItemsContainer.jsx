@@ -7,7 +7,32 @@ import SpinnerPortal from '../SharedComponents/SpinnerPortal';
 import EmailCampaign from './EmailCampaign';
 
 class SubscriptionItemsContainer extends React.Component {
-  state = {};
+  state = { email: '' };
+
+  handleEditEmailClick = (email, editEmail = true) => {
+    // console.log('object', email);
+    this.setState({ editEmail, email });
+  };
+
+  handleEditEmail = (event) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    this.setState({
+      email: event.target.value,
+      invalidEmail:
+        !re.test(String(event.target.value).toLowerCase()) &&
+        event.target.value.length > 0
+    });
+  };
+
+  handleEditRewardsClick = (rewards, editRewards = true) => {
+    this.setState({ editRewards, rewards });
+  };
+
+  handleEditRewards = ({ target: { value } }) => {
+    if (!Object.is(Number(value), NaN)) {
+      this.setState({ rewards: value });
+    }
+  };
 
   render() {
     return (
@@ -36,7 +61,14 @@ class SubscriptionItemsContainer extends React.Component {
                     }
                   >
                     <SubscriptionContext.Provider
-                      value={{ ...eachSubscription }}
+                      value={{
+                        ...eachSubscription,
+                        ...this.state,
+                        handleEditEmailClick: this.handleEditEmailClick,
+                        handleEditRewardsClick: this.handleEditRewardsClick,
+                        handleEditEmail: this.handleEditEmail,
+                        handleEditRewards: this.handleEditRewards
+                      }}
                     >
                       <SubscriptionItem />
                     </SubscriptionContext.Provider>

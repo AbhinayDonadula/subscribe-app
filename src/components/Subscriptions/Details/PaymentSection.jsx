@@ -6,17 +6,13 @@ import SubDetailsContext from '../../Context/SubDetailsContext';
 class PaymentSection extends React.Component {
   state = { email: '', invalidEmail: false };
 
-  handleEmail = (event) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    this.setState({
-      email: event.target.value,
-      invalidEmail: !re.test(String(event.target.value).toLowerCase())
-    });
-    this.editEmailAddress(event);
+  handleRewards = (event) => {
+    event.preventDefault();
+    this.setState({ rewardsNum: event.target.value });
+    this.editRewardsNum(event);
   };
 
   render() {
-    const { invalidEmail } = this.state;
     return (
       <AppContext.Consumer>
         {(appData) => (
@@ -24,16 +20,10 @@ class PaymentSection extends React.Component {
             {(subscription) => {
               return (
                 <SubDetailsContext.Consumer>
-                  {({
-                    itemInfo,
-                    handleEditEmailMobile,
-                    editingEmail,
-                    email,
-                    editEmailAddress,
-                    resetEdit
-                  }) => {
+                  {({ itemInfo, email, editEmailAddress, editRewardsNum }) => {
                     this.itemInfo = itemInfo;
                     this.editEmailAddress = editEmailAddress;
+                    this.editRewardsNum = editRewardsNum;
                     const {
                       loyaltyMember = 'N/A',
                       paymentDetails,
@@ -107,13 +97,15 @@ class PaymentSection extends React.Component {
                                 </td>
                                 {subscription.isItem ? (
                                   <td>
-                                    {editingEmail && !resetEdit ? (
+                                    {subscription.editEmail ? (
                                       <input
                                         className={`email__edit ${
-                                          invalidEmail ? 'invalid' : ''
+                                          subscription.invalidEmail
+                                            ? 'invalid'
+                                            : ''
                                         }`}
-                                        value={email}
-                                        onChange={this.handleEmail}
+                                        value={subscription.email}
+                                        onChange={subscription.handleEditEmail}
                                       />
                                     ) : (
                                       <span className="test_txt  email__address">
@@ -121,9 +113,8 @@ class PaymentSection extends React.Component {
                                       </span>
                                     )}
                                     <br />
-                                    {editingEmail &&
-                                    !resetEdit &&
-                                    invalidEmail ? (
+                                    {subscription.editEmail &&
+                                    subscription.invalidEmail ? (
                                       <span
                                         style={{
                                           color: '#ad2f2f',
@@ -138,7 +129,9 @@ class PaymentSection extends React.Component {
                                         href="/"
                                         onClick={(event) => {
                                           event.preventDefault();
-                                          handleEditEmailMobile();
+                                          subscription.handleEditEmailClick(
+                                            email
+                                          );
                                         }}
                                         className="edit_txt"
                                       >
@@ -151,16 +144,29 @@ class PaymentSection extends React.Component {
                                   </td>
                                 ) : null}
                                 <td>
-                                  <a className="test_txt">
-                                    {itemInfo
-                                      ? itemInfo.AdvantageNum
-                                      : loyaltyMember}
-                                  </a>
+                                  {subscription.editRewards ? (
+                                    <input
+                                      className="email__edit"
+                                      value={subscription.rewards}
+                                      onChange={subscription.handleEditRewards}
+                                    />
+                                  ) : (
+                                    <span className="test_txt  email__address">
+                                      {itemInfo
+                                        ? itemInfo.AdvantageNum
+                                        : loyaltyMember}
+                                    </span>
+                                  )}
                                   <br />
                                   {subscription.isItem ? (
                                     <a
                                       href="/"
-                                      onClick={this.editMemberNumber}
+                                      onClick={(event) => {
+                                        event.preventDefault();
+                                        subscription.handleEditRewardsClick(
+                                          itemInfo.AdvantageNum
+                                        );
+                                      }}
                                       className="edit_txt"
                                     >
                                       {
@@ -206,13 +212,13 @@ class PaymentSection extends React.Component {
                           {isItem ? (
                             <ul className="list-unstyled">
                               <li>
-                                {editingEmail && !resetEdit ? (
+                                {subscription.editEmail ? (
                                   <input
                                     className={`email__edit ${
-                                      invalidEmail ? 'invalid' : ''
+                                      subscription.invalidEmail ? 'invalid' : ''
                                     }`}
-                                    value={email}
-                                    onChange={this.handleEmail}
+                                    value={subscription.email}
+                                    onChange={subscription.handleEditEmail}
                                   />
                                 ) : (
                                   <span className="test_txt  email__address">
@@ -226,7 +232,7 @@ class PaymentSection extends React.Component {
                                     href="/"
                                     onClick={(event) => {
                                       event.preventDefault();
-                                      handleEditEmailMobile();
+                                      subscription.handleEditEmailClick(email);
                                     }}
                                     className="edit_txt email__address"
                                   >
@@ -242,20 +248,29 @@ class PaymentSection extends React.Component {
                           <h3>REWARDS MEMBER NUMBER:</h3>
                           <ul className="list-unstyled">
                             <li>
-                              <a
-                                href="/"
-                                onClick={this.editMemberNumber}
-                                className="test_txt"
-                              >
-                                {itemInfo
-                                  ? itemInfo.AdvantageNum
-                                  : loyaltyMember}
-                              </a>
+                              {subscription.editRewards ? (
+                                <input
+                                  className="email__edit"
+                                  value={subscription.rewards}
+                                  onChange={subscription.handleEditRewards}
+                                />
+                              ) : (
+                                <span className="test_txt  email__address">
+                                  {itemInfo
+                                    ? itemInfo.AdvantageNum
+                                    : loyaltyMember}
+                                </span>
+                              )}
                             </li>
                             <li>
                               <a
                                 href="/"
-                                onClick={this.editMemberNumber}
+                                onClick={(event) => {
+                                  event.preventDefault();
+                                  subscription.handleEditRewardsClick(
+                                    itemInfo.AdvantageNum
+                                  );
+                                }}
                                 className="edit_txt"
                               >
                                 {

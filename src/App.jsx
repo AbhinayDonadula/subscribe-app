@@ -312,7 +312,9 @@ class App extends Component {
           handleSortFilter: this.sortSubscriptions,
           getItems: this.getItems,
           reloadApp: this.reloadApp,
-          handleLoadMore: this.handleLoadMore
+          handleLoadMore: this.handleLoadMore,
+          handleEditEmail: this.handleEditEmail,
+          editEmail: this.editEmail
         }}
       >
         <SnackBar>

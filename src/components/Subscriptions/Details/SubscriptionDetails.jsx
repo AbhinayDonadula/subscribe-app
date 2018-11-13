@@ -21,8 +21,9 @@ class SubscriptionDetails extends React.Component {
     loading: false,
     openSaveCancelMenu: false,
     itemQuantity: null,
-    editingEmail: false,
+    editingRewardsNum: false,
     editPayment: false,
+    editEmail: false,
     email: ''
   };
 
@@ -163,7 +164,9 @@ class SubscriptionDetails extends React.Component {
     this.setState(({ prevItemQuantity, prevFrequencySelected }) => ({
       itemQuantity: prevItemQuantity,
       frequencySelected: prevFrequencySelected,
-      openSaveCancelMenu: false
+      openSaveCancelMenu: false,
+      editEmail: false,
+      editRewards: false
     }));
   };
 
@@ -171,8 +174,9 @@ class SubscriptionDetails extends React.Component {
     const { email } = this.state;
     const { handleEditUserInfo } = this.props;
     this.setState({
-      editingEmail: true,
+      editEmail: true,
       editPayment: false,
+      editRewards: false,
       openSaveCancelMenu: false,
       saveChangesTxt: 'Save email changes?',
       saveAction: 'emailUpdate'
@@ -187,18 +191,41 @@ class SubscriptionDetails extends React.Component {
     });
   };
 
+  handleEditRewardsNumMobile = () => {
+    const { email } = this.state;
+    const { handleEditUserInfo } = this.props;
+    this.setState({
+      editEmail: false,
+      // resetEdit: false,
+      editPayment: false,
+      editingRewardsNum: true,
+      openSaveCancelMenu: false,
+      saveChangesTxt: 'Save Rewards Number changes?',
+      saveAction: 'updateMemNum'
+    });
+    handleEditUserInfo('updateMemNum', email);
+  };
+
+  editRewardsNum = ({ target: { value } }) => {
+    const { handleEditUserInfo } = this.props;
+    this.setState({ rewardsNum: value }, () => {
+      handleEditUserInfo('updateMemNum', value);
+    });
+  };
+
   render() {
     const {
       frequencySelected,
       itemInfo,
       loading,
       gettingDetailsError,
-      editingEmail,
+      editEmail,
+      editingRewardsNum,
       editPayment,
       email
     } = this.state;
 
-    const { resetEdit } = this.props;
+    // const { resetEdit } = this.props;
 
     return (
       <AppContext.Consumer>
@@ -313,12 +340,15 @@ class SubscriptionDetails extends React.Component {
                     <SubDetailsContext.Provider
                       value={{
                         itemInfo,
-                        editingEmail,
+                        editEmail,
                         editPayment,
+                        editingRewardsNum,
                         email,
                         handleEditEmailMobile: this.handleEditEmailMobile,
+                        handleEditRewardsNumMobile: this
+                          .handleEditRewardsNumMobile,
                         editEmailAddress: this.editEmailAddress,
-                        resetEdit
+                        editRewardsNum: this.editRewardsNum
                       }}
                     >
                       <React.Fragment>
@@ -349,8 +379,8 @@ class SubscriptionDetails extends React.Component {
 }
 
 SubscriptionDetails.propTypes = {
-  handleEditUserInfo: PropTypes.func.isRequired,
-  resetEdit: PropTypes.bool.isRequired
+  handleEditUserInfo: PropTypes.func.isRequired
+  // resetEdit: PropTypes.bool.isRequired
 };
 
 export default SubscriptionDetails;

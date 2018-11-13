@@ -29,12 +29,15 @@ class SubscriptionItem extends React.Component {
     openExtendedMenu: false,
     cancelService: false,
     resetEdit: false,
+    editEmail: false,
     frequencySelected: '',
     prevFrequencySelected: '',
     itemQuantity: '',
     prevItemQuantity: '',
     cancelReason: '',
-    saveChangesTxt: ''
+    saveChangesTxt: '',
+    emailToSave: '',
+    rewards: ''
   };
 
   componentWillMount() {
@@ -170,13 +173,17 @@ class SubscriptionItem extends React.Component {
   };
 
   handleSaveUpdate = async (event) => {
-    event.preventDefault();
+    console.log('object');
+    if (event) {
+      event.preventDefault();
+    }
     const { RecordKey, LstChgTmpStmp } = this.subscription;
     const {
       itemQuantity,
       saveAction,
       frequencySelected,
-      emailToSave
+      emailToSave,
+      rewards
     } = this.state;
     let updateAction = {};
     const isServiceCancellation = saveAction === 'cancelService';
@@ -209,6 +216,9 @@ class SubscriptionItem extends React.Component {
           break;
         case 'email':
           updateAction = { name: 'email', value: emailToSave };
+          break;
+        case 'rewards':
+          updateAction = { name: 'rewards', value: rewards };
           // console.log(updateAction);
           break;
         default:
@@ -218,36 +228,45 @@ class SubscriptionItem extends React.Component {
           };
       }
 
-      try {
-        const response = await updateItemSubscription(
-          this.isLocalAPI,
-          RecordKey,
-          LstChgTmpStmp,
-          updateAction
-        );
-        if (
-          (response.success !== undefined && !response.success) ||
-          !response.responseObject.success
-        ) {
-          this.setState({ openSaveCancelMenu: false }, () => {
-            toast.warn(`Update item ${saveAction} is failed.`);
-          });
-        } else {
-          this.setState(
-            {
-              openSaveCancelMenu: false,
-              prevItemQuantity: itemQuantity,
-              resetEdit: true
-            },
-            () => {
-              toast.success(`Update item ${saveAction} is successful.`);
-              // pass true to not to show extra toast msg
-              this.appData.getItems(null, null, true);
-            }
+      if (
+        (saveAction === 'rewards' && rewards.length === 0) ||
+        (saveAction === 'email' && emailToSave.length === 0)
+      ) {
+        this.subscription.handleEditRewardsClick('', false);
+      } else {
+        try {
+          const response = await updateItemSubscription(
+            this.isLocalAPI,
+            RecordKey,
+            LstChgTmpStmp,
+            updateAction
           );
+          if (
+            (response.success !== undefined && !response.success) ||
+            !response.responseObject.success
+          ) {
+            this.setState({ openSaveCancelMenu: false }, () => {
+              toast.warn(`Update item ${saveAction} is failed.`);
+            });
+          } else {
+            this.setState(
+              {
+                openSaveCancelMenu: false,
+                prevItemQuantity: itemQuantity,
+                resetEdit: true
+              },
+              () => {
+                toast.success(`Update item ${saveAction} is successful.`);
+                // pass true to not to show extra toast msg
+                this.appData.getItems(null, null, true);
+                this.subscription.handleEditEmailClick('', false);
+                this.subscription.handleEditRewardsClick('', false);
+              }
+            );
+          }
+        } catch (error) {
+          toast.error('Item update failed.');
         }
-      } catch (error) {
-        toast.error('Item update failed.');
       }
     }
   };
@@ -260,8 +279,12 @@ class SubscriptionItem extends React.Component {
       openSaveCancelMenu: false,
       cancelService: false,
       resetEdit: true,
+      editEmail: false,
+      editRewards: false,
       cancelStep: 1
     }));
+    this.subscription.handleEditEmailClick('', false);
+    this.subscription.handleEditRewardsClick('', false);
   };
 
   handleCancelSubmit = (event) => {
@@ -347,8 +370,8 @@ class SubscriptionItem extends React.Component {
       cancelService,
       cancelFees,
       cancelStep,
-      cancelReason,
-      resetEdit
+      cancelReason
+      // resetEdit
     } = this.state;
 
     return (
@@ -370,7 +393,9 @@ class SubscriptionItem extends React.Component {
                 mediumImageUrl,
                 vendorNumber,
                 SubType,
-                Status
+                Status,
+                editEmail,
+                editRewards
               } = subscription;
 
               let subscriptionImage = '';
@@ -623,7 +648,7 @@ class SubscriptionItem extends React.Component {
                   {viewDetailsOpen && (
                     <SubscriptionDetails
                       handleEditUserInfo={this.handleEditUserInfo}
-                      resetEdit={resetEdit}
+                      // resetEdit={resetEdit}
                     />
                   )}
 
@@ -811,6 +836,87 @@ class SubscriptionItem extends React.Component {
                       <div className="title">{saveChangesTxt}</div>
                       <div>
                         <button type="button" onClick={this.handleSaveUpdate}>
+                          Save/Update
+                        </button>
+                      </div>
+                      <div>
+                        <a onClick={this.handleCancelSave}>cancel</a>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {/* edit email */}
+                  {(editEmail || editRewards) && viewDetailsOpen ? (
+                    <div
+                      className={`show_Div hidden-xs show asd${
+                        viewDetailsOpen ? 'add__margin' : ''
+                      }`}
+                    >
+                      <ul className="list-inline list-unstyled">
+                        <li className="update__save--cancel-conf">
+                          {editEmail ? 'Save email changes?' : null}
+                          {editRewards ? 'Save Rewards number changes?' : null}
+                        </li>
+                        <li className="btn_sv-container">
+                          <a
+                            href="/"
+                            className="btn_sv"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              this.setState(
+                                {
+                                  saveAction: editEmail ? 'email' : 'rewards',
+                                  emailToSave: subscription.email,
+                                  rewards: subscription.rewards
+                                },
+                                () => {
+                                  this.handleSaveUpdate();
+                                }
+                              );
+                            }}
+                          >
+                            {appData.content.SaveUpdate}
+                          </a>
+                        </li>
+                        <li className="btn_cncl-container">
+                          <a
+                            href="/"
+                            className="btn_cncl"
+                            onClick={this.handleCancelSave}
+                          >
+                            Cancel
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {/* edit email mobile */}
+                  {(editEmail || editRewards) && viewDetailsOpen ? (
+                    <div
+                      className="visible-xs-block save__update-mob"
+                      style={{ margin: '-15px 0' }}
+                    >
+                      <div className="title">
+                        {editEmail ? 'Save email changes?' : null}
+                        {editRewards ? 'Save Rewards number changes?' : null}
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            this.setState(
+                              {
+                                saveAction: editEmail ? 'email' : 'rewards',
+                                emailToSave: subscription.email,
+                                rewards: subscription.rewards
+                              },
+                              () => {
+                                this.handleSaveUpdate();
+                              }
+                            );
+                          }}
+                        >
                           Save/Update
                         </button>
                       </div>
