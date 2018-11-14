@@ -45,6 +45,13 @@ class SubscriptionDetails extends React.Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    const { refresh } = this.props;
+    if (props.refresh !== refresh) {
+      this.getDetails();
+    }
+  }
+
   getDetails = async () => {
     const { RecordKey } = this.subscription;
     try {
@@ -196,7 +203,6 @@ class SubscriptionDetails extends React.Component {
     const { handleEditUserInfo } = this.props;
     this.setState({
       editEmail: false,
-      // resetEdit: false,
       editPayment: false,
       editingRewardsNum: true,
       openSaveCancelMenu: false,
@@ -224,8 +230,6 @@ class SubscriptionDetails extends React.Component {
       editPayment,
       email
     } = this.state;
-
-    // const { resetEdit } = this.props;
 
     return (
       <AppContext.Consumer>
@@ -379,8 +383,8 @@ class SubscriptionDetails extends React.Component {
 }
 
 SubscriptionDetails.propTypes = {
-  handleEditUserInfo: PropTypes.func.isRequired
-  // resetEdit: PropTypes.bool.isRequired
+  handleEditUserInfo: PropTypes.func.isRequired,
+  refresh: PropTypes.bool.isRequired
 };
 
 export default SubscriptionDetails;

@@ -10,8 +10,7 @@ class SubscriptionItemsContainer extends React.Component {
   state = { email: '' };
 
   handleEditEmailClick = (email, editEmail = true) => {
-    // console.log('object', email);
-    this.setState({ editEmail, email });
+    this.setState({ editEmail, editRewards: false, email });
   };
 
   handleEditEmail = (event) => {
@@ -25,7 +24,7 @@ class SubscriptionItemsContainer extends React.Component {
   };
 
   handleEditRewardsClick = (rewards, editRewards = true) => {
-    this.setState({ editRewards, rewards });
+    this.setState({ editRewards, editEmail: false, rewards });
   };
 
   handleEditRewards = ({ target: { value } }) => {

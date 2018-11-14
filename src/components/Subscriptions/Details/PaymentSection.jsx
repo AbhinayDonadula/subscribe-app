@@ -6,12 +6,6 @@ import SubDetailsContext from '../../Context/SubDetailsContext';
 class PaymentSection extends React.Component {
   state = { email: '', invalidEmail: false };
 
-  handleRewards = (event) => {
-    event.preventDefault();
-    this.setState({ rewardsNum: event.target.value });
-    this.editRewardsNum(event);
-  };
-
   render() {
     return (
       <AppContext.Consumer>
@@ -146,7 +140,7 @@ class PaymentSection extends React.Component {
                                 <td>
                                   {subscription.editRewards ? (
                                     <input
-                                      className="email__edit"
+                                      className="rewards__edit"
                                       value={subscription.rewards}
                                       onChange={subscription.handleEditRewards}
                                     />

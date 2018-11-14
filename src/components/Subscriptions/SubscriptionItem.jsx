@@ -37,7 +37,8 @@ class SubscriptionItem extends React.Component {
     cancelReason: '',
     saveChangesTxt: '',
     emailToSave: '',
-    rewards: ''
+    rewards: '',
+    refreshDetailsSection: false
   };
 
   componentWillMount() {
@@ -173,7 +174,6 @@ class SubscriptionItem extends React.Component {
   };
 
   handleSaveUpdate = async (event) => {
-    console.log('object');
     if (event) {
       event.preventDefault();
     }
@@ -219,7 +219,6 @@ class SubscriptionItem extends React.Component {
           break;
         case 'rewards':
           updateAction = { name: 'rewards', value: rewards };
-          // console.log(updateAction);
           break;
         default:
           updateAction = {
@@ -253,14 +252,19 @@ class SubscriptionItem extends React.Component {
               {
                 openSaveCancelMenu: false,
                 prevItemQuantity: itemQuantity,
-                resetEdit: true
+                resetEdit: true,
+                refreshDetailsSection: false
               },
               () => {
                 toast.success(`Update item ${saveAction} is successful.`);
                 // pass true to not to show extra toast msg
-                this.appData.getItems(null, null, true);
-                this.subscription.handleEditEmailClick('', false);
-                this.subscription.handleEditRewardsClick('', false);
+                if (saveAction === 'rewards' || saveAction === 'email') {
+                  this.subscription.handleEditEmailClick('', false);
+                  this.subscription.handleEditRewardsClick('', false);
+                  this.setState({ refreshDetailsSection: true });
+                } else {
+                  this.appData.getItems(null, null, true);
+                }
               }
             );
           }
@@ -354,7 +358,6 @@ class SubscriptionItem extends React.Component {
       editMemberNum,
       saveChangesTxt,
       openSaveCancelMenu: true,
-      resetEdit: false,
       saveAction,
       emailToSave: value
     });
@@ -649,7 +652,7 @@ class SubscriptionItem extends React.Component {
                   {viewDetailsOpen && (
                     <SubscriptionDetails
                       handleEditUserInfo={this.handleEditUserInfo}
-                      // resetEdit={resetEdit}
+                      refresh={this.state.refreshDetailsSection}
                     />
                   )}
 
@@ -853,7 +856,7 @@ class SubscriptionItem extends React.Component {
                         viewDetailsOpen ? 'add__margin' : ''
                       }`}
                     >
-                      <ul className="list-inline list-unstyled">
+                      <ul className="list-inline list-unstyled email__rewards">
                         <li className="update__save--cancel-conf">
                           {editEmail ? 'Save email changes?' : null}
                           {editRewards ? 'Save Rewards number changes?' : null}
