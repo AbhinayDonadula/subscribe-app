@@ -301,6 +301,7 @@ class SubscriptionItem extends React.Component {
         contractId,
         lineNumber
       } = this.subscription;
+
       if (!this.isLocalAPI) {
         cancelSubscription(
           contractId,

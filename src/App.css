@@ -849,9 +849,9 @@ div.app__loader {
 .show_Div.hide {
   display: none !important;
 }
-li.btn_sv-container {
-  margin-left: 15px;
-}
+/* li.btn_sv-container {
+  margin-left: 15px; */
+/* } */
 .btn_sv {
   width: 138px;
   border-radius: 4px;
@@ -861,10 +861,10 @@ li.btn_sv-container {
   padding: 10px 26px;
   letter-spacing: 1px;
 }
-li.btn_cncl-container {
+/* li.btn_cncl-container {
   margin-right: 8%;
   margin-left: 15px;
-}
+} */
 .btn_cncl {
   font-size: 13px;
   font-weight: 600;
@@ -2675,6 +2675,10 @@ div.loadmore__container > a{
   right: 2%;
 }
 
+div.show_Div.cancellation ul {
+
+}
+
 /* 
   ##Device = Laptops, Desktops, projectors
   ##Screen > 1025
@@ -2730,10 +2734,11 @@ div.loadmore__container > a{
   }
 
   li.update__save--cancel-conf {
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.53;
     letter-spacing: 0.5px;
     color: #64696e;
+    margin-left: 15px;
   }
 
   .item__quantity {
