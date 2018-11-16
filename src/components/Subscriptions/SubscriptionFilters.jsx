@@ -1,6 +1,7 @@
 import React from 'react';
 import AppContext from '../Context/AppContext';
 import Dropdown from '../SharedComponents/Dropdown';
+import FilterDropDown from '../SharedComponents/FilterDropDown';
 
 class SubscriptionFilters extends React.Component {
   state = {};
@@ -14,20 +15,24 @@ class SubscriptionFilters extends React.Component {
               <div className="row row_sub">
                 <div className="col-lg-8 col-md-6 col-sm-10 col-xs-12">
                   <div className="row select_Box hidden-xs">
-                    <div className="filter__label col-xs-1">Filter:</div>
-                    <div className="filter__options col-xs-5">
-                      <Dropdown
+                    <div className="filter__label col-xs-2">Filter & Sort:</div>
+                    <div className="filter__options col-xs-6">
+                      {/* <Dropdown
                         options={appData.content.ShowOptions}
                         updateParentState={appData.handleAllFilter}
+                      /> */}
+                      <FilterDropDown
+                        updateParentState={appData.handleAllFilter}
+                        selected={appData.filterBy}
                       />
                     </div>
-                    <div className="sort__label col-xs-1">Sort by:</div>
+                    {/*  <div className="sort__label col-xs-1">Sort by:</div>
                     <div className="sort__options col-xs-5">
                       <Dropdown
                         options={appData.content.SortOptions}
                         updateParentState={appData.handleSortFilter}
                       />
-                    </div>
+                    </div> */}
                   </div>
                   {/*  mobile only */}
                   <div className="row visible-xs-block select_Box">

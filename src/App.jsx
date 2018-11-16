@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '@babel/polyfill';
+// import '@babel/polyfill';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { toast } from 'react-toastify';
@@ -24,7 +24,7 @@ class App extends Component {
     content,
     userName: '',
     sortBy: 'Next Delivery Date',
-    filterBy: 'Active',
+    filterBy: 'All Subscriptions',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
     filtering: true,
@@ -52,45 +52,44 @@ class App extends Component {
   };
 
   filterSubscriptions = (selected) => {
-    this.setState({ filterBy: selected, filtering: true }, () => {
-      const {
-        filterBy,
-        sortBy,
-        products,
-        activeAndCancelledServices
-      } = this.state;
+    const [filterBy, sortBy] = selected.split(',');
+    this.setState(
+      { filterBy, sortBy: sortBy ? sortBy.trim() : '', filtering: true },
+      () => {
+        const { products, activeAndCancelledServices } = this.state;
 
-      if (selected === 'Products') {
-        this.setState(
-          { subscriptionsToShow: products, filtering: false },
-          () => {
-            toast.success('Showing Product subscriptions.');
-          }
-        );
-      } else if (selected === 'Services') {
-        this.setState(
-          {
-            subscriptionsToShow: activeAndCancelledServices,
-            filtering: false
-          },
-          () => {
-            toast.success('Showing Service subscriptions.');
-          }
-        );
-      } else if (selected === 'All') {
-        this.setState(
-          {
-            subscriptionsToShow: [...products, ...activeAndCancelledServices],
-            filtering: false
-          },
-          () => {
-            toast.success('Showing All subscriptions.');
-          }
-        );
-      } else {
-        this.getItems(filterBy, sortBy);
+        if (filterBy === 'Products') {
+          this.setState(
+            { subscriptionsToShow: products, filtering: false },
+            () => {
+              toast.success('Showing Product subscriptions.');
+            }
+          );
+        } else if (filterBy === 'Services') {
+          this.setState(
+            {
+              subscriptionsToShow: activeAndCancelledServices,
+              filtering: false
+            },
+            () => {
+              toast.success('Showing Service subscriptions.');
+            }
+          );
+        } else if (filterBy === 'All Subscriptions') {
+          this.setState(
+            {
+              subscriptionsToShow: [...products, ...activeAndCancelledServices],
+              filtering: false
+            },
+            () => {
+              toast.success('Showing All subscriptions.');
+            }
+          );
+        } else {
+          this.getItems(filterBy, sortBy);
+        }
       }
-    });
+    );
   };
 
   sortItemsAndSubs = async (
@@ -243,16 +242,16 @@ class App extends Component {
           itemsSubs,
           subscriptionsToShow,
           filterStatus,
-          sortBy
+          sortBy,
+          loadMore
         );
       }
     });
   };
 
-  getServicesAndItems = () => {
+  getServicesAndItems = async () => {
     const { localAPI } = this.state;
-    getServiceSubscriptions(localAPI).then((response) => {
-      // console.log(response);
+    await getServiceSubscriptions(localAPI).then((response) => {
       if (
         response.hasErrorResponse === undefined ||
         response.hasErrorResponse === 'true'
@@ -270,8 +269,8 @@ class App extends Component {
         this.setState(
           {
             activeAndCancelledServices: services,
-            subscriptionsToShow: activeServices,
-            services: activeServices,
+            subscriptionsToShow: services,
+            services,
             activeServices,
             cancelledServices,
             itemsAndServices: null,

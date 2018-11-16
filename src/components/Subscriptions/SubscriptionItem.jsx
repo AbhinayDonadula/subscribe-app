@@ -262,9 +262,8 @@ class SubscriptionItem extends React.Component {
                   this.subscription.handleEditEmailClick('', false);
                   this.subscription.handleEditRewardsClick('', false);
                   this.setState({ refreshDetailsSection: true });
-                } else {
-                  this.appData.getItems(null, null, true);
                 }
+                this.appData.getItems(null, null, true);
               }
             );
           }
@@ -374,8 +373,8 @@ class SubscriptionItem extends React.Component {
       cancelService,
       cancelFees,
       cancelStep,
-      cancelReason
-      // resetEdit
+      cancelReason,
+      refreshDetailsSection
     } = this.state;
 
     return (
@@ -652,7 +651,7 @@ class SubscriptionItem extends React.Component {
                   {viewDetailsOpen && (
                     <SubscriptionDetails
                       handleEditUserInfo={this.handleEditUserInfo}
-                      refresh={this.state.refreshDetailsSection}
+                      refresh={refreshDetailsSection}
                     />
                   )}
 

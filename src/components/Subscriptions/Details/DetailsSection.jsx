@@ -55,7 +55,7 @@ class DetailsSection extends React.Component {
             {(subscription) => {
               return (
                 <SubDetailsContext.Consumer>
-                  {({ itemInfo }) => {
+                  {({ itemInfo, subscriptionId }) => {
                     this.subscription = subscription;
                     this.appData = appData;
                     return (
@@ -220,6 +220,16 @@ class DetailsSection extends React.Component {
                                       subscription.lineNumber
                                     )}
                                   </p>
+                                </div>
+                              </li>
+                            ) : null}
+
+                            {/* last Shipment date, item service only */}
+                            {itemInfo ? (
+                              <li className="list-inline-item">
+                                <div className="total_box">
+                                  <h3>Subscription ID:</h3>
+                                  <p>{subscriptionId}</p>
                                 </div>
                               </li>
                             ) : null}

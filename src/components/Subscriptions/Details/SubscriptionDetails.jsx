@@ -70,7 +70,8 @@ class SubscriptionDetails extends React.Component {
           responseObject.jsonObjectResponse &&
           responseObject.jsonObjectResponse.Email
             ? responseObject.jsonObjectResponse.Email.toLowerCase()
-            : 'N/A'
+            : 'N/A',
+        subscriptionId: RecordKey.replace(/^0+/, '')
       });
     } catch (error) {
       this.setState({ gettingDetailsError: true, loading: false });
@@ -228,6 +229,7 @@ class SubscriptionDetails extends React.Component {
       editEmail,
       editingRewardsNum,
       editPayment,
+      subscriptionId,
       email
     } = this.state;
 
@@ -317,6 +319,16 @@ class SubscriptionDetails extends React.Component {
                           </span>
                         )}
                       </li>
+                      {isItem ? (
+                        <li className="status__item-mob">
+                          <span className="status mobile sub__id">
+                            SUBSCRIPTION ID:
+                          </span>
+                          <span className="status__date-mobile">
+                            {subscriptionId}
+                          </span>
+                        </li>
+                      ) : null}
                     </ul>
                     {openSaveCancelMenu ? (
                       <div className="save__update-mob">
@@ -348,6 +360,7 @@ class SubscriptionDetails extends React.Component {
                         editPayment,
                         editingRewardsNum,
                         email,
+                        subscriptionId,
                         handleEditEmailMobile: this.handleEditEmailMobile,
                         handleEditRewardsNumMobile: this
                           .handleEditRewardsNumMobile,
