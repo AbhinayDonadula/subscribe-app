@@ -87,7 +87,11 @@ class App extends Component {
     );
   };
 
-  sortItemsAndSubs = async ({ responseObject }, subscriptionsToShow) => {
+  sortItemsAndSubs = async (
+    { responseObject },
+    subscriptionsToShow,
+    itemUpdates = false
+  ) => {
     let itemSkus = [];
     let itemsAndServices = [];
     let products = [];
@@ -192,7 +196,7 @@ class App extends Component {
         products
       },
       () => {
-        if (filterBy) {
+        if (filterBy && !itemUpdates) {
           toast.success(`Showing ${filterBy} Subscriptions.`);
         }
       }
@@ -211,7 +215,7 @@ class App extends Component {
         showLoadMore
       } = this.state;
 
-      if (filterStatus === 'Active' || itemUpdates) {
+      if (filterStatus === 'Active') {
         subscriptionsToShow = activeServices;
       } else if (filterStatus === 'Cancelled') {
         subscriptionsToShow = cancelledServices;
@@ -239,7 +243,7 @@ class App extends Component {
           loadingProductsFailed: true
         });
       } else {
-        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow);
+        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, itemUpdates);
       }
     });
   };
