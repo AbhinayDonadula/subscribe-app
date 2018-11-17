@@ -35,13 +35,21 @@ export const beautifyGetSubListResponse = (servicesList) => {
           contractLine.status === 'Hold'
         )
       ) {
+        let sortByFreq = 0;
+        if (contractLine.billingFrequency === 'MON') {
+          sortByFreq = 1;
+        }
+        if (contractLine.billingFrequency === 'YR') {
+          sortByFreq = 2;
+        }
         subscriptions.push(
           Object.assign({
             ...header,
             ...contractLine,
             ...response.customer,
             reactKeyId: index + 1,
-            sortDate: datefns.format(contractLine.startDate, 'MM/DD/YYYY')
+            sortDate: datefns.format(contractLine.startDate, 'MM/DD/YYYY'),
+            sortByFreq
           })
         );
       }

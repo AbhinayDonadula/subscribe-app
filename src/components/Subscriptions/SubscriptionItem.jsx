@@ -263,7 +263,7 @@ class SubscriptionItem extends React.Component {
                   this.subscription.handleEditRewardsClick('', false);
                   this.setState({ refreshDetailsSection: true });
                 }
-                this.appData.getItems(null, null, true);
+                this.appData.getItems(true);
               }
             );
           }

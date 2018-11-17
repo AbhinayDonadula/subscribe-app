@@ -2701,7 +2701,7 @@ div.save__filter-sort > button {
     text-align: center;
     color: #ffffff;
     height: 40px;
-    width: 50%;
+    width: 60%;
 }
 
 div.save__filter-sort:hover {
@@ -2759,6 +2759,17 @@ input.disabled {
 .status.mobile.sub__id {
   margin-right: 3px;
 }
+
+div#monetate_htmlCountdown_d034a4a3, div.mt_countdown {
+  width: 100%;
+}
+
+input.filter__sort-checkbox[type="checkbox"] {
+  padding: 9px;
+  margin-top: 0;
+  margin-right: 10px;
+}
+
 
 /* 
   ##Device = Laptops, Desktops, projectors
@@ -2895,6 +2906,9 @@ input.disabled {
 
 /* phone*/
 @media (min-width: 320px) and (max-width: 760px) {
+  span.main_txt.desc {
+    word-break: break-all;
+  }
   div.data-table {
     margin: 15px 0;
   }
@@ -2993,7 +3007,6 @@ input.disabled {
     padding-left: 20px;
     padding-right: 20px;
     font-size: 13px;
-    /* border-radius: 4px; */
   }
 
   .save__update-mob > div > button.disable__btn {

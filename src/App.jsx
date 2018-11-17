@@ -23,7 +23,7 @@ class App extends Component {
   state = {
     content,
     userName: '',
-    sortBy: 'Next Delivery Date',
+    sortBy: '',
     filterBy: 'All Subscriptions',
     isMobile: window.innerWidth <= 750,
     initialAppLoading: true,
@@ -46,62 +46,57 @@ class App extends Component {
 
   sortSubscriptions = (selected) => {
     this.setState({ sortBy: selected, filtering: true }, () => {
-      const { filterBy, sortBy } = this.state;
-      this.getItems(filterBy, sortBy);
+      this.getItems();
     });
   };
 
   filterSubscriptions = (selected) => {
-    const [filterBy, sortBy] = selected.split(',');
+    const [filterBy, sort] = selected.split(',');
     this.setState(
-      { filterBy, sortBy: sortBy ? sortBy.trim() : '', filtering: true },
+      { filterBy, sortBy: sort ? sort.trim() : '', filtering: true },
       () => {
-        const { products, activeAndCancelledServices } = this.state;
-
-        if (filterBy === 'Products') {
-          this.setState(
-            { subscriptionsToShow: products, filtering: false },
-            () => {
-              toast.success('Showing Product subscriptions.');
-            }
-          );
-        } else if (filterBy === 'Services') {
+        const { activeAndCancelledServices, sortBy } = this.state;
+        if (filterBy === 'Services') {
+          let sortedServices = [];
+          if (sortBy === 'Purchase Date') {
+            sortedServices = activeAndCancelledServices.sort(
+              (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+            );
+          }
+          if (sortBy === 'Billing Frequency') {
+            // monthly services is shown first
+            sortedServices = activeAndCancelledServices.sort(
+              (a, b) => a.sortByFreq - b.sortByFreq
+            );
+          }
           this.setState(
             {
-              subscriptionsToShow: activeAndCancelledServices,
-              filtering: false
+              subscriptionsToShow:
+                sortBy.length > 0 ? sortedServices : activeAndCancelledServices,
+              filtering: false,
+              showLoadMore: false
             },
             () => {
               toast.success('Showing Service subscriptions.');
             }
           );
-        } else if (filterBy === 'All Subscriptions') {
-          this.setState(
-            {
-              subscriptionsToShow: [...products, ...activeAndCancelledServices],
-              filtering: false
-            },
-            () => {
-              toast.success('Showing All subscriptions.');
-            }
-          );
         } else {
-          this.getItems(filterBy, sortBy);
+          this.getItems();
         }
       }
     );
   };
 
-  sortItemsAndSubs = async (
-    { responseObject },
-    subscriptionsToShow,
-    status,
-    sortBy
-  ) => {
+  sortItemsAndSubs = async ({ responseObject }, subscriptionsToShow) => {
     let itemSkus = [];
     let itemsAndServices = [];
     let products = [];
-    const { services, localAPI } = this.state;
+    const {
+      activeAndCancelledServices,
+      localAPI,
+      sortBy,
+      filterBy
+    } = this.state;
     const { jsonObjectResponse } = responseObject;
     const { GetSubListDetail } = jsonObjectResponse;
     const showLoadMore = jsonObjectResponse.MoreFlag === '1';
@@ -160,7 +155,10 @@ class App extends Component {
           ...subscriptionsToShow
         ];
       } else {
-        itemsAndServices = [...beautifiedItemsWithImages, ...services];
+        itemsAndServices = [
+          ...beautifiedItemsWithImages,
+          ...activeAndCancelledServices
+        ];
       }
 
       // when we want to show only products
@@ -169,12 +167,12 @@ class App extends Component {
       if (subscriptionsToShow) {
         itemsAndServices = [...beautifiedItems, ...subscriptionsToShow];
       } else {
-        itemsAndServices = [...beautifiedItems, ...services];
+        itemsAndServices = [...beautifiedItems, ...activeAndCancelledServices];
       }
     }
 
     let sortedByDate = [];
-    if (sortBy === 'Frequency') {
+    if (sortBy === 'Delivery Frequency') {
       sortedByDate = itemsAndServices;
     } else {
       sortedByDate = itemsAndServices.sort(
@@ -194,57 +192,54 @@ class App extends Component {
         products
       },
       () => {
-        if (status) {
-          toast.success(`Showing ${status} Subscriptions.`);
+        if (filterBy) {
+          toast.success(`Showing ${filterBy} Subscriptions.`);
         }
       }
     );
   };
 
-  getItems = (filterStatus, sortBy, itemUpdates = false, loadMore = false) => {
+  getItems = (itemUpdates = false) => {
+    const { filterBy: filterStatus, sortBy } = this.state;
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
         localAPI,
-        services,
         activeServices,
         cancelledServices,
-        itemsAndServices
+        activeAndCancelledServices,
+        showLoadMore
       } = this.state;
 
       if (filterStatus === 'Active' || itemUpdates) {
         subscriptionsToShow = activeServices;
       } else if (filterStatus === 'Cancelled') {
         subscriptionsToShow = cancelledServices;
+      } else if (filterStatus === 'Products') {
+        subscriptionsToShow = [];
       } else {
-        subscriptionsToShow = itemsAndServices;
+        subscriptionsToShow = activeAndCancelledServices;
       }
 
       const itemsSubs = await getItemSubscriptions(
         localAPI,
         filterStatus,
         sortBy,
-        loadMore ? 'F' : 'T'
+        showLoadMore ? 'F' : 'T'
       );
       if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
         this.setState({ envDown: true });
       } else if (itemsSubs.hasErrorResponse === 'true') {
         this.setState({
-          itemsAndServices: services,
-          subscriptionsToShow: subscriptionsToShow || services,
+          itemsAndServices: activeAndCancelledServices,
+          subscriptionsToShow: activeAndCancelledServices,
           filtering: false,
           initialAppLoading: false,
           envDown: false,
           loadingProductsFailed: true
         });
       } else {
-        this.sortItemsAndSubs(
-          itemsSubs,
-          subscriptionsToShow,
-          filterStatus,
-          sortBy,
-          loadMore
-        );
+        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow);
       }
     });
   };
@@ -270,7 +265,6 @@ class App extends Component {
           {
             activeAndCancelledServices: services,
             subscriptionsToShow: services,
-            services,
             activeServices,
             cancelledServices,
             itemsAndServices: null,
@@ -291,8 +285,8 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    const { filterBy, sortBy } = this.state;
-    this.getItems(filterBy, sortBy, false, true);
+    // const { filterBy, sortBy } = this.state;
+    this.getItems();
   };
 
   render() {

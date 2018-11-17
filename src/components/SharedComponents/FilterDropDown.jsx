@@ -104,13 +104,13 @@ class FilterDropDown extends React.Component {
   };
 
   handleSelected = (event) => {
-    const { selected } = this.state;
-    const isButton = event.target.getAttribute('type') === 'button';
+    const { selected, listOpen } = this.state;
+    const open = event.target.getAttribute('data-value') !== null || !listOpen;
     this.setState({
       selected: event.target.getAttribute('data-value')
         ? event.target.getAttribute('data-value')
         : selected,
-      listOpen: !isButton
+      listOpen: open
     });
   };
 
@@ -123,8 +123,10 @@ class FilterDropDown extends React.Component {
 
   handleCheckBox = (event) => {
     const { filterOptions, sortOptions } = this.state;
+    const dataAttribute = event.target.getAttribute('data-value');
+
     const updatedOptions = filterOptions.map((each) => {
-      if (each.title === event.target.getAttribute('data-value')) {
+      if (each.title === dataAttribute) {
         return {
           ...each,
           checked:
@@ -137,22 +139,29 @@ class FilterDropDown extends React.Component {
     });
 
     const updatedSortOptions = sortOptions.map((each) => {
+      const { selectedSort } = this.state;
       if (
-        event.target.getAttribute('data-value') === 'Products' &&
-        (each.title === 'Delivery Date' || each.title === 'Delivery Frequency')
+        (dataAttribute === 'Services' &&
+          (each.title === 'Delivery Date' ||
+            each.title === 'Delivery Frequency')) ||
+        (dataAttribute === 'Products' &&
+          (each.title === 'Purchase Date' ||
+            each.title === 'Billing Frequency'))
       ) {
+        if (
+          (dataAttribute === 'Services' &&
+            (selectedSort === ', Delivery Date' ||
+              selectedSort === ', Delivery Frequency')) ||
+          (dataAttribute === 'Products' &&
+            (selectedSort === ', Purchase Date' ||
+              selectedSort === ', Billing Frequency'))
+        ) {
+          this.setState({ selectedSort: '' });
+        }
         return {
           ...each,
-          disabled: true
-        };
-      }
-      if (
-        event.target.getAttribute('data-value') === 'Services' &&
-        (each.title === 'Purchase Date' || each.title === 'Billing Frequency')
-      ) {
-        return {
-          ...each,
-          disabled: true
+          disabled: true,
+          checked: false
         };
       }
       return { ...each, disabled: false };
@@ -161,25 +170,29 @@ class FilterDropDown extends React.Component {
     this.setState({
       filterOptions: updatedOptions,
       sortOptions: updatedSortOptions,
-      selectedFilter: event.target.getAttribute('data-value')
+      selectedFilter: dataAttribute
     });
   };
 
   handleSortCheckBox = (event) => {
     const { sortOptions } = this.state;
+    const dataAttribute = event.target.getAttribute('data-value');
     const updatedSortOptions = sortOptions.map((each) => {
-      if (each.title === event.target.getAttribute('data-value')) {
+      if (each.title === dataAttribute) {
         return {
           ...each,
           checked:
-            event.target.checked === undefined ? true : event.target.checked
+            event.target.checked === undefined || each.checked === true
+              ? true
+              : event.target.checked
+          // event.target.checked === undefined ? true : event.target.checked
         };
       }
       return { ...each, checked: false };
     });
     this.setState({
       sortOptions: updatedSortOptions,
-      selectedSort: `, ${event.target.getAttribute('data-value')}`
+      selectedSort: `, ${dataAttribute}`
     });
   };
 

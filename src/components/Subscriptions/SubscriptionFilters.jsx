@@ -1,6 +1,5 @@
 import React from 'react';
 import AppContext from '../Context/AppContext';
-import Dropdown from '../SharedComponents/Dropdown';
 import FilterDropDown from '../SharedComponents/FilterDropDown';
 
 class SubscriptionFilters extends React.Component {
@@ -17,41 +16,23 @@ class SubscriptionFilters extends React.Component {
                   <div className="row select_Box hidden-xs">
                     <div className="filter__label col-xs-2">Filter & Sort:</div>
                     <div className="filter__options col-xs-6">
-                      {/* <Dropdown
-                        options={appData.content.ShowOptions}
-                        updateParentState={appData.handleAllFilter}
-                      /> */}
                       <FilterDropDown
                         updateParentState={appData.handleAllFilter}
                         selected={appData.filterBy}
                       />
                     </div>
-                    {/*  <div className="sort__label col-xs-1">Sort by:</div>
-                    <div className="sort__options col-xs-5">
-                      <Dropdown
-                        options={appData.content.SortOptions}
-                        updateParentState={appData.handleSortFilter}
-                      />
-                    </div> */}
                   </div>
                   {/*  mobile only */}
                   <div className="row visible-xs-block select_Box">
                     <div className="filters__container" id="scroll__to">
                       <div className="filter__mob">
-                        <div className="filter__label col-xs-12">Filter:</div>
-                        <div className="filter__options col-xs-12">
-                          <Dropdown
-                            options={appData.content.ShowOptions}
-                            updateParentState={appData.handleAllFilter}
-                          />
+                        <div className="filter__label col-xs-12">
+                          Filter & Sort:
                         </div>
-                      </div>
-                      <div className="sort__mob">
-                        <div className="sort__label col-xs-12">Sort by:</div>
-                        <div className="sort__options col-xs-12">
-                          <Dropdown
-                            options={appData.content.SortOptions}
-                            updateParentState={appData.handleSortFilter}
+                        <div className="filter__options col-xs-12">
+                          <FilterDropDown
+                            updateParentState={appData.handleAllFilter}
+                            selected={appData.filterBy}
                           />
                         </div>
                       </div>

@@ -152,7 +152,7 @@ class SubscriptionDetails extends React.Component {
         this.setState({ openSaveCancelMenu: false }, () => {
           toast.success(`Update item ${saveAction} is successful.`);
           // pass true to not to show extra toast msg
-          this.appData.getItems(null, null, true);
+          this.appData.getItems(true);
         });
       }
     } catch (error) {

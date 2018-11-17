@@ -18,10 +18,7 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
     StsCode = 'C';
   }
 
-  if (sortBy === 'Next Delivery Date') {
-    SortBy = 'D';
-  }
-  if (sortBy === 'Frequency') {
+  if (sortBy === 'Delivery Frequency') {
     SortBy = 'F';
   }
 
