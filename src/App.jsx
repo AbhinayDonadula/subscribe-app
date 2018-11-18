@@ -44,13 +44,7 @@ class App extends Component {
     cleanUp();
   }
 
-  sortSubscriptions = (selected) => {
-    this.setState({ sortBy: selected, filtering: true }, () => {
-      this.getItems();
-    });
-  };
-
-  filterSubscriptions = (selected) => {
+  filterSubscriptions = (selected, loadMore = false) => {
     const [filterBy, sort] = selected.split(',');
     this.setState(
       { filterBy, sortBy: sort ? sort.trim() : '', filtering: true },
@@ -77,11 +71,11 @@ class App extends Component {
               showLoadMore: false
             },
             () => {
-              toast.success('Showing Service subscriptions.');
+              toast.success('Showing Services.');
             }
           );
         } else {
-          this.getItems();
+          this.getItems(false, loadMore);
         }
       }
     );
@@ -90,7 +84,8 @@ class App extends Component {
   sortItemsAndSubs = async (
     { responseObject },
     subscriptionsToShow,
-    itemUpdates = false
+    itemUpdates = false,
+    loadMore = false
   ) => {
     let itemSkus = [];
     let itemsAndServices = [];
@@ -154,9 +149,23 @@ class App extends Component {
 
       // filter cancel/active subscriptions
       if (subscriptionsToShow) {
+        if (loadMore) {
+          itemsAndServices = [
+            ...beautifiedItemsWithImages,
+            ...subscriptionsToShow,
+            ...products
+          ];
+        } else {
+          itemsAndServices = [
+            ...beautifiedItemsWithImages,
+            ...subscriptionsToShow
+          ];
+        }
+      } else if (loadMore) {
         itemsAndServices = [
           ...beautifiedItemsWithImages,
-          ...subscriptionsToShow
+          ...activeAndCancelledServices,
+          ...products
         ];
       } else {
         itemsAndServices = [
@@ -197,13 +206,13 @@ class App extends Component {
       },
       () => {
         if (filterBy && !itemUpdates) {
-          toast.success(`Showing ${filterBy} Subscriptions.`);
+          toast.success(`Showing ${filterBy}.`);
         }
       }
     );
   };
 
-  getItems = (itemUpdates = false) => {
+  getItems = (itemUpdates = false, loadMore = false) => {
     const { filterBy: filterStatus, sortBy } = this.state;
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
@@ -243,7 +252,12 @@ class App extends Component {
           loadingProductsFailed: true
         });
       } else {
-        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, itemUpdates);
+        this.sortItemsAndSubs(
+          itemsSubs,
+          subscriptionsToShow,
+          itemUpdates,
+          loadMore
+        );
       }
     });
   };
@@ -289,8 +303,8 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    // const { filterBy, sortBy } = this.state;
-    this.getItems();
+    const { filterBy, sortBy } = this.state;
+    this.filterSubscriptions(`${filterBy}, ${sortBy}`, true);
   };
 
   render() {
@@ -306,7 +320,6 @@ class App extends Component {
         value={{
           ...this.state,
           handleAllFilter: this.filterSubscriptions,
-          handleSortFilter: this.sortSubscriptions,
           getItems: this.getItems,
           reloadApp: this.reloadApp,
           handleLoadMore: this.handleLoadMore
