@@ -12,7 +12,6 @@ import {
   formatStatus,
   getOrderNowURL,
   getFrequencyForAPI,
-  getCancellationFee,
   getCancelReasonServerVal,
   cancelSubscription,
   getOrderNowMobileURL
@@ -20,6 +19,7 @@ import {
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
 import CancelDropdown from '../SharedComponents/CancelDropDown';
+import getCancellationFee from '../../apiCalls/getCancellationFee';
 
 class SubscriptionItem extends React.Component {
   state = {
@@ -115,14 +115,6 @@ class SubscriptionItem extends React.Component {
     }));
   };
 
-  cancellationFeeSuccess = ({ data }) => {
-    this.setState({ cancelFees: data.CancellationFee });
-  };
-
-  cancellationFeeErr = () => {
-    this.setState({ cancellationFeeErr: true });
-  };
-
   handleExtendedMenuSelection = (event, subscription) => {
     event.preventDefault();
     const { SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
@@ -141,15 +133,27 @@ class SubscriptionItem extends React.Component {
           saveAction: 'cancel'
         });
       } else if (selected === 'Cancel Service Subscription') {
-        await getCancellationFee(
-          this.appData.localAPI
-            ? 'http://localhost:3004/getCancellationFee'
-            : `https://dev.odplabs.com/services/subscription-management-service-ext/eaiapi/getCancellationFee?contractNumber=${
-                this.subscription.contractId
-              }&cancellingLine=${this.subscription.lineNumber}`,
-          this.cancellationFeeSuccess,
-          this.cancellationFeeErr
+        const cancelFeeResponse = await getCancellationFee(
+          this.appData.localAPI,
+          this.subscription.contractId,
+          this.subscription.lineNumber
         );
+
+        if (
+          !cancelFeeResponse ||
+          cancelFeeResponse.hasErrorResponse === undefined ||
+          cancelFeeResponse.hasErrorResponse === 'true'
+        ) {
+          this.setState({ cancellationFeeFailed: true });
+        } else {
+          this.setState({
+            cancellationFeeFailed: false,
+            response: cancelFeeResponse.responseObject.jsonObjectResponse,
+            cancelFees:
+              cancelFeeResponse.responseObject.jsonObjectResponse
+                .CancellationFee
+          });
+        }
         this.setState({
           saveAction: 'cancelService',
           cancelService: true,

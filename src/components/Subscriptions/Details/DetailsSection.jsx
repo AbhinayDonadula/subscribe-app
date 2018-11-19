@@ -19,23 +19,32 @@ class DetailsSection extends React.Component {
 
   componentDidMount() {
     if (!this.subscription.isItem) {
-      const { contractId, lineNumber } = this.subscription;
-      getCancellationFee(
-        this.appData.localAPI
-          ? 'http://localhost:3004/getCancellationFee'
-          : `https://dev.odplabs.com/services/subscription-management-service-ext/eaiapi/getCancellationFee?contractNumber=${contractId}&cancellingLine=${lineNumber}`,
-        this.cancellationFeeSuccess,
-        this.cancellationFeeErr
-      );
+      this.getCancelFees();
     }
   }
 
-  cancellationFeeSuccess = ({ data }) => {
-    this.setState({ cancelFees: data.CancellationFee });
-  };
+  getCancelFees = async () => {
+    const { contractId, lineNumber } = this.subscription;
+    const cancelFeeResponse = await getCancellationFee(
+      this.appData.localAPI,
+      contractId,
+      lineNumber
+    );
 
-  cancellationFeeErr = () => {
-    this.setState({ cancellationFeeErr: true });
+    if (
+      !cancelFeeResponse ||
+      cancelFeeResponse.hasErrorResponse === undefined ||
+      cancelFeeResponse.hasErrorResponse === 'true'
+    ) {
+      this.setState({ cancellationFeeFailed: true });
+    } else {
+      this.setState({
+        cancellationFeeFailed: false,
+        response: cancelFeeResponse.responseObject.jsonObjectResponse,
+        cancelFees:
+          cancelFeeResponse.responseObject.jsonObjectResponse.CancellationFee
+      });
+    }
   };
 
   showSubDetailsSection = () => {
