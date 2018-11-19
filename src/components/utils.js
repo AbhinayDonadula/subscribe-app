@@ -1,10 +1,4 @@
-import axios from 'axios';
 import datefns from 'date-fns';
-import getJWToken from '../apiCalls/getJWToken';
-
-export const getTokenFromCookie = () => {};
-
-export const setTokenCookie = () => {};
 
 export const formatDate = (date, format) => {
   if (format) {
@@ -149,90 +143,6 @@ export const formatPrice = (price) => `$${parseFloat(price).toFixed(2)}`;
 
 export const getContractNumber = (contractId = 'N/A', lineNumber = 'N/A') =>
   `${contractId}-${lineNumber}`;
-
-// export const getCancellationFee = async (url, handleSuccess, handleError) => {
-//   const axiosInstance = axios.create({ baseURL: url });
-//   const tokenFromCookie = document.cookie.replace(
-//     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
-//     '$1'
-//   );
-//   if (tokenFromCookie.length === 0) {
-//     await getJWToken().then(({ token }) => {
-//       const date = new Date();
-//       date.setTime(date.getTime() + 540 * 1000);
-//       const expires = `; expires= ${date.toGMTString()}`;
-//       document.cookie = `token = ${token}${expires}; path=/`;
-//       axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-//     });
-//   } else {
-//     axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
-//   }
-
-//   await axiosInstance
-//     .get()
-//     .then((response) => {
-//       handleSuccess(response);
-//     })
-//     .catch((error) => {
-//       handleError(error);
-//     });
-// };
-
-export const cancelSubscription = async (
-  contractNumber,
-  lineNumber,
-  cancelDate,
-  reasonCode,
-  handleSuccess,
-  handleError
-) => {
-  const customerId = document.querySelector("input[name='accountId']").value;
-  const url = `https://staging.odplabs.com/services/subscription-management-async-broker/eaiapi/subscriptions/submitCancelSubscription?customerId=${customerId}`;
-  const axiosInstance = axios.create({ baseURL: url });
-  const tokenFromCookie = document.cookie.replace(
-    /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
-    '$1'
-  );
-  if (tokenFromCookie.length === 0) {
-    await getJWToken().then(({ token }) => {
-      const date = new Date();
-      date.setTime(date.getTime() + 540 * 1000);
-      const expires = `; expires= ${date.toGMTString()}`;
-      document.cookie = `token = ${token}${expires}; path=/`;
-      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    });
-  } else {
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${tokenFromCookie}`;
-  }
-
-  const postBody = {
-    cancelContractRequest: {
-      transactionHeader: {
-        consumer: {
-          consumerName: 'WWW',
-          consumerTransactionID: datefns.format(new Date(), 'MM/DD/YYYY')
-        },
-        timeReceived: datefns.format(new Date(), 'MM/DD/YYYY')
-      },
-      contract: {
-        customerId,
-        contractNumber,
-        lineNumber,
-        cancelDate,
-        reasonCode
-      }
-    }
-  };
-
-  await axiosInstance
-    .post(postBody)
-    .then((response) => {
-      handleSuccess(response);
-    })
-    .catch((error) => {
-      handleError(error);
-    });
-};
 
 export const FireGetImageBySku = async (url, handleSuccess, handleError) => {
   const headers = new window.Headers({

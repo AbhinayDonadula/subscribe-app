@@ -1,37 +1,43 @@
+import datefns from 'date-fns';
 import { getDefaultHeaders } from '../components/utils';
 
-const getBillingHistory = (localAPI, contractId) => {
+const cancelServiceSubscription = (
+  localAPI,
+  contractNumber,
+  lineNumber,
+  cancelDate,
+  reasonCode
+) => {
   let url = '';
+  const customerId = document.querySelector("input[name='accountId']").value;
 
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
-      TYPE: 'SERVICE_CONTRACT'
+      TYPE: 'SERVICE_LIST'
     },
-    INPUT: { contractId }
+    INPUT: {
+      cancelContractRequest: {
+        transactionHeader: {
+          consumer: {
+            consumerName: 'WWW',
+            consumerTransactionID: datefns.format(new Date(), 'MM/DD/YYYY')
+          },
+          timeReceived: datefns.format(new Date(), 'MM/DD/YYYY')
+        },
+        contract: {
+          customerId,
+          contractNumber,
+          lineNumber,
+          cancelDate,
+          reasonCode
+        }
+      }
+    }
   };
 
-  //   const postBody = {
-  //     cancelContractRequest: {
-  //       transactionHeader: {
-  //         consumer: {
-  //           consumerName: 'WWW',
-  //           consumerTransactionID: datefns.format(new Date(), 'MM/DD/YYYY')
-  //         },
-  //         timeReceived: datefns.format(new Date(), 'MM/DD/YYYY')
-  //       },
-  //       contract: {
-  //         customerId,
-  //         contractNumber,
-  //         lineNumber,
-  //         cancelDate,
-  //         reasonCode
-  //       }
-  //     }
-  //   };
-
   if (localAPI) {
-    url = 'http://localhost:3004/billingHistory';
+    url = 'http://localhost:3004/cancel';
   } else {
     url = '/orderhistory/subscriptionManager.do';
   }
@@ -51,4 +57,4 @@ const getBillingHistory = (localAPI, contractId) => {
     .catch(() => {});
 };
 
-export default getBillingHistory;
+export default cancelServiceSubscription;

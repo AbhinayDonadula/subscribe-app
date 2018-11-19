@@ -1,14 +1,10 @@
 import React from 'react';
 import AppContext from '../../Context/AppContext';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import {
-  formatPrice,
-  formatDate,
-  getContractNumber,
-  getCancellationFee
-} from '../../utils';
+import { formatPrice, formatDate, getContractNumber } from '../../utils';
 import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
 import SubDetailsContext from '../../Context/SubDetailsContext';
+import getCancellationFee from '../../../apiCalls/getCancellationFee';
 
 class DetailsSection extends React.Component {
   state = {

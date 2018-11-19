@@ -828,7 +828,7 @@ div.app__loader {
   display: block;
   padding: 28px 0;
   background: #ddd;
-  /* margin-top: -12px; */
+  margin-top: -12px;
   margin-bottom: -24px;
   margin-left: 5px;
   margin-right: 5px;
@@ -841,9 +841,12 @@ div.app__loader {
 .show_Div.hide {
   display: none !important;
 }
-/* li.btn_sv-container {
-  margin-left: 15px; */
-/* } */
+li.btn_sv-container {
+  margin-left: 15px; 
+ } 
+.cancellation > li.btn_sv-container {
+  margin-left: 0; 
+ } 
 .btn_sv {
   width: 138px;
   border-radius: 4px;
@@ -853,10 +856,14 @@ div.app__loader {
   padding: 10px 26px;
   letter-spacing: 1px;
 }
-/* li.btn_cncl-container {
+ li.btn_cncl-container {
   margin-right: 8%;
   margin-left: 15px;
-} */
+} 
+ .cancellation > li.btn_cncl-container {
+  margin-right: 0;
+  margin-left: 0;
+}
 .btn_cncl {
   font-size: 13px;
   font-weight: 600;

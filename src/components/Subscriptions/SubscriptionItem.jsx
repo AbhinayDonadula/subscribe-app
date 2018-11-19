@@ -13,13 +13,13 @@ import {
   getOrderNowURL,
   getFrequencyForAPI,
   getCancelReasonServerVal,
-  cancelSubscription,
   getOrderNowMobileURL
 } from '../utils';
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
 import CancelDropdown from '../SharedComponents/CancelDropDown';
 import getCancellationFee from '../../apiCalls/getCancellationFee';
+import cancelServiceSubscription from '../../apiCalls/cancelServiceSubscription';
 
 class SubscriptionItem extends React.Component {
   state = {
@@ -294,7 +294,7 @@ class SubscriptionItem extends React.Component {
     this.subscription.handleEditRewardsClick('', false);
   };
 
-  handleCancelSubmit = (event) => {
+  handleCancelSubmit = async (event) => {
     event.preventDefault();
     const { cancelStep, cancelReason } = this.state;
 
@@ -310,30 +310,21 @@ class SubscriptionItem extends React.Component {
       } = this.subscription;
 
       if (!this.isLocalAPI) {
-        cancelSubscription(
+        await cancelServiceSubscription(
+          this.isLocalAPI,
           contractId,
           lineNumber,
           currentBillingEndDate,
-          getCancelReasonServerVal(cancelReason),
-          this.handleCancelSuccess,
-          this.handleCancelErr
+          getCancelReasonServerVal(cancelReason)
         );
+        this.setState({ cancelService: false, cancelReason: '' }, () => {
+          this.appData.reloadApp();
+          toast.success(`Cancellation subscription is successful.`);
+        });
       } else {
         this.handleCancelSuccess();
       }
     }
-  };
-
-  handleCancelSuccess = () => {
-    this.setState({ cancelService: false, cancelReason: '' }, () => {
-      this.appData.reloadApp();
-      toast.success(`Cancellation subscription is successful.`);
-    });
-  };
-
-  handleCancelErr = (error) => {
-    this.setState({ cancellationFailed: error });
-    toast.warn(`Cancellation item is failed.`);
   };
 
   handleEditUserInfo = (editing, value) => {
@@ -667,24 +658,9 @@ class SubscriptionItem extends React.Component {
                       }`}
                     >
                       <ul className="list-inline list-unstyled">
-                        {cancelService ? (
-                          <li className="update__save--cancel-conf">
-                            <span
-                              style={{ color: '#273039', fontWeight: '600' }}
-                            >
-                              Are you sure you want to cancel? if you cancel
-                              now, your fee to cancel will be:
-                            </span>
-                            <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
-                              {' '}
-                              ${cancelFees}
-                            </span>
-                          </li>
-                        ) : (
-                          <li className="update__save--cancel-conf">
-                            {saveChangesTxt}
-                          </li>
-                        )}
+                        <li className="update__save--cancel-conf">
+                          {saveChangesTxt}
+                        </li>
                         <li className="btn_sv-container">
                           <a
                             href="/"
