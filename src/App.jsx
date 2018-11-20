@@ -37,7 +37,7 @@ class App extends Component {
     itemsAndServices: [],
     localAPI: true,
     loadingServicesFailed: false,
-    showLoadMore: false
+    showLoadMoreButton: false
   };
 
   componentDidMount() {
@@ -45,11 +45,7 @@ class App extends Component {
     cleanUp();
   }
 
-  filterSubscriptions = (
-    selectedFilter = '',
-    selectedSort = '',
-    loadMore = false
-  ) => {
+  filterSubscriptions = (selectedFilter = '', selectedSort = '') => {
     const [filterBy, sort] = getFilterSort(selectedFilter, selectedSort);
 
     this.setState(
@@ -59,7 +55,8 @@ class App extends Component {
           activeAndCancelledServices,
           sortBy,
           activeServices,
-          cancelledServices
+          cancelledServices,
+          loadMore
         } = this.state;
         if (
           filterBy === 'Services' ||
@@ -67,37 +64,43 @@ class App extends Component {
           filterBy === 'Services-Cancelled'
         ) {
           let servicesToShow = [];
+          let toastMessage = '';
           if (filterBy === 'Services') {
             servicesToShow = activeAndCancelledServices;
+            toastMessage = 'Showing All Services';
           }
 
           if (filterBy === 'Services-Active') {
             servicesToShow = activeServices;
+            toastMessage = 'Showing Active Services';
           }
 
           if (filterBy === 'Services-Cancelled') {
             servicesToShow = cancelledServices;
+            toastMessage = 'Showing Cancelled Services';
           }
 
           if (sortBy === 'Purchase Date') {
             servicesToShow = activeAndCancelledServices.sort(
               (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
             );
+            toastMessage = 'Showing Services sorted by purchase date';
           }
           if (sortBy === 'Billing Frequency') {
             // monthly services is shown first
             servicesToShow = activeAndCancelledServices.sort(
               (a, b) => a.sortByFreq - b.sortByFreq
             );
+            toastMessage = 'Showing Services sorted by billing frequency';
           }
           this.setState(
             {
               subscriptionsToShow: servicesToShow,
               filtering: false,
-              showLoadMore: false
+              showLoadMoreButton: false
             },
             () => {
-              toast.success('Showing Services.');
+              toast.success(toastMessage);
             }
           );
         } else {
@@ -124,7 +127,7 @@ class App extends Component {
     } = this.state;
     const { jsonObjectResponse } = responseObject;
     const { GetSubListDetail } = jsonObjectResponse;
-    const showLoadMore = jsonObjectResponse.MoreFlag === '1';
+    const showLoadMoreButton = jsonObjectResponse.MoreFlag === '1';
     const itemsList = GetSubListDetail || [];
 
     // filter out just item services from the response which has non-empty record key
@@ -227,7 +230,7 @@ class App extends Component {
         loadingProductsFailed: false,
         itemsAndServices: sortedByDate,
         subscriptionsToShow: sortedByDate,
-        showLoadMore,
+        showLoadMoreButton,
         products
       },
       () => {
@@ -247,7 +250,7 @@ class App extends Component {
         activeServices,
         cancelledServices,
         activeAndCancelledServices,
-        showLoadMore
+        showLoadMoreButton
       } = this.state;
 
       if (filterStatus === 'Active') {
@@ -264,7 +267,7 @@ class App extends Component {
         localAPI,
         filterStatus,
         sortBy,
-        showLoadMore ? 'F' : 'T'
+        showLoadMoreButton ? 'F' : 'T'
       );
       if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
         this.setState({ envDown: true });
@@ -330,7 +333,9 @@ class App extends Component {
 
   handleLoadMore = () => {
     const { filterBy, sortBy } = this.state;
-    this.filterSubscriptions(`${filterBy}, ${sortBy}`, true);
+    this.setState({ loadMore: true }, () => {
+      this.filterSubscriptions(`${filterBy}, ${sortBy}`);
+    });
   };
 
   render() {
