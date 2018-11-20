@@ -4,7 +4,7 @@ const getServiceSubscriptions = (localAPI) => {
   let url = '';
 
   if (localAPI) {
-    url = 'http://localhost:3004/getServicesFromNewAPI';
+    url = 'http://localhost:3004/getServices';
   } else {
     url = '/orderhistory/subscriptionManager.do';
   }

@@ -1,7 +1,6 @@
 {
   "/getCancellationFee": "/cancellationFee",
   "/getServices": "/data",
-  "/getServicesFromNewAPI": "/newData",
   "/getItems": "/items",
   "/getItemInfo": "/itemInfo"
 }

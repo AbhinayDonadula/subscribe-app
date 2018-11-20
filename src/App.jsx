@@ -67,6 +67,10 @@ class App extends Component {
           filterBy === 'Services-Cancelled'
         ) {
           let servicesToShow = [];
+          if (filterBy === 'Services') {
+            servicesToShow = activeAndCancelledServices;
+          }
+
           if (filterBy === 'Services-Active') {
             servicesToShow = activeServices;
           }
