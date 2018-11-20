@@ -14,7 +14,7 @@ const cancelServiceSubscription = (
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
-      TYPE: 'SERVICE_LIST'
+      TYPE: 'SERVICE_CANCELLATION'
     },
     INPUT: {
       cancelContractRequest: {
