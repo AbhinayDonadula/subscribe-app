@@ -6,7 +6,7 @@ const getCancellationFee = (localAPI, contractNumber, cancellingLine) => {
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
-      TYPE: 'SERVICE_LIST'
+      TYPE: 'CANCELLATION_FEE'
     },
     INPUT: { contractNumber, cancellingLine }
   };

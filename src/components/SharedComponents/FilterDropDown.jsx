@@ -119,7 +119,6 @@ class FilterDropDown extends React.Component {
     const { updateParentState } = this.props;
     const { selectedFilter, selectedSort } = this.state;
     updateParentState(selectedFilter, selectedSort);
-    // updateParentState(`${selectedFilter}${selectedSort}`);
   };
 
   handleFilterCheckBox = (event) => {
