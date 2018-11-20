@@ -73,7 +73,7 @@ class SubscriptionItemsContainer extends React.Component {
                     </SubscriptionContext.Provider>
                   </div>
                 ))}
-                {appData.showLoadMore ? (
+                {appData.showLoadMoreButton ? (
                   <div className="loadmore__container">
                     <button type="button" onClick={appData.handleLoadMore}>
                       Show More

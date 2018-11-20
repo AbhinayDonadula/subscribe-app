@@ -55,9 +55,10 @@ class App extends Component {
           activeAndCancelledServices,
           sortBy,
           activeServices,
-          cancelledServices,
-          loadMore
+          cancelledServices
         } = this.state;
+
+        // sort/filter services only
         if (
           filterBy === 'Services' ||
           filterBy === 'Services-Active' ||
@@ -104,7 +105,7 @@ class App extends Component {
             }
           );
         } else {
-          this.getItems(false, loadMore);
+          this.getItems();
         }
       }
     );
@@ -113,8 +114,7 @@ class App extends Component {
   sortItemsAndSubs = async (
     { responseObject },
     subscriptionsToShow,
-    itemUpdates = false,
-    loadMore = false
+    itemUpdates = false
   ) => {
     let itemSkus = [];
     let itemsAndServices = [];
@@ -123,7 +123,8 @@ class App extends Component {
       activeAndCancelledServices,
       localAPI,
       sortBy,
-      filterBy
+      filterBy,
+      loadMore
     } = this.state;
     const { jsonObjectResponse } = responseObject;
     const { GetSubListDetail } = jsonObjectResponse;
@@ -241,8 +242,7 @@ class App extends Component {
     );
   };
 
-  getItems = (itemUpdates = false, loadMore = false) => {
-    const { filterBy: filterStatus, sortBy } = this.state;
+  getItems = (itemUpdates = false) => {
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
@@ -250,14 +250,22 @@ class App extends Component {
         activeServices,
         cancelledServices,
         activeAndCancelledServices,
-        showLoadMoreButton
+        filterBy: filterStatus,
+        sortBy,
+        loadMore
       } = this.state;
+
+      console.log(filterStatus);
 
       if (filterStatus === 'Active') {
         subscriptionsToShow = activeServices;
       } else if (filterStatus === 'Cancelled') {
         subscriptionsToShow = cancelledServices;
-      } else if (filterStatus === 'Products') {
+      } else if (
+        filterStatus === 'Products' ||
+        filterStatus === 'Products-Active' ||
+        filterStatus === 'Products-Cancelled'
+      ) {
         subscriptionsToShow = [];
       } else {
         subscriptionsToShow = activeAndCancelledServices;
@@ -267,7 +275,7 @@ class App extends Component {
         localAPI,
         filterStatus,
         sortBy,
-        showLoadMoreButton ? 'F' : 'T'
+        loadMore ? 'F' : 'T'
       );
       if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
         this.setState({ envDown: true });
@@ -281,12 +289,7 @@ class App extends Component {
           loadingProductsFailed: true
         });
       } else {
-        this.sortItemsAndSubs(
-          itemsSubs,
-          subscriptionsToShow,
-          itemUpdates,
-          loadMore
-        );
+        this.sortItemsAndSubs(itemsSubs, subscriptionsToShow, itemUpdates);
       }
     });
   };
