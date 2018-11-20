@@ -118,11 +118,12 @@ class FilterDropDown extends React.Component {
     event.preventDefault();
     const { updateParentState } = this.props;
     const { selectedFilter, selectedSort } = this.state;
-    updateParentState(`${selectedFilter}${selectedSort}`);
+    updateParentState(selectedFilter, selectedSort);
+    // updateParentState(`${selectedFilter}${selectedSort}`);
   };
 
-  handleCheckBox = (event) => {
-    const { filterOptions, sortOptions } = this.state;
+  handleFilterCheckBox = (event) => {
+    const { filterOptions, sortOptions, selectedSort } = this.state;
     const dataAttribute = event.target.getAttribute('data-value');
 
     const updatedOptions = filterOptions.map((each) => {
@@ -135,16 +136,57 @@ class FilterDropDown extends React.Component {
               : event.target.checked
         };
       }
-      return { ...each, checked: false };
+
+      if (dataAttribute === 'Products' || dataAttribute === 'Services') {
+        return { ...each, checked: false };
+      }
+      if (
+        (dataAttribute === 'All Subscriptions' && each.title === 'Products') ||
+        (dataAttribute === 'All Subscriptions' && each.title === 'Services')
+      ) {
+        return { ...each, checked: false };
+      }
+
+      if (dataAttribute === 'Active' && each.title === 'Cancelled') {
+        return { ...each, checked: false };
+      }
+      if (dataAttribute === 'Cancelled' && each.title === 'Active') {
+        return { ...each, checked: false };
+      }
+
+      if (dataAttribute === 'Cancelled' && each.title === 'All Subscriptions') {
+        return { ...each, checked: false };
+      }
+
+      if (dataAttribute === 'Active' && each.title === 'All Subscriptions') {
+        return { ...each, checked: false };
+      }
+      if (dataAttribute === 'All Subscriptions' && each.title === 'Active') {
+        return { ...each, checked: false };
+      }
+      if (dataAttribute === 'All Subscriptions' && each.title === 'Cancelled') {
+        return { ...each, checked: false };
+      }
+      return each;
+    });
+
+    let selectedFilter = '';
+    updatedOptions.forEach((each) => {
+      if (each.checked) {
+        selectedFilter = !selectedFilter.length
+          ? selectedFilter + each.title
+          : `${selectedFilter}, ${each.title}`;
+      }
     });
 
     const updatedSortOptions = sortOptions.map((each) => {
-      const { selectedSort } = this.state;
       if (
-        (dataAttribute === 'Services' &&
+        ((dataAttribute === 'Services' ||
+          selectedFilter.includes('Services')) &&
           (each.title === 'Delivery Date' ||
             each.title === 'Delivery Frequency')) ||
-        (dataAttribute === 'Products' &&
+        ((dataAttribute === 'Products' ||
+          selectedFilter.includes('Products')) &&
           (each.title === 'Purchase Date' ||
             each.title === 'Billing Frequency'))
       ) {
@@ -170,7 +212,7 @@ class FilterDropDown extends React.Component {
     this.setState({
       filterOptions: updatedOptions,
       sortOptions: updatedSortOptions,
-      selectedFilter: dataAttribute
+      selectedFilter
     });
   };
 
@@ -234,7 +276,7 @@ class FilterDropDown extends React.Component {
               data-value={each.value}
               role="button"
               tabIndex={0}
-              onClick={this.handleCheckBox}
+              onClick={this.handleFilterCheckBox}
               className={
                 each.checked
                   ? 'filter__sort-option checked__filter'
@@ -245,7 +287,7 @@ class FilterDropDown extends React.Component {
                 type="checkbox"
                 data-value={each.value}
                 checked={each.checked}
-                onChange={this.handleCheckBox}
+                onChange={this.handleFilterCheckBox}
                 className="filter__sort-checkbox"
               />
               {each.title}

@@ -11,7 +11,8 @@ import Subscriptions from './components/Subscriptions/Subscriptions';
 import {
   beautifyGetSubListResponse,
   filterActiveCancel,
-  cleanUp
+  cleanUp,
+  getFilterSort
 } from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
@@ -44,29 +45,50 @@ class App extends Component {
     cleanUp();
   }
 
-  filterSubscriptions = (selected, loadMore = false) => {
-    const [filterBy, sort] = selected.split(',');
+  filterSubscriptions = (
+    selectedFilter = '',
+    selectedSort = '',
+    loadMore = false
+  ) => {
+    const [filterBy, sort] = getFilterSort(selectedFilter, selectedSort);
+
     this.setState(
       { filterBy, sortBy: sort ? sort.trim() : '', filtering: true },
       () => {
-        const { activeAndCancelledServices, sortBy } = this.state;
-        if (filterBy === 'Services') {
-          let sortedServices = [];
+        const {
+          activeAndCancelledServices,
+          sortBy,
+          activeServices,
+          cancelledServices
+        } = this.state;
+        if (
+          filterBy === 'Services' ||
+          filterBy === 'Services-Active' ||
+          filterBy === 'Services-Cancelled'
+        ) {
+          let servicesToShow = [];
+          if (filterBy === 'Services-Active') {
+            servicesToShow = activeServices;
+          }
+
+          if (filterBy === 'Services-Cancelled') {
+            servicesToShow = cancelledServices;
+          }
+
           if (sortBy === 'Purchase Date') {
-            sortedServices = activeAndCancelledServices.sort(
+            servicesToShow = activeAndCancelledServices.sort(
               (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
             );
           }
           if (sortBy === 'Billing Frequency') {
             // monthly services is shown first
-            sortedServices = activeAndCancelledServices.sort(
+            servicesToShow = activeAndCancelledServices.sort(
               (a, b) => a.sortByFreq - b.sortByFreq
             );
           }
           this.setState(
             {
-              subscriptionsToShow:
-                sortBy.length > 0 ? sortedServices : activeAndCancelledServices,
+              subscriptionsToShow: servicesToShow,
               filtering: false,
               showLoadMore: false
             },

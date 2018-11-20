@@ -356,3 +356,7 @@ export const getCancelReasonServerVal = (reason) => {
   }
   return 'OD_TERMINATED_CHANGE_OF_PLANS';
 };
+
+export const getFilterSort = (filter, sort) => {
+  return [filter.replace(', ', '-'), sort.replace(', ', '')];
+};
