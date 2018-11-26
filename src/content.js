@@ -52,7 +52,7 @@ export default {
     BillingInfoSectionHeader: 'Billing Information',
     NextScheduledPayment: 'Next Scheduled Payment : '
   },
-  SaveUpdate: 'Save/Update',
+  SaveUpdate: 'Save',
   CancelSaveUpdate: 'Cancel',
   navigateToService: '/catalog/search.do?Ntt=itemNumber',
   defaultItemImg:

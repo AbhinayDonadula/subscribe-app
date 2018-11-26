@@ -360,3 +360,161 @@ export const getCancelReasonServerVal = (reason) => {
 export const getFilterSort = (filter, sort) => {
   return [filter.replace(', ', '-'), sort.replace(', ', '')];
 };
+
+export const getProductErrorMsg = (errCode = '') => {
+  let errorMessage = '';
+  switch (errCode) {
+    case 'B14':
+      errorMessage =
+        'Credit card expires before next estimated delivery date. Please update your credit card information.';
+      break;
+    case 'B17':
+      errorMessage = 'Not enough stock, customer does not allow backorder.';
+      break;
+    case 'BDC':
+      errorMessage = 'Cancel date reached before next estimated delivery date.';
+      break;
+    case 'BDE':
+      errorMessage = 'End date reached before next estimated delivery date.';
+      break;
+    case 'BID':
+      errorMessage =
+        'Not enough stock, item discontinued, cancel subscription.';
+      break;
+    case 'BIN':
+      errorMessage =
+        'Not enough stock, this item will not replenish, cancel subscription. Please create new subscription with another available item.';
+      break;
+    case 'L05':
+      errorMessage = 'Miscellaneous line error(s).';
+      break;
+    case 'L18':
+      errorMessage =
+        'Quantity limit exceeded. Please update your subscription quantity appropriately.';
+      break;
+    case 'L78':
+      errorMessage =
+        'Unit price exceeded. Please create new subscription with another available item.';
+      break;
+    case 'L79':
+      errorMessage =
+        'Extended line total exceeded. Please lower subscription quantity to satisfy your line limit.';
+      break;
+    case 'L84':
+      errorMessage =
+        'Line limit exceeded. Please create new subscription with another available item that satisfies your line limit.';
+      break;
+    case 'L88':
+      errorMessage =
+        'Cost Center line limit exceeded. Please create new subscription with another available item that satisfies your line limit.';
+      break;
+    case 'LBO':
+      errorMessage = 'Not enough stock, customer allows backorder.';
+      break;
+    case 'O77':
+      errorMessage = 'Order dollar limit exceeded.';
+      break;
+    case 'O81':
+      errorMessage = 'Order Bill to limit exceeded.';
+      break;
+    case 'O82':
+      errorMessage = 'Order PO limit exceeded.';
+      break;
+    case 'O83':
+      errorMessage = 'Order Cost Center limit exceeded.';
+      break;
+    case 'O85':
+      errorMessage = 'Order limit exceeded.';
+      break;
+    case 'O86':
+      errorMessage = 'Order Ship To limit exceeded.';
+      break;
+    case 'O89':
+      errorMessage = 'Order PO expired.';
+      break;
+    case 'O90':
+      errorMessage = 'Minimum order value not met.';
+      break;
+    case 'L27':
+      errorMessage =
+        'Restricted item not allowed. Please create new subscription with another available item.';
+      break;
+    case 'ORD':
+      errorMessage = '';
+      break;
+    case 'O05':
+      errorMessage =
+        'We were unable to process the order due to the accounting fields on this subscription. Please update the values as needed.';
+      break;
+    case 'L39':
+      errorMessage =
+        'Item is discontinued. Can no longer be back-ordered. Please create new subscription with another available item.';
+      break;
+    case 'BSI':
+      errorMessage =
+        'Shipping address for this subscription has been placed in inactive status. Please update your profile with a valid Shipping address.';
+      break;
+    case 'L11':
+      errorMessage =
+        'Discontinued, invalid or invalid for location and no stock available. Please create new subscription with another available item.';
+      break;
+    case 'L17':
+      errorMessage =
+        'Not enough stock, customer does not allow backorder. Please create new subscription with another available item.';
+      break;
+    case 'SFS':
+      errorMessage = '';
+      break;
+    case 'U05':
+      errorMessage = 'Cost Center is invalid. Please enter a new Cost Center.';
+      break;
+    case 'U11':
+      errorMessage =
+        'Item is not available at this location for this order type.';
+      break;
+    case 'U23':
+      errorMessage =
+        'Orders can not be delivered to PO box numbers. Please set up an alternate shipping address.';
+      break;
+    case 'UC5':
+      errorMessage = 'An item in this subscription has been discontinued.';
+      break;
+    case 'UG1':
+      errorMessage =
+        'The shipping address has expired. Please update the shipping address.';
+      break;
+    case 'UG3':
+      errorMessage =
+        'The Cost Center has expired. Please update the Cost Center.';
+      break;
+    case 'UG5':
+      errorMessage =
+        'Shipping address balance exceeded. Contact your shipping department for additional information.';
+      break;
+    case 'X05':
+      errorMessage = 'Cost Center information is missing or invalid.';
+      break;
+    case 'X07':
+      errorMessage = 'Credit card information is missing or invalid.';
+      break;
+    case 'X22':
+      errorMessage = 'PayPal transaction did not complete. Please try again.';
+      break;
+    case 'X25':
+      errorMessage =
+        'User location error. Please contact your management to correct user profile location.';
+      break;
+    case 'X70':
+      errorMessage = 'Credit card expiration date is required.';
+      break;
+    default:
+      errorMessage = '';
+  }
+  if (
+    errorMessage === '' &&
+    ([...errCode][0] === 'U' && [...errCode][0] === 'X')
+  ) {
+    errorMessage = `We were unable to fulfill this subscription order. Please contact Customer Service and provide the error code:${errCode}`;
+  }
+  return errorMessage;
+};

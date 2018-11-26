@@ -827,7 +827,7 @@ div.app__loader {
 .show_Div.show {
   display: block;
   padding: 28px 0;
-  background: #ddd;
+  background: #f1f3f4;
   margin-top: -12px;
   margin-bottom: -24px;
   margin-left: 5px;
@@ -857,7 +857,7 @@ li.btn_sv-container {
   letter-spacing: 1px;
 }
  li.btn_cncl-container {
-  margin-right: 8%;
+  margin-right: 5%;
   margin-left: 15px;
 } 
  .cancellation > li.btn_cncl-container {
@@ -1741,9 +1741,7 @@ li.btn_sv-container {
 
   .fix {
     position: relative;
-    /* right: -11px; */
     z-index: 999;
-    /* top: 0; */
     box-shadow: -3px 0px 3px -2px #ccc;
     margin-bottom: 0;
     width: 31%;
@@ -1905,6 +1903,9 @@ li.btn_sv-container {
   }
   .select-items {
     left: 0;
+  }
+  .data-table ul li {
+    padding: 0
   }
 }
 @media (max-width: 414px) {
@@ -2777,6 +2778,44 @@ input.filter__sort-checkbox[type="checkbox"] {
   margin-right: 10px;
 }
 
+div.alert__box {
+  height: 45px;
+  margin-bottom: 25px;
+  border: 2px solid #f2f3f5;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+div.alert__box > span.err__msg {
+  font-size: 13px;
+  line-height: 1.77;
+  letter-spacing: 0.9px;
+  color: #000000;
+  margin-right: 10px;
+}
+
+div.alert__box > span.err__msg > span {
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.77;
+  letter-spacing: 0.9px;
+  color: #000000;
+  margin-right: 10px;
+}
+
+div.alert__img {
+  display: inline-block;
+  background: red;
+  height: 100%;
+  width: 45px;
+  margin-right: 10px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
 
 /* 
   ##Device = Laptops, Desktops, projectors
@@ -2897,6 +2936,10 @@ input.filter__sort-checkbox[type="checkbox"] {
   
   div#headerInnerWrap.headerV5.nav_with_tb #headerSearchBlock {
     margin-left: 30px;
+  }
+
+  div#content {
+    padding: 0;
   }
 }
 
@@ -3027,6 +3070,13 @@ input.filter__sort-checkbox[type="checkbox"] {
   div.loadmore__container > button {
     width: 50%;
     left: 25%;
+  }
+  div.alert__box > span.err__msg {
+    margin-right: 0;
+    line-height: inherit;
+  }
+  div.alert__box {
+    height: 75px;
   }
 
 }

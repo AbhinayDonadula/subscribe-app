@@ -82,16 +82,35 @@ class App extends Component {
           }
 
           if (sortBy === 'Purchase Date') {
-            servicesToShow = activeAndCancelledServices.sort(
-              (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-            );
+            if (filterBy === 'Services-Active') {
+              servicesToShow = activeServices.sort(
+                (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+              );
+            } else if (filterBy === 'Services-Cancelled') {
+              servicesToShow = cancelledServices.sort(
+                (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+              );
+            } else {
+              servicesToShow = activeAndCancelledServices.sort(
+                (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+              );
+            }
             toastMessage = 'Showing Services sorted by purchase date';
           }
           if (sortBy === 'Billing Frequency') {
-            // monthly services is shown first
-            servicesToShow = activeAndCancelledServices.sort(
-              (a, b) => a.sortByFreq - b.sortByFreq
-            );
+            if (filterBy === 'Services-Active') {
+              servicesToShow = activeServices.sort(
+                (a, b) => a.sortByFreq - b.sortByFreq
+              );
+            } else if (filterBy === 'Services-Cancelled') {
+              servicesToShow = cancelledServices.sort(
+                (a, b) => a.sortByFreq - b.sortByFreq
+              );
+            } else {
+              servicesToShow = activeAndCancelledServices.sort(
+                (a, b) => a.sortByFreq - b.sortByFreq
+              );
+            }
             toastMessage = 'Showing Services sorted by billing frequency';
           }
           this.setState(
@@ -114,7 +133,8 @@ class App extends Component {
   sortItemsAndSubs = async (
     { responseObject },
     subscriptionsToShow,
-    itemUpdates = false
+    itemUpdates = false,
+    loadMore = false
   ) => {
     let itemSkus = [];
     let itemsAndServices = [];
@@ -123,8 +143,7 @@ class App extends Component {
       activeAndCancelledServices,
       localAPI,
       sortBy,
-      filterBy,
-      loadMore
+      filterBy
     } = this.state;
     const { jsonObjectResponse } = responseObject;
     const { GetSubListDetail } = jsonObjectResponse;
@@ -242,7 +261,7 @@ class App extends Component {
     );
   };
 
-  getItems = (itemUpdates = false) => {
+  getItems = (itemUpdates = false, loadMore = false) => {
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
@@ -251,11 +270,8 @@ class App extends Component {
         cancelledServices,
         activeAndCancelledServices,
         filterBy: filterStatus,
-        sortBy,
-        loadMore
+        sortBy
       } = this.state;
-
-      console.log(filterStatus);
 
       if (filterStatus === 'Active') {
         subscriptionsToShow = activeServices;
@@ -336,9 +352,7 @@ class App extends Component {
 
   handleLoadMore = () => {
     const { filterBy, sortBy } = this.state;
-    this.setState({ loadMore: true }, () => {
-      this.filterSubscriptions(`${filterBy}, ${sortBy}`);
-    });
+    this.filterSubscriptions(filterBy, sortBy, true);
   };
 
   render() {
@@ -363,8 +377,12 @@ class App extends Component {
           <Header />
           {enableNotifications && !envDown ? <Notifications /> : null}
           {subscriptionsToShow && !envDown ? <Subscriptions /> : null}
-          {subscriptionsToShow === null && !initialAppLoading && !envDown ? (
-            <div className="no__subs">You have no subscriptions to view.</div>
+          {subscriptionsToShow === null ||
+          (subscriptionsToShow &&
+            !subscriptionsToShow.length &&
+            !initialAppLoading &&
+            !envDown) ? (
+            <div className="no__subs">No subscriptions found.</div>
           ) : null}
           {envDown ? (
             <div className="no__subs">

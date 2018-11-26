@@ -223,17 +223,22 @@ class FilterDropDown extends React.Component {
         return {
           ...each,
           checked:
-            event.target.checked === undefined || each.checked === true
-              ? true
+            event.target.checked === undefined
+              ? !each.checked
               : event.target.checked
-          // event.target.checked === undefined ? true : event.target.checked
         };
       }
       return { ...each, checked: false };
     });
+    let selectedSort = '';
+    updatedSortOptions.forEach((each) => {
+      if (each.checked) {
+        selectedSort = each.title;
+      }
+    });
     this.setState({
       sortOptions: updatedSortOptions,
-      selectedSort: `, ${dataAttribute}`
+      selectedSort: selectedSort.length ? `, ${selectedSort}` : ''
     });
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-import AppContext from '../Context/AppContext';
+// import AppContext from '../Context/AppContext';
 import TextLink from '../SharedComponents/TextLink';
 import Dropdown from '../SharedComponents/Dropdown';
 import SubscriptionDetails from './Details/SubscriptionDetails';
@@ -35,7 +35,6 @@ class SubscriptionItem extends React.Component {
     itemQuantity: '',
     prevItemQuantity: '',
     cancelReason: '',
-    saveChangesTxt: '',
     emailToSave: '',
     rewards: '',
     refreshDetailsSection: false
@@ -76,7 +75,6 @@ class SubscriptionItem extends React.Component {
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
       openSaveCancelMenu: true,
-      saveChangesTxt: 'Save/Update frequency changes?',
       saveAction: 'frequency',
       itemQuantity: prevItemQuantity
     }));
@@ -88,7 +86,6 @@ class SubscriptionItem extends React.Component {
       this.setState(() => ({
         itemQuantity: value,
         openSaveCancelMenu: value !== '' && value !== prevItemQuantity,
-        saveChangesTxt: 'Save/Update quantity changes?',
         saveAction: 'quantity',
         frequencySelected: prevFrequencySelected
       }));
@@ -129,7 +126,6 @@ class SubscriptionItem extends React.Component {
         this.setState({
           openSaveCancelMenu: true,
           cancelService: false,
-          saveChangesTxt: 'Cancel Item Subscription ?',
           saveAction: 'cancel'
         });
       } else if (selected === 'Cancel Service Subscription') {
@@ -163,14 +159,12 @@ class SubscriptionItem extends React.Component {
         this.setState({
           openSaveCancelMenu: true,
           cancelService: false,
-          saveChangesTxt: 'Skip Item Subscription ?',
           saveAction: 'skip'
         });
       } else if (selected === '') {
         this.setState({
           openSaveCancelMenu: true,
           cancelService: false,
-          saveChangesTxt: 'Change Item Frequency ?',
           saveAction: 'frequency'
         });
       }
@@ -331,26 +325,21 @@ class SubscriptionItem extends React.Component {
     let editPayment = false;
     let editEmail = false;
     let editMemberNum = false;
-    let saveChangesTxt = '';
     let saveAction = '';
     if (editing === 'email') {
       editEmail = true;
-      saveChangesTxt = 'Save email changes?';
       saveAction = 'email';
     } else if (editing === 'payment') {
       editPayment = true;
-      saveChangesTxt = 'Save payment changes?';
       saveAction = 'updatePayment';
     } else {
       editMemberNum = true;
-      saveChangesTxt = 'Save member number changes?';
       saveAction = 'updateMemNum';
     }
     this.setState({
       editEmail,
       editPayment,
       editMemberNum,
-      saveChangesTxt,
       openSaveCancelMenu: true,
       saveAction,
       emailToSave: value
@@ -363,7 +352,6 @@ class SubscriptionItem extends React.Component {
       viewDetailsOpen,
       itemQuantity,
       openSaveCancelMenu,
-      saveChangesTxt,
       frequencySelected,
       cancelService,
       cancelFees,
@@ -373,547 +361,540 @@ class SubscriptionItem extends React.Component {
     } = this.state;
 
     return (
-      <AppContext.Consumer>
-        {(appData) => (
-          <SubscriptionContext.Consumer>
-            {(subscription) => {
-              this.appData = appData;
-              this.subscription = subscription;
-              this.isLocalAPI = appData.localAPI;
+      <SubscriptionContext.Consumer>
+        {({ appData, ...subscription }) => {
+          this.appData = appData;
+          this.subscription = subscription;
+          this.isLocalAPI = appData.localAPI;
 
-              const {
-                closeDate = '',
-                isItem,
-                skuUrl,
-                itemNumber,
-                itemDescription = 'N/A',
-                shortDescription = '',
-                mediumImageUrl,
-                vendorNumber,
-                SubType,
-                Status,
-                editEmail,
-                editRewards
-              } = subscription;
+          const {
+            closeDate = '',
+            isItem,
+            skuUrl,
+            itemNumber,
+            itemDescription = 'N/A',
+            shortDescription = '',
+            mediumImageUrl,
+            vendorNumber,
+            SubType,
+            Status,
+            editEmail,
+            editRewards
+          } = subscription;
 
-              let subscriptionImage = '';
-              if (isItem) {
-                subscriptionImage =
-                  mediumImageUrl || appData.content.defaultItemImg;
-              } else if (vendorNumber === '01242135') {
-                subscriptionImage = getImageBySKU(itemNumber);
-              } else {
-                subscriptionImage = getSubscriptionImg(
-                  itemNumber,
-                  closeDate.length > 0
-                );
-              }
+          let subscriptionImage = '';
+          if (isItem) {
+            subscriptionImage =
+              mediumImageUrl || this.appData.content.defaultItemImg;
+          } else if (vendorNumber === '01242135') {
+            subscriptionImage = getImageBySKU(itemNumber);
+          } else {
+            subscriptionImage = getSubscriptionImg(
+              itemNumber,
+              closeDate.length > 0
+            );
+          }
 
-              const disableExtendedMenu =
-                Status === 'C' ||
-                subscription.status === 'Closed' ||
-                (closeDate && closeDate.length > 0);
-              const isSteamSub = isItem && SubType === 'S';
-              const isActiveItemSubscription = isItem && Status === 'A';
-              const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
+          const disableExtendedMenu =
+            Status === 'C' ||
+            subscription.status === 'Closed' ||
+            (closeDate && closeDate.length > 0);
+          const isSteamSub = isItem && SubType === 'S';
+          const isActiveItemSubscription = isItem && Status === 'A';
+          const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
 
-              let subscriptionDescription = '';
-              if (isItem && shortDescription) {
-                subscriptionDescription = `${shortDescription
-                  .split(' ')
-                  .slice(1, 12)
-                  .join(' ')}...`;
-              } else if (isItem && !shortDescription) {
-                subscriptionDescription = itemDescription;
-              } else if (!isItem) {
-                subscriptionDescription = itemDescription;
-              } else {
-                subscriptionDescription = 'N/A';
-              }
+          let subscriptionDescription = '';
+          if (isItem && shortDescription) {
+            subscriptionDescription = `${shortDescription
+              .split(' ')
+              .slice(1, 12)
+              .join(' ')}...`;
+          } else if (isItem && !shortDescription) {
+            subscriptionDescription = itemDescription;
+          } else if (!isItem) {
+            subscriptionDescription = itemDescription;
+          } else {
+            subscriptionDescription = 'N/A';
+          }
 
-              return (
-                <React.Fragment>
-                  <div
-                    className={`data-table ${
-                      openExtendedMenu ? 'overlay' : ''
-                    } ${openSaveCancelMenu ? 'open__conf' : ''}`}
+          return (
+            <React.Fragment>
+              <div
+                className={`data-table ${openExtendedMenu ? 'overlay' : ''} ${
+                  openSaveCancelMenu ? 'open__conf' : ''
+                }`}
+                onClick={() => {
+                  if (openExtendedMenu)
+                    this.setState({ openExtendedMenu: false });
+                }}
+                ref={(node) => {
+                  this.node = node;
+                }}
+              >
+                {/* each item */}
+                <ul className="list-unstyled list-inline main_ul">
+                  <li>
+                    <a
+                      onClick={(event) => {
+                        if (isItem && !skuUrl) {
+                          event.preventDefault();
+                        }
+                        return true;
+                      }}
+                      href={`${
+                        isItem
+                          ? skuUrl || ''
+                          : '/catalog/search.do?Ntt=itemNumber'.replace(
+                              'itemNumber',
+                              itemNumber
+                            )
+                      }`}
+                      className={`${isItem && !skuUrl ? 'default_cursor' : ''}`}
+                    >
+                      <Img src={subscriptionImage} />
+                    </a>
+                  </li>
+                  <li>
+                    <span
+                      className="main_txt desc"
+                      dangerouslySetInnerHTML={{
+                        __html: subscriptionDescription
+                      }}
+                    />
+                    <br />
+                    <TextLink
+                      label={`${
+                        viewDetailsOpen ? 'Close details' : 'View details'
+                      }`}
+                      handleClick={(open) => {
+                        this.setState(() => ({ viewDetailsOpen: open }));
+                      }}
+                    />
+                  </li>
+                  <li className="d-mob">
+                    <label className="item__label">STATUS</label> <br />
+                    <label
+                      className={`pad_span ${
+                        isActiveItemSubscription ? 'mgb0' : ''
+                      }`}
+                    >
+                      {isActiveItemSubscription
+                        ? `Delivery by: ${subscription.NextDlvDt}`
+                        : null}
+                      {!isActiveItemSubscription
+                        ? formatStatus(
+                            closeDate.length > 0 ||
+                            (!isActiveItemSubscription && isItem)
+                              ? 'C'
+                              : 'Active'
+                          )
+                        : null}
+                    </label>
+                  </li>
+                  <li
+                    className={`d-mob ${
+                      isActiveItemSubscription ? 'item__quantity-container' : ''
+                    }`}
+                  >
+                    <label
+                      className={`item__label ${
+                        isActiveItemSubscription
+                          ? 'item__quantity-container'
+                          : ''
+                      }`}
+                    >
+                      {appData.content.Quantity}
+                    </label>
+                    <br />
+                    {isActiveItemSubscription ? (
+                      <input
+                        className="item__quantity"
+                        onChange={this.handleItemQuantity}
+                        value={itemQuantity}
+                        onBlur={this.resetQuantity}
+                      />
+                    ) : (
+                      <label className="item__label pad_span margin__left-25">
+                        {subscription.quantity.replace(/^0+/, '')}
+                      </label>
+                    )}
+                  </li>
+                  <li
+                    className={`${
+                      !showFreqDropDown ? 'no__Dropdown' : ''
+                    } d-mob select_Box`}
+                  >
+                    <label className="item__label">
+                      {appData.content.FrequencyLabel}
+                    </label>
+                    <br />
+                    {showFreqDropDown ? (
+                      <Dropdown
+                        frequencyDropDown
+                        options={appData.content.FrequencyOptions}
+                        updateParentState={this.handleFrequencyDropDown}
+                        selected={frequencySelected}
+                      />
+                    ) : (
+                      <span className="pad_span margin__left-10">
+                        {getFrequency(subscription.billingFrequency)}
+                      </span>
+                    )}
+                  </li>
+                  {isItem && subscription.ActionCode !== '' ? (
+                    <li className="org_bg">
+                      <img src="" alt="" />
+                    </li>
+                  ) : (
+                    ''
+                  )}
+                  <li
+                    className={`cursor__pointer ${
+                      disableExtendedMenu ? 'disable' : ''
+                    }`}
                     onClick={() => {
-                      if (openExtendedMenu)
-                        this.setState({ openExtendedMenu: false });
-                    }}
-                    ref={(node) => {
-                      this.node = node;
+                      this.handleExtendedMenu(subscription);
                     }}
                   >
-                    {/* each item */}
-                    <ul className="list-unstyled list-inline main_ul">
-                      <li>
-                        <a
-                          onClick={(event) => {
-                            if (isItem && !skuUrl) {
-                              event.preventDefault();
+                    <a
+                      className={`open_drop ${
+                        disableExtendedMenu ? 'disable' : ''
+                      }`}
+                    >
+                      <span className="menu__ellipses">.</span>
+                      <span className="menu__ellipses">.</span>
+                      <span className="menu__ellipses">.</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Extended Menu */}
+              {openExtendedMenu && (
+                <div className="dropdown_div" style={{ display: 'block' }}>
+                  <ul className="list-inline list-unstyled">
+                    <li>
+                      <div className="dropbox">
+                        <div className="drophead">
+                          <p
+                            data-value={
+                              subscription.isItem
+                                ? appData.content.SkipNextDelivery
+                                : 'Cancel Service Subscription'
                             }
-                            return true;
-                          }}
-                          href={`${
-                            isItem
-                              ? skuUrl || ''
-                              : '/catalog/search.do?Ntt=itemNumber'.replace(
-                                  'itemNumber',
-                                  itemNumber
-                                )
-                          }`}
-                          className={`${
-                            isItem && !skuUrl ? 'default_cursor' : ''
-                          }`}
-                        >
-                          <Img src={subscriptionImage} />
-                        </a>
-                      </li>
-                      <li>
-                        <span
-                          className="main_txt desc"
-                          dangerouslySetInnerHTML={{
-                            __html: subscriptionDescription
-                          }}
-                        />
-                        <br />
-                        <TextLink
-                          label={`${
-                            viewDetailsOpen ? 'Close details' : 'View details'
-                          }`}
-                          handleClick={(open) => {
-                            this.setState(() => ({ viewDetailsOpen: open }));
-                          }}
-                        />
-                      </li>
-                      <li className="d-mob">
-                        <label className="item__label">STATUS</label> <br />
-                        <label
-                          className={`pad_span ${
-                            isActiveItemSubscription ? 'mgb0' : ''
-                          }`}
-                        >
-                          {isActiveItemSubscription
-                            ? `Delivery by: ${subscription.NextDlvDt}`
-                            : null}
-                          {!isActiveItemSubscription
-                            ? formatStatus(
-                                closeDate.length > 0 ||
-                                (!isActiveItemSubscription && isItem)
-                                  ? 'C'
-                                  : 'Active'
-                              )
-                            : null}
-                        </label>
-                      </li>
-                      <li
-                        className={`d-mob ${
-                          isActiveItemSubscription
-                            ? 'item__quantity-container'
-                            : ''
-                        }`}
-                      >
-                        <label
-                          className={`item__label ${
-                            isActiveItemSubscription
-                              ? 'item__quantity-container'
-                              : ''
-                          }`}
-                        >
-                          {appData.content.Quantity}
-                        </label>
-                        <br />
-                        {isActiveItemSubscription ? (
-                          <input
-                            className="item__quantity"
-                            onChange={this.handleItemQuantity}
-                            value={itemQuantity}
-                            onBlur={this.resetQuantity}
-                          />
-                        ) : (
-                          <label className="item__label pad_span margin__left-25">
-                            {subscription.quantity.replace(/^0+/, '')}
-                          </label>
-                        )}
-                      </li>
-                      <li
-                        className={`${
-                          !showFreqDropDown ? 'no__Dropdown' : ''
-                        } d-mob select_Box`}
-                      >
-                        <label className="item__label">
-                          {appData.content.FrequencyLabel}
-                        </label>
-                        <br />
-                        {showFreqDropDown ? (
-                          <Dropdown
-                            frequencyDropDown
-                            options={appData.content.FrequencyOptions}
-                            updateParentState={this.handleFrequencyDropDown}
-                            selected={frequencySelected}
-                          />
-                        ) : (
-                          <span className="pad_span margin__left-10">
-                            {getFrequency(subscription.billingFrequency)}
-                          </span>
-                        )}
-                      </li>
-                      <li
-                        className={`cursor__pointer ${
-                          disableExtendedMenu ? 'disable' : ''
-                        }`}
-                        onClick={() => {
-                          this.handleExtendedMenu(subscription);
-                        }}
-                      >
-                        <a
-                          className={`open_drop ${
-                            disableExtendedMenu ? 'disable' : ''
-                          }`}
-                        >
-                          <span className="menu__ellipses">.</span>
-                          <span className="menu__ellipses">.</span>
-                          <span className="menu__ellipses">.</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Extended Menu */}
-                  {openExtendedMenu && (
-                    <div className="dropdown_div" style={{ display: 'block' }}>
-                      <ul className="list-inline list-unstyled">
-                        <li>
-                          <div className="dropbox">
-                            <div className="drophead">
-                              <p
-                                data-value={
-                                  subscription.isItem
-                                    ? appData.content.SkipNextDelivery
-                                    : 'Cancel Service Subscription'
-                                }
-                                className="extended__menu-click"
-                                onClick={(event) => {
-                                  this.handleExtendedMenuSelection(
-                                    event,
-                                    subscription
-                                  );
-                                }}
-                              >
-                                {subscription.isItem
-                                  ? appData.content.SkipNextDelivery
-                                  : 'Cancel Subscription'}
-                              </p>
-                            </div>
-                            {subscription.isItem ? (
-                              <div className="dropbody">
-                                <ul className="list-unstyled subscription__extended-menu">
-                                  {appData.content.ExtendedMenuOptions.map(
-                                    (each) => {
-                                      if (each.id === 3 && isSteamSub) {
-                                        return undefined;
-                                      }
-                                      return (
-                                        <li key={each.id}>
-                                          <a
-                                            href="/"
-                                            data-value={each.label}
-                                            className="extended__menu-click"
-                                            onClick={(event) => {
-                                              this.handleExtendedMenuSelection(
-                                                event,
-                                                subscription
-                                              );
-                                            }}
-                                          >
-                                            {each.label}
-                                          </a>
-                                        </li>
-                                      );
-                                    }
-                                  )}
-                                </ul>
-                              </div>
-                            ) : null}
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Subscription Details Section */}
-                  {viewDetailsOpen && (
-                    <SubscriptionDetails
-                      handleEditUserInfo={this.handleEditUserInfo}
-                      refresh={refreshDetailsSection}
-                    />
-                  )}
-
-                  {/* Save/Update confirmation  */}
-                  {openSaveCancelMenu && !cancelService ? (
-                    <div
-                      className={`show_Div hidden-xs show ${
-                        viewDetailsOpen ? 'add__margin' : ''
-                      }`}
-                    >
-                      <ul className="list-inline list-unstyled">
-                        <li className="update__save--cancel-conf">
-                          {saveChangesTxt}
-                        </li>
-                        <li className="btn_sv-container">
-                          <a
-                            href="/"
-                            className="btn_sv"
-                            onClick={this.handleSaveUpdate}
-                          >
-                            {cancelService
-                              ? 'Yes, Continue'
-                              : appData.content.SaveUpdate}
-                          </a>
-                        </li>
-                        <li className="btn_cncl-container">
-                          <a
-                            href="/"
-                            className="btn_cncl"
-                            onClick={this.handleCancelSave}
-                          >
-                            {cancelService ? 'I Changed My Mind' : 'Cancel'}
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {/* cancel service */}
-                  {!openSaveCancelMenu && cancelService ? (
-                    <div
-                      className={`show_Div hidden-xs show cancellation ${
-                        viewDetailsOpen ? 'add__margin' : ''
-                      }`}
-                    >
-                      <ul className="list-inline list-unstyled">
-                        {cancelStep === 1 ? (
-                          <li className="update__save--cancel-conf">
-                            <span
-                              style={{ color: '#273039', fontWeight: '600' }}
-                            >
-                              Are you sure you want to cancel? if you cancel
-                              now, your fee to cancel will be:
-                            </span>
-                            <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
-                              {' '}
-                              ${cancelFees}
-                            </span>
-                          </li>
-                        ) : null}
-                        {cancelStep === 2 ? (
-                          <li className="update__save--cancel-conf">
-                            <span
-                              style={{ color: '#273039', fontWeight: '600' }}
-                            >
-                              Before you go, Please select a reason for your
-                              cancellation:
-                            </span>
-                          </li>
-                        ) : null}
-                        {cancelStep === 2 ? (
-                          <CancelDropdown
-                            options={appData.content.cancelReasonOptions}
-                            updateParentState={(reason) => {
-                              if (reason === 'Select your Reason...') {
-                                this.setState({ cancelReason: '' });
-                              } else {
-                                this.setState({ cancelReason: reason });
-                              }
-                            }}
-                          />
-                        ) : null}
-                        <li className="btn_sv-container">
-                          <a
-                            href="/"
-                            className={`btn_sv ${
-                              cancelStep === 2 && cancelReason.length === 0
-                                ? 'disable'
-                                : ''
-                            }`}
-                            onClick={this.handleCancelSubmit}
-                          >
-                            {cancelStep === 1 && 'Yes, Continue'}
-                            {cancelStep === 2 && 'Submit'}
-                          </a>
-                        </li>
-                        <li className="btn_cncl-container">
-                          <a
-                            href="/"
-                            className="btn_cncl"
-                            onClick={this.handleCancelSave}
-                          >
-                            I Changed My Mind
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  {/* Mobile */}
-                  {cancelService && !openSaveCancelMenu ? (
-                    <div
-                      className="visible-xs-block save__update-mob cancel__sub"
-                      style={{ margin: '-15px 0' }}
-                    >
-                      <div className="title">
-                        {cancelStep === 1 &&
-                          'Are you sure you want to cancel? if you cancel now, your fee to cancel will be: '}
-                        {cancelStep === 1 && (
-                          <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
-                            ${cancelFees}
-                          </span>
-                        )}
-                        {cancelStep === 2 ? (
-                          <span style={{ color: '#273039', fontWeight: '600' }}>
-                            Before you go, Please select a reason for your
-                            cancellation:
-                          </span>
-                        ) : null}
-                      </div>
-                      {cancelStep === 2 ? (
-                        <CancelDropdown
-                          options={appData.content.cancelReasonOptions}
-                          updateParentState={(reason) => {
-                            if (reason === 'Select your Reason...') {
-                              this.setState({ cancelReason: '' });
-                            } else {
-                              this.setState({ cancelReason: reason });
-                            }
-                          }}
-                        />
-                      ) : null}
-                      <div>
-                        <button
-                          type="button"
-                          onClick={(event) => {
-                            this.handleCancelSubmit(event);
-                          }}
-                          className={`${
-                            cancelStep === 2 && cancelReason.length === 0
-                              ? 'disable__btn'
-                              : ''
-                          }`}
-                        >
-                          {cancelStep === 1 && 'Yes, Cancel Subscription'}
-                          {cancelStep === 2 && 'Submit'}
-                        </button>
-                      </div>
-                      <div>
-                        <a onClick={this.handleCancelSave}>I change my mind</a>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {openSaveCancelMenu && !cancelService ? (
-                    <div
-                      className="visible-xs-block save__update-mob"
-                      style={{ margin: '-15px 0' }}
-                    >
-                      <div className="title">{saveChangesTxt}</div>
-                      <div>
-                        <button type="button" onClick={this.handleSaveUpdate}>
-                          Save/Update
-                        </button>
-                      </div>
-                      <div>
-                        <a onClick={this.handleCancelSave}>cancel</a>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {/* edit email */}
-                  {(editEmail || editRewards) && viewDetailsOpen ? (
-                    <div
-                      className={`show_Div hidden-xs show asd${
-                        viewDetailsOpen ? 'add__margin' : ''
-                      }`}
-                    >
-                      <ul className="list-inline list-unstyled email__rewards">
-                        <li className="update__save--cancel-conf">
-                          {editEmail ? 'Save email changes?' : null}
-                          {editRewards ? 'Save Rewards number changes?' : null}
-                        </li>
-                        <li className="btn_sv-container">
-                          <a
-                            href="/"
-                            className="btn_sv"
+                            className="extended__menu-click"
                             onClick={(event) => {
-                              event.preventDefault();
-                              this.setState(
-                                {
-                                  saveAction: editEmail ? 'email' : 'rewards',
-                                  emailToSave: subscription.email,
-                                  rewards: subscription.rewards
-                                },
-                                () => {
-                                  this.handleSaveUpdate();
-                                }
+                              this.handleExtendedMenuSelection(
+                                event,
+                                subscription
                               );
                             }}
                           >
-                            {appData.content.SaveUpdate}
-                          </a>
-                        </li>
-                        <li className="btn_cncl-container">
-                          <a
-                            href="/"
-                            className="btn_cncl"
-                            onClick={this.handleCancelSave}
-                          >
-                            Cancel
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  ) : null}
+                            {subscription.isItem
+                              ? appData.content.SkipNextDelivery
+                              : 'Cancel Subscription'}
+                          </p>
+                        </div>
+                        {subscription.isItem ? (
+                          <div className="dropbody">
+                            <ul className="list-unstyled subscription__extended-menu">
+                              {appData.content.ExtendedMenuOptions.map(
+                                (each) => {
+                                  if (each.id === 3 && isSteamSub) {
+                                    return undefined;
+                                  }
+                                  return (
+                                    <li key={each.id}>
+                                      <a
+                                        href="/"
+                                        data-value={each.label}
+                                        className="extended__menu-click"
+                                        onClick={(event) => {
+                                          this.handleExtendedMenuSelection(
+                                            event,
+                                            subscription
+                                          );
+                                        }}
+                                      >
+                                        {each.label}
+                                      </a>
+                                    </li>
+                                  );
+                                }
+                              )}
+                            </ul>
+                          </div>
+                        ) : null}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              )}
 
-                  {/* edit email mobile */}
-                  {(editEmail || editRewards) && viewDetailsOpen ? (
-                    <div
-                      className="visible-xs-block save__update-mob"
-                      style={{ margin: '-15px 0' }}
-                    >
-                      <div className="title">
-                        {editEmail ? 'Save email changes?' : null}
-                        {editRewards ? 'Save Rewards number changes?' : null}
-                      </div>
-                      <div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            this.setState(
-                              {
-                                saveAction: editEmail ? 'email' : 'rewards',
-                                emailToSave: subscription.email,
-                                rewards: subscription.rewards
-                              },
-                              () => {
-                                this.handleSaveUpdate();
-                              }
-                            );
-                          }}
-                        >
-                          Save/Update
-                        </button>
-                      </div>
-                      <div>
-                        <a onClick={this.handleCancelSave}>cancel</a>
-                      </div>
-                    </div>
+              {/* Subscription Details Section */}
+              {viewDetailsOpen && (
+                <SubscriptionDetails
+                  handleEditUserInfo={this.handleEditUserInfo}
+                  refresh={refreshDetailsSection}
+                />
+              )}
+
+              {/* Save/Update confirmation  */}
+              {openSaveCancelMenu && !cancelService ? (
+                <div
+                  className={`show_Div hidden-xs show ${
+                    viewDetailsOpen ? 'add__margin' : ''
+                  }`}
+                >
+                  <ul className="list-inline list-unstyled">
+                    <li className="update__save--cancel-conf">Save changes?</li>
+                    <li className="btn_sv-container">
+                      <a
+                        href="/"
+                        className="btn_sv"
+                        onClick={this.handleSaveUpdate}
+                      >
+                        {cancelService
+                          ? 'Yes, Continue'
+                          : appData.content.SaveUpdate}
+                      </a>
+                    </li>
+                    <li className="btn_cncl-container">
+                      <a
+                        href="/"
+                        className="btn_cncl"
+                        onClick={this.handleCancelSave}
+                      >
+                        {cancelService ? 'I Changed My Mind' : 'Cancel'}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              ) : null}
+
+              {/* cancel service */}
+              {!openSaveCancelMenu && cancelService ? (
+                <div
+                  className={`show_Div hidden-xs show cancellation ${
+                    viewDetailsOpen ? 'add__margin' : ''
+                  }`}
+                >
+                  <ul className="list-inline list-unstyled">
+                    {cancelStep === 1 ? (
+                      <li className="update__save--cancel-conf">
+                        <span style={{ color: '#273039', fontWeight: '600' }}>
+                          Are you sure you want to cancel? if you cancel now,
+                          your fee to cancel will be:
+                        </span>
+                        <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
+                          {' '}
+                          ${cancelFees}
+                        </span>
+                      </li>
+                    ) : null}
+                    {cancelStep === 2 ? (
+                      <li className="update__save--cancel-conf">
+                        <span style={{ color: '#273039', fontWeight: '600' }}>
+                          Before you go, Please select a reason for your
+                          cancellation:
+                        </span>
+                      </li>
+                    ) : null}
+                    {cancelStep === 2 ? (
+                      <CancelDropdown
+                        options={appData.content.cancelReasonOptions}
+                        updateParentState={(reason) => {
+                          if (reason === 'Select your Reason...') {
+                            this.setState({ cancelReason: '' });
+                          } else {
+                            this.setState({ cancelReason: reason });
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <li className="btn_sv-container">
+                      <a
+                        href="/"
+                        className={`btn_sv ${
+                          cancelStep === 2 && cancelReason.length === 0
+                            ? 'disable'
+                            : ''
+                        }`}
+                        onClick={this.handleCancelSubmit}
+                      >
+                        {cancelStep === 1 && 'Yes, Continue'}
+                        {cancelStep === 2 && 'Submit'}
+                      </a>
+                    </li>
+                    <li className="btn_cncl-container">
+                      <a
+                        href="/"
+                        className="btn_cncl"
+                        onClick={this.handleCancelSave}
+                      >
+                        I Changed My Mind
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              ) : null}
+
+              {/* Mobile */}
+              {cancelService && !openSaveCancelMenu ? (
+                <div
+                  className="visible-xs-block save__update-mob cancel__sub"
+                  style={{ margin: '-15px 0' }}
+                >
+                  <div className="title">
+                    {cancelStep === 1 &&
+                      'Are you sure you want to cancel? if you cancel now, your fee to cancel will be: '}
+                    {cancelStep === 1 && (
+                      <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
+                        ${cancelFees}
+                      </span>
+                    )}
+                    {cancelStep === 2 ? (
+                      <span style={{ color: '#273039', fontWeight: '600' }}>
+                        Before you go, Please select a reason for your
+                        cancellation:
+                      </span>
+                    ) : null}
+                  </div>
+                  {cancelStep === 2 ? (
+                    <CancelDropdown
+                      options={appData.content.cancelReasonOptions}
+                      updateParentState={(reason) => {
+                        if (reason === 'Select your Reason...') {
+                          this.setState({ cancelReason: '' });
+                        } else {
+                          this.setState({ cancelReason: reason });
+                        }
+                      }}
+                    />
                   ) : null}
-                </React.Fragment>
-              );
-            }}
-          </SubscriptionContext.Consumer>
-        )}
-      </AppContext.Consumer>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        this.handleCancelSubmit(event);
+                      }}
+                      className={`${
+                        cancelStep === 2 && cancelReason.length === 0
+                          ? 'disable__btn'
+                          : ''
+                      }`}
+                    >
+                      {cancelStep === 1 && 'Yes, Cancel Subscription'}
+                      {cancelStep === 2 && 'Submit'}
+                    </button>
+                  </div>
+                  <div>
+                    <a onClick={this.handleCancelSave}>I change my mind</a>
+                  </div>
+                </div>
+              ) : null}
+
+              {openSaveCancelMenu && !cancelService ? (
+                <div
+                  className="visible-xs-block save__update-mob"
+                  style={{ margin: '-15px 0' }}
+                >
+                  <div className="title">Save changes?</div>
+                  <div>
+                    <button type="button" onClick={this.handleSaveUpdate}>
+                      Save/Update
+                    </button>
+                  </div>
+                  <div>
+                    <a onClick={this.handleCancelSave}>cancel</a>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* edit email */}
+              {(editEmail || editRewards) && viewDetailsOpen ? (
+                <div
+                  className={`show_Div hidden-xs show asd${
+                    viewDetailsOpen ? 'add__margin' : ''
+                  }`}
+                >
+                  <ul className="list-inline list-unstyled email__rewards">
+                    <li className="update__save--cancel-conf">
+                      {editEmail ? 'Save email changes?' : null}
+                      {editRewards ? 'Save Rewards number changes?' : null}
+                    </li>
+                    <li className="btn_sv-container">
+                      <a
+                        href="/"
+                        className="btn_sv"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          this.setState(
+                            {
+                              saveAction: editEmail ? 'email' : 'rewards',
+                              emailToSave: subscription.email,
+                              rewards: subscription.rewards
+                            },
+                            () => {
+                              this.handleSaveUpdate();
+                            }
+                          );
+                        }}
+                      >
+                        {appData.content.SaveUpdate}
+                      </a>
+                    </li>
+                    <li className="btn_cncl-container">
+                      <a
+                        href="/"
+                        className="btn_cncl"
+                        onClick={this.handleCancelSave}
+                      >
+                        Cancel
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              ) : null}
+
+              {/* edit email mobile */}
+              {(editEmail || editRewards) && viewDetailsOpen ? (
+                <div
+                  className="visible-xs-block save__update-mob"
+                  style={{ margin: '-15px 0' }}
+                >
+                  <div className="title">
+                    {editEmail ? 'Save email changes?' : null}
+                    {editRewards ? 'Save Rewards number changes?' : null}
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        this.setState(
+                          {
+                            saveAction: editEmail ? 'email' : 'rewards',
+                            emailToSave: subscription.email,
+                            rewards: subscription.rewards
+                          },
+                          () => {
+                            this.handleSaveUpdate();
+                          }
+                        );
+                      }}
+                    >
+                      Save/Update
+                    </button>
+                  </div>
+                  <div>
+                    <a onClick={this.handleCancelSave}>cancel</a>
+                  </div>
+                </div>
+              ) : null}
+            </React.Fragment>
+          );
+        }}
+      </SubscriptionContext.Consumer>
     );
   }
 }

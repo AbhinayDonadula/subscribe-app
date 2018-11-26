@@ -61,6 +61,7 @@ class SubscriptionItemsContainer extends React.Component {
                   >
                     <SubscriptionContext.Provider
                       value={{
+                        appData,
                         ...eachSubscription,
                         ...this.state,
                         handleEditEmailClick: this.handleEditEmailClick,

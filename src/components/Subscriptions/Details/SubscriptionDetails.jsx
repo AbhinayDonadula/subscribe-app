@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import AppContext from '../../Context/AppContext';
 import Dropdown from '../../SharedComponents/Dropdown';
 import DetailsSection from './DetailsSection';
 import DownloadServiceSection from './DownloadServiceSection';
@@ -234,163 +233,158 @@ class SubscriptionDetails extends React.Component {
     } = this.state;
 
     return (
-      <AppContext.Consumer>
-        {(appData) => (
-          <SubscriptionContext.Consumer>
-            {(subscription) => {
-              this.subscription = subscription;
-              this.appData = appData;
-              this.isLocalAPI = appData.localAPI;
-              const {
-                status = '',
-                serviceType = 'SS',
-                billingFrequency,
-                vendorNumber,
-                isItem
-              } = subscription;
-              const {
-                itemQuantity,
-                saveChangesTxt,
-                openSaveCancelMenu
-              } = this.state;
+      <SubscriptionContext.Consumer>
+        {({ appData, ...subscription }) => {
+          this.subscription = subscription;
+          this.appData = appData;
+          this.isLocalAPI = appData.localAPI;
+          const {
+            status = '',
+            serviceType = 'SS',
+            billingFrequency,
+            vendorNumber,
+            isItem
+          } = subscription;
+          const {
+            itemQuantity,
+            saveChangesTxt,
+            openSaveCancelMenu
+          } = this.state;
 
-              // show billing section only only for SS type and Monthly frequency
-              const showBillingSection =
-                serviceType === 'SS' && billingFrequency === 'MON' && !isItem;
+          // show billing section only only for SS type and Monthly frequency
+          const showBillingSection =
+            serviceType === 'SS' && billingFrequency === 'MON' && !isItem;
 
-              // show/hide download section
-              const showDownloadSection =
-                !isItem &&
-                status.toLowerCase() !== 'closed' &&
-                vendorNumber !== '01242135' &&
-                (serviceType === 'SS' && vendorNumber !== '01306234');
+          // show/hide download section
+          const showDownloadSection =
+            !isItem &&
+            status.toLowerCase() !== 'closed' &&
+            vendorNumber !== '01242135' &&
+            (serviceType === 'SS' && vendorNumber !== '01306234');
 
-              return (
-                <div className="expand_box" style={{ display: 'block' }}>
-                  <div className="d-block d-md-none d-lg-none status_box full__width-mob">
-                    <ul className="list-unstyled details__mobile">
-                      <li className="status__item-mob">
-                        <span className="status mobile">STATUS</span>
-                        <span className="status__date-mobile">
-                          {isItem
-                            ? `Delivery by: ${formatDate(
-                                subscription.NextDlvDt,
-                                'MM/DD/YY'
-                              )}`
-                            : `Subscribed until: ${formatDate(
-                                subscription.endDate,
-                                'MM/DD/YY'
-                              )}`}
-                        </span>
-                      </li>
-                      <li className="quantity__item-mob">
-                        <span className="quantity mobile">
-                          {appData.content.Quantity}
-                        </span>
-                        <span>
-                          {isItem ? (
-                            <input
-                              type="text"
-                              className="item__qty-mob"
-                              id="item--qty"
-                              value={itemQuantity || ''}
-                              onChange={this.handleItemQuantity}
-                              onBlur={this.resetQuantity}
-                            />
-                          ) : (
-                            subscription.quantity.replace(/^0+/, '')
-                          )}
-                        </span>
-                      </li>
-                      <li className="freq__item-mob select_Box">
-                        <span className="frequency mobile">
-                          {appData.content.FrequencyLabel}
-                        </span>
-                        {isItem ? (
-                          <Dropdown
-                            options={appData.content.FrequencyOptions}
-                            updateParentState={this.handleFrequencyDropDown}
-                            selected={frequencySelected}
-                            mobile
-                          />
-                        ) : (
-                          <span className="pad_span">
-                            {getFrequency(subscription.billingFrequency)}
-                          </span>
-                        )}
-                      </li>
+          return (
+            <div className="expand_box" style={{ display: 'block' }}>
+              <div className="d-block d-md-none d-lg-none status_box full__width-mob">
+                <ul className="list-unstyled details__mobile">
+                  <li className="status__item-mob">
+                    <span className="status mobile">STATUS</span>
+                    <span className="status__date-mobile">
+                      {isItem
+                        ? `Delivery by: ${formatDate(
+                            subscription.NextDlvDt,
+                            'MM/DD/YY'
+                          )}`
+                        : `Subscribed until: ${formatDate(
+                            subscription.endDate,
+                            'MM/DD/YY'
+                          )}`}
+                    </span>
+                  </li>
+                  <li className="quantity__item-mob">
+                    <span className="quantity mobile">
+                      {appData.content.Quantity}
+                    </span>
+                    <span>
                       {isItem ? (
-                        <li className="status__item-mob">
-                          <span className="status mobile sub__id">
-                            SUBSCRIPTION ID:
-                          </span>
-                          <span className="status__date-mobile">
-                            {subscriptionId}
-                          </span>
-                        </li>
-                      ) : null}
-                    </ul>
-                    {openSaveCancelMenu ? (
-                      <div className="save__update-mob">
-                        <div className="title">{saveChangesTxt}</div>
-                        <div>
-                          <button type="button" onClick={this.handleSaveUpdate}>
-                            Save/Update
-                          </button>
-                        </div>
-                        <div>
-                          <a onClick={this.handleCancelSave}>Cancel</a>
-                        </div>
-                      </div>
-                    ) : null}
-                    <hr />
-                  </div>
-                  {loading ? (
-                    <Img
-                      spinner
-                      src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
-                    />
+                        <input
+                          type="text"
+                          className="item__qty-mob"
+                          id="item--qty"
+                          value={itemQuantity || ''}
+                          onChange={this.handleItemQuantity}
+                          onBlur={this.resetQuantity}
+                        />
+                      ) : (
+                        subscription.quantity.replace(/^0+/, '')
+                      )}
+                    </span>
+                  </li>
+                  <li className="freq__item-mob select_Box">
+                    <span className="frequency mobile">
+                      {appData.content.FrequencyLabel}
+                    </span>
+                    {isItem ? (
+                      <Dropdown
+                        options={appData.content.FrequencyOptions}
+                        updateParentState={this.handleFrequencyDropDown}
+                        selected={frequencySelected}
+                        mobile
+                      />
+                    ) : (
+                      <span className="pad_span">
+                        {getFrequency(subscription.billingFrequency)}
+                      </span>
+                    )}
+                  </li>
+                  {isItem ? (
+                    <li className="status__item-mob">
+                      <span className="status mobile sub__id">
+                        SUBSCRIPTION ID:
+                      </span>
+                      <span className="status__date-mobile">
+                        {subscriptionId}
+                      </span>
+                    </li>
                   ) : null}
-
-                  {!loading && !gettingDetailsError ? (
-                    <SubDetailsContext.Provider
-                      value={{
-                        itemInfo,
-                        editEmail,
-                        editPayment,
-                        editingRewardsNum,
-                        email,
-                        subscriptionId,
-                        handleEditEmailMobile: this.handleEditEmailMobile,
-                        handleEditRewardsNumMobile: this
-                          .handleEditRewardsNumMobile,
-                        editEmailAddress: this.editEmailAddress,
-                        editRewardsNum: this.editRewardsNum
-                      }}
-                    >
-                      <React.Fragment>
-                        <DetailsSection />
-                        {showDownloadSection ? (
-                          <DownloadServiceSection />
-                        ) : null}
-                        {showBillingSection ? <BillingInfoSection /> : null}
-                        <PaymentSection />
-                      </React.Fragment>
-                    </SubDetailsContext.Provider>
-                  ) : null}
-
-                  {!loading && gettingDetailsError ? (
-                    <div className="unexpected__error">
-                      Something unexpected happened while we tried to load item
-                      details, Please try again later.
+                </ul>
+                {openSaveCancelMenu ? (
+                  <div className="save__update-mob">
+                    <div className="title">{saveChangesTxt}</div>
+                    <div>
+                      <button type="button" onClick={this.handleSaveUpdate}>
+                        Save/Update
+                      </button>
                     </div>
-                  ) : null}
+                    <div>
+                      <a onClick={this.handleCancelSave}>Cancel</a>
+                    </div>
+                  </div>
+                ) : null}
+                <hr />
+              </div>
+              {loading ? (
+                <Img
+                  spinner
+                  src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
+                />
+              ) : null}
+
+              {!loading && !gettingDetailsError ? (
+                <SubDetailsContext.Provider
+                  value={{
+                    itemInfo,
+                    editEmail,
+                    editPayment,
+                    editingRewardsNum,
+                    email,
+                    subscriptionId,
+                    handleEditEmailMobile: this.handleEditEmailMobile,
+                    handleEditRewardsNumMobile: this.handleEditRewardsNumMobile,
+                    editEmailAddress: this.editEmailAddress,
+                    editRewardsNum: this.editRewardsNum,
+                    appData,
+                    subscription
+                  }}
+                >
+                  <React.Fragment>
+                    <DetailsSection />
+                    {showDownloadSection ? <DownloadServiceSection /> : null}
+                    {showBillingSection ? <BillingInfoSection /> : null}
+                    <PaymentSection />
+                  </React.Fragment>
+                </SubDetailsContext.Provider>
+              ) : null}
+
+              {!loading && gettingDetailsError ? (
+                <div className="unexpected__error">
+                  Something unexpected happened while we tried to load item
+                  details, Please try again later.
                 </div>
-              );
-            }}
-          </SubscriptionContext.Consumer>
-        )}
-      </AppContext.Consumer>
+              ) : null}
+            </div>
+          );
+        }}
+      </SubscriptionContext.Consumer>
     );
   }
 }
