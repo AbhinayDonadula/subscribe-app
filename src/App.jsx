@@ -165,7 +165,8 @@ class App extends Component {
         billingFrequency: item.Freq,
         quantity: item.QtyOrd,
         status: item.Status,
-        sortDate: item.NextDlvDt
+        sortDate: item.NextDlvDt,
+        reactKeyId: item.RecordKey
       };
     });
 

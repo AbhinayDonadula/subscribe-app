@@ -41,7 +41,7 @@ export const beautifyGetSubListResponse = (servicesList) => {
             ...header,
             ...contractLine,
             ...response.customer,
-            reactKeyId: index + 1,
+            reactKeyId: index * Math.random() * 10,
             sortDate: datefns.format(contractLine.startDate, 'MM/DD/YYYY'),
             sortByFreq
           })

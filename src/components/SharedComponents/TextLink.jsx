@@ -4,6 +4,13 @@ import PropTypes from 'prop-types';
 class TextLink extends React.Component {
   state = { active: false };
 
+  componentWillReceiveProps(nextProps) {
+    const { active } = this.props;
+    if (JSON.stringify(active) !== JSON.stringify(nextProps.active)) {
+      this.setState({ active: nextProps.active });
+    }
+  }
+
   handleClick = (event) => {
     event.preventDefault();
     const { active } = this.state;
@@ -53,7 +60,8 @@ class TextLink extends React.Component {
 
 TextLink.propTypes = {
   label: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired
+  handleClick: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired
 };
 
 export default TextLink;

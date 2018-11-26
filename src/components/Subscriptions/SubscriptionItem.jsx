@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-// import AppContext from '../Context/AppContext';
 import TextLink from '../SharedComponents/TextLink';
 import Dropdown from '../SharedComponents/Dropdown';
 import SubscriptionDetails from './Details/SubscriptionDetails';
@@ -25,7 +25,7 @@ class SubscriptionItem extends React.Component {
   state = {
     openSaveCancelMenu: false,
     saveAction: '',
-    viewDetailsOpen: false,
+    viewDetails: false,
     openExtendedMenu: false,
     cancelService: false,
     resetEdit: false,
@@ -37,7 +37,8 @@ class SubscriptionItem extends React.Component {
     cancelReason: '',
     emailToSave: '',
     rewards: '',
-    refreshDetailsSection: false
+    refreshDetailsSection: false,
+    localViewDetails: false
   };
 
   componentWillMount() {
@@ -46,12 +47,21 @@ class SubscriptionItem extends React.Component {
 
   componentDidMount() {
     const { billingFrequency, quantity, isItem, Freq } = this.subscription;
+    const { viewDetails } = this.props;
     this.setState({
       frequencySelected: getFrequency(isItem ? Freq : billingFrequency),
       prevFrequencySelected: getFrequency(isItem ? Freq : billingFrequency),
       itemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
-      prevItemQuantity: isItem ? quantity.replace(/^0+/, '') : ''
+      prevItemQuantity: isItem ? quantity.replace(/^0+/, '') : '',
+      viewDetails
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { viewDetails } = this.props;
+    if (JSON.stringify(viewDetails) !== JSON.stringify(nextProps.viewDetails)) {
+      this.setState({ viewDetails: nextProps.viewDetails });
+    }
   }
 
   componentWillUnmount() {
@@ -349,7 +359,7 @@ class SubscriptionItem extends React.Component {
   render() {
     const {
       openExtendedMenu,
-      viewDetailsOpen,
+      viewDetails,
       itemQuantity,
       openSaveCancelMenu,
       frequencySelected,
@@ -381,6 +391,8 @@ class SubscriptionItem extends React.Component {
             editEmail,
             editRewards
           } = subscription;
+
+          const { handleViewDetails } = this.props;
 
           let subscriptionImage = '';
           if (isItem) {
@@ -464,11 +476,12 @@ class SubscriptionItem extends React.Component {
                     <br />
                     <TextLink
                       label={`${
-                        viewDetailsOpen ? 'Close details' : 'View details'
+                        viewDetails ? 'Close details' : 'View details'
                       }`}
-                      handleClick={(open) => {
-                        this.setState(() => ({ viewDetailsOpen: open }));
+                      handleClick={() => {
+                        handleViewDetails();
                       }}
+                      active={viewDetails}
                     />
                   </li>
                   <li className="d-mob">
@@ -632,7 +645,7 @@ class SubscriptionItem extends React.Component {
               )}
 
               {/* Subscription Details Section */}
-              {viewDetailsOpen && (
+              {viewDetails && (
                 <SubscriptionDetails
                   handleEditUserInfo={this.handleEditUserInfo}
                   refresh={refreshDetailsSection}
@@ -643,7 +656,7 @@ class SubscriptionItem extends React.Component {
               {openSaveCancelMenu && !cancelService ? (
                 <div
                   className={`show_Div hidden-xs show ${
-                    viewDetailsOpen ? 'add__margin' : ''
+                    viewDetails ? 'add__margin' : ''
                   }`}
                 >
                   <ul className="list-inline list-unstyled">
@@ -676,7 +689,7 @@ class SubscriptionItem extends React.Component {
               {!openSaveCancelMenu && cancelService ? (
                 <div
                   className={`show_Div hidden-xs show cancellation ${
-                    viewDetailsOpen ? 'add__margin' : ''
+                    viewDetails ? 'add__margin' : ''
                   }`}
                 >
                   <ul className="list-inline list-unstyled">
@@ -812,10 +825,10 @@ class SubscriptionItem extends React.Component {
               ) : null}
 
               {/* edit email */}
-              {(editEmail || editRewards) && viewDetailsOpen ? (
+              {(editEmail || editRewards) && viewDetails ? (
                 <div
                   className={`show_Div hidden-xs show asd${
-                    viewDetailsOpen ? 'add__margin' : ''
+                    viewDetails ? 'add__margin' : ''
                   }`}
                 >
                   <ul className="list-inline list-unstyled email__rewards">
@@ -858,7 +871,7 @@ class SubscriptionItem extends React.Component {
               ) : null}
 
               {/* edit email mobile */}
-              {(editEmail || editRewards) && viewDetailsOpen ? (
+              {(editEmail || editRewards) && viewDetails ? (
                 <div
                   className="visible-xs-block save__update-mob"
                   style={{ margin: '-15px 0' }}
@@ -898,5 +911,14 @@ class SubscriptionItem extends React.Component {
     );
   }
 }
+
+SubscriptionItem.propTypes = {
+  handleViewDetails: PropTypes.func.isRequired,
+  viewDetails: PropTypes.bool
+};
+
+SubscriptionItem.defaultProps = {
+  viewDetails: false
+};
 
 export default SubscriptionItem;

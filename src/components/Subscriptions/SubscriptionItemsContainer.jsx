@@ -7,7 +7,7 @@ import SpinnerPortal from '../SharedComponents/SpinnerPortal';
 import EmailCampaign from './EmailCampaign';
 
 class SubscriptionItemsContainer extends React.Component {
-  state = { email: '' };
+  state = { email: '', openDetailsInfo: {} };
 
   handleEditEmailClick = (email, editEmail = true) => {
     this.setState({ editEmail, editRewards: false, email });
@@ -49,31 +49,61 @@ class SubscriptionItemsContainer extends React.Component {
                     subscriptions. Please try again later.`}
                   </div>
                 ) : null}
-                {appData.subscriptionsToShow.map((eachSubscription) => (
-                  <div
-                    className="sub_div"
-                    key={
-                      eachSubscription.RecordKey
-                        ? eachSubscription.RecordKey
-                        : eachSubscription.reactKeyId +
-                          eachSubscription.lineNumber
-                    }
-                  >
-                    <SubscriptionContext.Provider
-                      value={{
-                        appData,
-                        ...eachSubscription,
-                        ...this.state,
-                        handleEditEmailClick: this.handleEditEmailClick,
-                        handleEditRewardsClick: this.handleEditRewardsClick,
-                        handleEditEmail: this.handleEditEmail,
-                        handleEditRewards: this.handleEditRewards
-                      }}
+                {appData.subscriptionsToShow.map((eachSubscription) => {
+                  // console.log(eachSubscription);
+                  const { state } = this;
+                  const viewDetailsPropName = `viewDetails${
+                    eachSubscription.reactKeyId
+                  }`;
+                  return (
+                    <div
+                      className="sub_div"
+                      key={
+                        eachSubscription.reactKeyId +
+                        eachSubscription.lineNumber
+                      }
+                      id={eachSubscription.reactKeyId}
                     >
-                      <SubscriptionItem />
-                    </SubscriptionContext.Provider>
-                  </div>
-                ))}
+                      <SubscriptionContext.Provider
+                        value={{
+                          appData,
+                          ...eachSubscription,
+                          ...this.state,
+                          handleEditEmailClick: this.handleEditEmailClick,
+                          handleEditRewardsClick: this.handleEditRewardsClick,
+                          handleEditEmail: this.handleEditEmail,
+                          handleEditRewards: this.handleEditRewards
+                        }}
+                      >
+                        <SubscriptionItem
+                          viewDetails={
+                            state.openDetailsInfo[viewDetailsPropName]
+                          }
+                          handleViewDetails={() => {
+                            this.setState(
+                              {
+                                openDetailsInfo: {
+                                  [viewDetailsPropName]: !state.openDetailsInfo[
+                                    viewDetailsPropName
+                                  ]
+                                }
+                              },
+                              () => {
+                                document
+                                  .getElementById(eachSubscription.reactKeyId)
+                                  .scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start',
+                                    inline: 'center'
+                                  });
+                              }
+                            );
+                          }}
+                        />
+                      </SubscriptionContext.Provider>
+                    </div>
+                  );
+                })}
                 {appData.showLoadMoreButton ? (
                   <div className="loadmore__container">
                     <button type="button" onClick={appData.handleLoadMore}>
