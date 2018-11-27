@@ -35,9 +35,9 @@
               {
                 "contractHeader": {
                   "closeDate": "",
-                  "orderNumber": "405648450-001",
-                  "endDate": "2020-11-16",
-                  "contractId": "61347",
+                  "orderNumber": "405727933-001",
+                  "endDate": "2020-11-23",
+                  "contractId": "64478",
                   "loyaltyMember": "1931915514",
                   "paymentDetails": {
                     "paymentCard": {
@@ -46,12 +46,127 @@
                         "fullAddress": "118 CAMELOT DR,BERKELEY,GOOSE CREEK, SC 29445",
                         "fullName": "DONALD DUCK"
                       },
-                      "expirationDate": "2022-04-01"
+                      "expirationDate": "2036-12-01"
+                    },
+                    "paymentType": "CreditCard"
+                  },
+                  "startDate": "2018-11-24",
+                  "versionNumber": "3",
+                  "status": "Active"
+                },
+                "contractLines": [
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "23",
+                    "serviceType": "SS",
+                    "itemNumber": "9760701",
+                    "nextBillingDate": "2018-12-23",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2020-11-23",
+                    "currentBillingEndDate": "2018-12-22",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "2018-12-23",
+                    "itemName": "9760701",
+                    "currentBillingStartDate": "2018-11-24",
+                    "itemDescription": "Proactive PC Monitoring & Security Support ",
+                    "lineNumber": "1",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-11-24",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "23",
+                    "serviceType": "SS",
+                    "itemNumber": "9760701",
+                    "nextBillingDate": "2018-12-24",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2020-11-23",
+                    "currentBillingEndDate": "2018-12-23",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9760701",
+                    "currentBillingStartDate": "2018-11-24",
+                    "itemDescription": "Proactive PC Monitoring & Security Support ",
+                    "lineNumber": "2",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-11-24",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "23",
+                    "serviceType": "SS",
+                    "itemNumber": "9760701",
+                    "nextBillingDate": "2018-12-23",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2020-11-23",
+                    "currentBillingEndDate": "2018-12-22",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "2018-12-23",
+                    "itemName": "9760701",
+                    "currentBillingStartDate": "2018-11-24",
+                    "itemDescription": "Proactive PC Monitoring & Security Support ",
+                    "lineNumber": "3",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-11-24",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "0",
+                    "itemNumber": "4383814",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2018-11-24",
+                    "lineTypeName": "Termination Fee",
+                    "closeDate": "2018-11-24",
+                    "itemName": "4383814",
+                    "itemDescription": "Unlimited On Demand Cancel",
+                    "lineNumber": "4",
+                    "startDate": "2018-11-24",
+                    "status": "Closed"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "0",
+                    "itemNumber": "4383814",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2018-11-24",
+                    "lineTypeName": "Termination Fee",
+                    "closeDate": "2018-11-24",
+                    "itemName": "4383814",
+                    "itemDescription": "Unlimited On Demand Cancel",
+                    "lineNumber": "5",
+                    "startDate": "2018-11-24",
+                    "status": "Closed"
+                  }
+                ]
+              },
+              {
+                "contractHeader": {
+                  "closeDate": "2018-12-16",
+                  "orderNumber": "405648450-001",
+                  "endDate": "2020-11-16",
+                  "contractId": "61347",
+                  "loyaltyMember": "1931915514",
+                  "paymentDetails": {
+                    "paymentCard": {
+                      "cardType": "VISA",
+                      "billingAddress": {
+                        "fullAddress": "118 CAMELOT DR,BERKELEY,GOOSE CREEK, SC 29445",
+                        "fullName": "DONALD DUCK"
+                      },
+                      "expirationDate": "2023-02-01"
                     },
                     "paymentType": "CreditCard"
                   },
                   "startDate": "2018-11-17",
-                  "versionNumber": "6",
+                  "versionNumber": "17",
                   "status": "Active"
                 },
                 "contractLines": [
@@ -66,7 +181,7 @@
                     "endDate": "2020-11-16",
                     "currentBillingEndDate": "2018-12-16",
                     "lineTypeName": "Subscription",
-                    "closeDate": "",
+                    "closeDate": "2018-12-16",
                     "itemName": "9760701",
                     "currentBillingStartDate": "2018-11-17",
                     "itemDescription": "Proactive PC Monitoring & Security Support ",
@@ -74,6 +189,21 @@
                     "vendorNumber": "12345678",
                     "startDate": "2018-11-17",
                     "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "0",
+                    "itemNumber": "4383814",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2018-11-24",
+                    "lineTypeName": "Termination Fee",
+                    "closeDate": "2018-11-24",
+                    "itemName": "4383814",
+                    "itemDescription": "Unlimited On Demand Cancel",
+                    "lineNumber": "2",
+                    "startDate": "2018-11-24",
+                    "status": "Closed"
                   }
                 ]
               },
@@ -275,7 +405,7 @@
               },
               {
                 "contractHeader": {
-                  "closeDate": "",
+                  "closeDate": "2018-12-04",
                   "orderNumber": "405383209-001",
                   "endDate": "2020-11-04",
                   "contractId": "60366",
@@ -292,7 +422,7 @@
                     "paymentType": "CreditCard"
                   },
                   "startDate": "2018-11-05",
-                  "versionNumber": "1",
+                  "versionNumber": "2",
                   "status": "Active"
                 },
                 "contractLines": [
@@ -307,7 +437,7 @@
                     "endDate": "2020-11-04",
                     "currentBillingEndDate": "2018-12-04",
                     "lineTypeName": "Subscription",
-                    "closeDate": "",
+                    "closeDate": "2018-12-04",
                     "itemName": "9760701",
                     "currentBillingStartDate": "2018-11-05",
                     "itemDescription": "Proactive PC Monitoring & Security Support ",
@@ -315,6 +445,21 @@
                     "vendorNumber": "01132448",
                     "startDate": "2018-11-05",
                     "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "0",
+                    "itemNumber": "4383814",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2018-11-24",
+                    "lineTypeName": "Termination Fee",
+                    "closeDate": "2018-11-24",
+                    "itemName": "4383814",
+                    "itemDescription": "Unlimited On Demand Cancel",
+                    "lineNumber": "2",
+                    "startDate": "2018-11-24",
+                    "status": "Closed"
                   }
                 ]
               },
@@ -428,7 +573,7 @@
                   },
                   "startDate": "2018-10-22",
                   "versionNumber": "2",
-                  "status": "Active"
+                  "status": "Closed"
                 },
                 "contractLines": [
                   {
@@ -436,20 +581,17 @@
                     "unitPrice": "23",
                     "serviceType": "SS",
                     "itemNumber": "9760701",
-                    "nextBillingDate": "2018-11-22",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2020-10-21",
-                    "currentBillingEndDate": "2018-11-21",
                     "lineTypeName": "Subscription",
                     "closeDate": "2018-11-21",
                     "itemName": "9760701",
-                    "currentBillingStartDate": "2018-10-22",
                     "itemDescription": "Proactive PC Monitoring & Security Support ",
                     "lineNumber": "1",
                     "vendorNumber": "01132448",
                     "startDate": "2018-10-22",
-                    "status": "Active"
+                    "status": "Closed"
                   },
                   {
                     "billingFrequency": "MON",
@@ -586,15 +728,15 @@
                     "unitPrice": "23",
                     "serviceType": "SS",
                     "itemNumber": "9760701",
-                    "nextBillingDate": "2018-11-26",
+                    "nextBillingDate": "2018-12-26",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2020-09-25",
-                    "currentBillingEndDate": "2018-11-25",
+                    "currentBillingEndDate": "2018-12-25",
                     "lineTypeName": "Subscription",
                     "closeDate": "",
                     "itemName": "9760701",
-                    "currentBillingStartDate": "2018-10-26",
+                    "currentBillingStartDate": "2018-11-26",
                     "itemDescription": "Proactive PC Monitoring & Security Support ",
                     "lineNumber": "1",
                     "vendorNumber": "01132448",
@@ -623,7 +765,7 @@
                   },
                   "startDate": "2018-09-24",
                   "versionNumber": "2",
-                  "status": "Active"
+                  "status": "Closed"
                 },
                 "contractLines": [
                   {
@@ -631,20 +773,17 @@
                     "unitPrice": "15",
                     "serviceType": "SS",
                     "itemNumber": "9204711",
-                    "nextBillingDate": "2018-11-24",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2019-09-23",
-                    "currentBillingEndDate": "2018-11-23",
                     "lineTypeName": "Subscription",
                     "closeDate": "2018-11-23",
                     "itemName": "9204711",
-                    "currentBillingStartDate": "2018-10-24",
                     "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
                     "lineNumber": "1",
                     "vendorNumber": "01132448",
                     "startDate": "2018-09-24",
-                    "status": "Active"
+                    "status": "Closed"
                   }
                 ]
               },
@@ -1357,6 +1496,75 @@
             "WlrPct": "",
             "Freq": "",
             "SKU": ""
+          }
+        },
+        "ListCount": "3"
+      }
+    },
+    "timestamp": 0,
+    "requestObject": null
+  },
+  "cancelledItems": {
+    "statusCode": 0,
+    "hasErrorResponse": "false",
+    "errorResponse": null,
+    "responseObject": {
+      "errorMessage": null,
+      "success": true,
+      "jsonObjectResponse": {
+        "Reserve": "",
+        "MoreFlag": "0",
+        "WhereFlag": "O",
+        "GetSubListDetail": {
+          "GetSubListDetail000": {
+            "Status": "C",
+            "Reserve": "",
+            "fixedPriceFlag": "N",
+            "SubType": "R",
+            "RecordKey": "110849",
+            "BpSubPrice": "16.79",
+            "AllowReorder": "1",
+            "ActionCode": "B14",
+            "FreeSku": "",
+            "NickName": "",
+            "IncPct": "00",
+            "AllowCancel": "1",
+            "Desc": "TWIZZLERS,STRAWBERRY,LICORICE",
+            "BundleId": "",
+            "NextDlvDt": "11/29/2018",
+            "SkuCount": "",
+            "AllowMod": "1",
+            "AllowSkip": "1",
+            "LstChgTmpStmp": "2018-11-19-13.45.51.529000",
+            "QtyOrd": "5",
+            "WlrPct": "00",
+            "Freq": "W",
+            "SKU": "399253"
+          },
+          "GetSubListDetail001": {
+            "Status": "C",
+            "Reserve": "",
+            "fixedPriceFlag": "",
+            "SubType": "",
+            "RecordKey": "110911",
+            "BpSubPrice": "",
+            "AllowReorder": "",
+            "ActionCode": "",
+            "FreeSku": "",
+            "NickName": "",
+            "IncPct": "",
+            "AllowCancel": "",
+            "Desc": "",
+            "BundleId": "",
+            "NextDlvDt": "Dec 31, 2018",
+            "SkuCount": "",
+            "AllowMod": "",
+            "AllowSkip": "",
+            "LstChgTmpStmp": "",
+            "QtyOrd": "3",
+            "WlrPct": "",
+            "Freq": "",
+            "SKU": "255876"
           }
         },
         "ListCount": "3"

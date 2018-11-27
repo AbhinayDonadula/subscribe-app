@@ -575,10 +575,7 @@ class SubscriptionItem extends React.Component {
                         disableExtendedMenu ? 'disable' : ''
                       }`}
                     >
-                      <img
-                        src="http://officedepot.scene7.com/is/content/officedepot/options_menu_3-blue-dots"
-                        alt=""
-                      />
+                      <img src={appData.content.icons.dottedIcon} alt="" />
                     </a>
                   </li>
                 </ul>

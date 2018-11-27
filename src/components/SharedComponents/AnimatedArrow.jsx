@@ -9,7 +9,7 @@ class AnimatedArrow extends React.Component {
   };
 
   render() {
-    const { label, color, clicked } = this.props;
+    const { label, clicked } = this.props;
     const activeArrow = clicked;
 
     return (
@@ -20,20 +20,7 @@ class AnimatedArrow extends React.Component {
           onClick={(event) => {
             this.handleClick(event);
           }}
-        >
-          <span
-            onClick={(event) => {
-              this.handleClick(event);
-            }}
-            style={{ background: color || '#000' }}
-          />
-          <span
-            onClick={(event) => {
-              this.handleClick(event);
-            }}
-            style={{ background: color || '#000' }}
-          />
-        </span>
+        />
       </span>
     );
   }
@@ -41,14 +28,12 @@ class AnimatedArrow extends React.Component {
 
 AnimatedArrow.propTypes = {
   label: PropTypes.string,
-  color: PropTypes.string,
   handleClick: PropTypes.func.isRequired,
   clicked: PropTypes.bool
 };
 
 AnimatedArrow.defaultProps = {
   label: '',
-  color: '',
   clicked: false
 };
 

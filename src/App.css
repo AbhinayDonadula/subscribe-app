@@ -753,16 +753,6 @@ div.app__loader {
   transform: translate(0, -50%);
 }
 
-/*point the arrow upwards when the select box is open (active):*/
-.select-selected.select-arrow-active:after {
-  position: absolute;
-  content: "";
-  background-size: 14px;
-  z-index: 9999;
-  height: 8px;
-  background-position: 100% 59%;
-  right: 15%;
-}
 .custom-select1 .select-selected.select-arrow-active:after {
   right: 14%;
 }
@@ -1016,17 +1006,6 @@ li.btn_sv-container {
 .select_Box .select-items {
   width: 100%;
 }
-.select_Box .custom-select .select-selected.select-arrow-active:after {
-  right: 6%;
-  top: 43%;
-}
-.select_Box .select-selected:after {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #273039;
-}
 
 .select-items div,
 .select-selected.select-arrow-active {
@@ -1036,14 +1015,21 @@ li.btn_sv-container {
 
 .select-selected:after {
   content: "";
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #273039;
+  width: 10px;
+  height: 6px;
   top: 43%;
   position: absolute;
   right: 6%;
+  background: url(http://officedepot.scene7.com/is/content/officedepot/Down-arrow-solid);
+}
+.select-arrow-active.select-selected:after {
+  content: "";
+  width: 10px;
+  height: 6px;
+  top: 43%;
+  position: absolute;
+  right: 6%;
+  background: url(http://officedepot.scene7.com/is/content/officedepot/Up-arrow-solid);
 }
 .org_bg {
   background: #fab800;
@@ -1103,9 +1089,6 @@ li.btn_sv-container {
   }
   .custom-select1 .select-selected:after {
     right: 0%;
-  }
-  .custom-select1 .select-selected.select-arrow-active:after {
-    right: 8%;
   }
 }
 @media (max-width: 1280px) {
@@ -1211,9 +1194,6 @@ li.btn_sv-container {
   }
   .select-items {
     left: 0;
-  }
-  .select-selected.select-arrow-active:after {
-    right: 8%;
   }
 }
 @media (max-width: 1100px) {
@@ -2297,38 +2277,16 @@ div.unexpected__error {
 }
 
 .animated__arrow {
-  width: 1.25rem;
-  height: 10px;
+  width: 12px;
+  height: 7px;
   display: inline-block;
   position: relative;
-  margin: 0 1rem;
+  margin: 0.5px 5px;
+  background: url(http://officedepot.scene7.com/is/content/officedepot/Down-arrow-linear)
 }
-.animated__arrow span {
-  top: 0.5rem;
-  position: absolute;
-  width: 0.75rem;
-  height: 0.1rem;
-  background-color: #1e5a99;
-  display: inline-block;
-  transition: all 0.2s ease;
-}
-.animated__arrow span:first-of-type {
-  left: 0;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.animated__arrow span:last-of-type {
-  right: 0;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.animated__arrow.active span:first-of-type {
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.animated__arrow.active span:last-of-type {
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
+
+.animated__arrow.active {
+  background: url(http://officedepot.scene7.com/is/content/officedepot/Up-arrow-linear)
 }
 
 a.email__address,
@@ -2798,6 +2756,10 @@ div.alert__img {
   border-bottom-left-radius: 4px;
 }
 
+.filters__mob {
+  margin-right: -5px;
+}
+
 
 /* 
   ##Device = Laptops, Desktops, projectors
@@ -2964,13 +2926,13 @@ div.alert__img {
     margin-top: 0;
   }
 
-  .animated__arrow {
+  /* .animated__arrow {
     width: 20px;
     height: 11px;
     display: inline-block;
     position: relative;
     margin: 1px 6px;
-  }
+  } */
 
   .img-responsive {
     width: inherit;
@@ -3046,9 +3008,9 @@ div.alert__img {
     border: solid 1px #e3e3e3;
   }
 
-  span.animated__arrow {
+  /* span.animated__arrow {
     width: 13px;
-  }
+  } */
   div.loadmore__container > button {
     width: 50%;
     left: 25%;

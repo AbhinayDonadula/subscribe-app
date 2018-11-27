@@ -6,7 +6,11 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
   let SortBy = 'D';
 
   if (localAPI) {
-    url = 'http://localhost:3004/getItems';
+    if (statusCode === 'Products-Cancelled') {
+      url = 'http://localhost:3004/getCancelledItems';
+    } else {
+      url = 'http://localhost:3004/getItems';
+    }
   } else {
     url = '/orderhistory/subscriptionManager.do';
   }

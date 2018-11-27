@@ -40,18 +40,7 @@ class TextLink extends React.Component {
             onClick={(event) => {
               this.handleClick(event);
             }}
-          >
-            <span
-              onClick={(event) => {
-                this.handleClick(event);
-              }}
-            />
-            <span
-              onClick={(event) => {
-                this.handleClick(event);
-              }}
-            />
-          </span>
+          />
         </span>
       </a>
     );

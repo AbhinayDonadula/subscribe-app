@@ -36,12 +36,15 @@ export const beautifyGetSubListResponse = (servicesList) => {
         if (contractLine.billingFrequency === 'YR') {
           sortByFreq = 2;
         }
+        const reactKeyId =
+          index === 0 ? Math.random() * 1000 : index * Math.random() * 1000;
+
         subscriptions.push(
           Object.assign({
             ...header,
             ...contractLine,
             ...response.customer,
-            reactKeyId: index * Math.random() * 10,
+            reactKeyId,
             sortDate: datefns.format(contractLine.startDate, 'MM/DD/YYYY'),
             sortByFreq
           })

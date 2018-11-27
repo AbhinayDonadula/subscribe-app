@@ -2,5 +2,6 @@
   "/getCancellationFee": "/cancellationFee",
   "/getServices": "/data",
   "/getItems": "/items",
+  "/getCancelledItems": "/cancelledItems",
   "/getItemInfo": "/itemInfo"
 }

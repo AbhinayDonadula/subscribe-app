@@ -1,4 +1,16 @@
 export default {
+  icons: {
+    dottedIcon:
+      'http://officedepot.scene7.com/is/content/officedepot/options_menu_3-blue-dots',
+    solidDownArrow:
+      'http://officedepot.scene7.com/is/content/officedepot/Down-arrow-solid',
+    solidUpArrow:
+      'http://officedepot.scene7.com/is/content/officedepot/Up-arrow-solid',
+    upArrow:
+      'http://officedepot.scene7.com/is/content/officedepot/Up-arrow-linear',
+    downArrow:
+      'http://officedepot.scene7.com/is/content/officedepot/Down-arrow-linear'
+  },
   apiUrls: {
     token:
       'Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJTdWJzY3JpcHRpb24tVUkiLCJleHAiOjE1MzkxMTg1OTF9.6NDm4eYbjOJPgJ1xCNhj66sTTLK33kYCIdLv_U_8L-tKUIbKsHVkIi3YRHuUvylPssR6w6bT4Xorc8UNPmS4JQ',
@@ -177,7 +189,6 @@ export default {
       title: 'Change of plans'
     }
   ],
-
   ExtendedMenuOptions: [
     { id: 2, label: 'Cancel Subscription' },
     { id: 3, label: 'Order Now' }

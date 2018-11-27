@@ -50,7 +50,6 @@ class SubscriptionItemsContainer extends React.Component {
                   </div>
                 ) : null}
                 {appData.subscriptionsToShow.map((eachSubscription) => {
-                  // console.log(eachSubscription);
                   const { state } = this;
                   const viewDetailsPropName = `viewDetails${
                     eachSubscription.reactKeyId
