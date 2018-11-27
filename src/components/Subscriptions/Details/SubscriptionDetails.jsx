@@ -243,8 +243,10 @@ class SubscriptionDetails extends React.Component {
             serviceType = 'SS',
             billingFrequency,
             vendorNumber,
-            isItem
+            isItem,
+            SubType
           } = subscription;
+
           const {
             itemQuantity,
             saveChangesTxt,
@@ -254,6 +256,8 @@ class SubscriptionDetails extends React.Component {
           // show billing section only only for SS type and Monthly frequency
           const showBillingSection =
             serviceType === 'SS' && billingFrequency === 'MON' && !isItem;
+
+          const isSteamSub = isItem && SubType === 'S';
 
           // show/hide download section
           const showDownloadSection =
@@ -285,7 +289,7 @@ class SubscriptionDetails extends React.Component {
                       {appData.content.Quantity}
                     </span>
                     <span>
-                      {isItem ? (
+                      {isItem && !isSteamSub ? (
                         <input
                           type="text"
                           className="item__qty-mob"
@@ -303,7 +307,7 @@ class SubscriptionDetails extends React.Component {
                     <span className="frequency mobile">
                       {appData.content.FrequencyLabel}
                     </span>
-                    {isItem ? (
+                    {isItem && !isSteamSub ? (
                       <Dropdown
                         options={appData.content.FrequencyOptions}
                         updateParentState={this.handleFrequencyDropDown}

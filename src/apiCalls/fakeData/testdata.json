@@ -1062,7 +1062,7 @@
             "Status": "A",
             "Reserve": "",
             "fixedPriceFlag": "N",
-            "SubType": "R",
+            "SubType": "S",
             "RecordKey": "111773",
             "BpSubPrice": "10.95",
             "AllowReorder": "1",

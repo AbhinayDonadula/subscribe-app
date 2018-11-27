@@ -427,14 +427,6 @@ body {
 .list_price li:last-child:after {
   display: none;
 }
-.list_price li:nth-child(4) .total_box p {
-  color: #ad2f2f;
-}
-.list_price li:nth-child(5) .total_box p,
-.list_price li:nth-child(6) .total_box p,
-.list_price li:nth-child(7) .total_box p {
-  color: #1e5a99;
-}
 .total_box h3 {
   font-size: 14px;
   color: #4a4a4a;
@@ -2222,16 +2214,6 @@ div.Toastify__toast.Toastify__toast--success {
   padding-left: 15px;
 }
 
-span.menu__ellipses {
-  width: 5px;
-  font-size: 35px;
-  color: #1e5a99;
-  margin-right: -3px;
-}
-
-a.disable span.menu__ellipses {
-  color: #b3bdc1;
-}
 
 a.open_drop.disable,
 .disable.cursor__pointer {

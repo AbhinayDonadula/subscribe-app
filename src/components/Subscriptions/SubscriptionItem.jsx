@@ -414,6 +414,7 @@ class SubscriptionItem extends React.Component {
           const isSteamSub = isItem && SubType === 'S';
           const isActiveItemSubscription = isItem && Status === 'A';
           const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
+          const showQtyEdit = isItem && Status === 'A' && !isSteamSub;
 
           let subscriptionDescription = '';
           if (isItem && shortDescription) {
@@ -519,7 +520,7 @@ class SubscriptionItem extends React.Component {
                       {appData.content.Quantity}
                     </label>
                     <br />
-                    {isActiveItemSubscription ? (
+                    {isActiveItemSubscription && showQtyEdit ? (
                       <input
                         className="item__quantity"
                         onChange={this.handleItemQuantity}
@@ -574,9 +575,10 @@ class SubscriptionItem extends React.Component {
                         disableExtendedMenu ? 'disable' : ''
                       }`}
                     >
-                      <span className="menu__ellipses">.</span>
-                      <span className="menu__ellipses">.</span>
-                      <span className="menu__ellipses">.</span>
+                      <img
+                        src="http://officedepot.scene7.com/is/content/officedepot/options_menu_3-blue-dots"
+                        alt=""
+                      />
                     </a>
                   </li>
                 </ul>

@@ -86,7 +86,7 @@ class DetailsSection extends React.Component {
               </div>
               {(showSubDetailsMobile || !isMobile) && (
                 <React.Fragment>
-                  {subscription.ActionCode !== '' ? (
+                  {subscription.ActionCode && subscription.ActionCode !== '' ? (
                     <AlertBox
                       error
                       errMsg="payment error"
