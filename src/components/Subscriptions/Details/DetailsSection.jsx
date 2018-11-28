@@ -41,10 +41,12 @@ class DetailsSection extends React.Component {
       this.setState({
         cancellationFeeFailed: false,
         response: cancelFeeResponse.responseObject.jsonObjectResponse,
-        cancelFees: cancelFeeResponse.responseObject.jsonObjectResponse
-          .CancellationFee
-          ? cancelFeeResponse.responseObject.jsonObjectResponse.CancellationFee
-          : 'N/A'
+        cancelFees:
+          cancelFeeResponse.responseObject.jsonObjectResponse
+            .CancellationFee === undefined
+            ? cancelFeeResponse.responseObject.jsonObjectResponse
+                .CancellationFee
+            : 'N/A'
       });
     }
   };
