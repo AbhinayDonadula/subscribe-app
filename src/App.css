@@ -370,11 +370,10 @@ body {
   background: #fff;
   width: 100%;
   top: 94%;
-  padding: 40px;
+  padding: 40px 15px;
   display: none;
   transition: 0.6s;
-  border-bottom: 1px solid #eae1e1;
-  border-top: navajowhite;
+  border-bottom: 1px solid #d2d1d1;
   z-index: 99;
   box-shadow: -5px 0 5px -5px #d2d1d1, 5px 0 5px -5px #d2d1d1;
 }

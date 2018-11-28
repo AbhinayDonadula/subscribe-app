@@ -826,7 +826,7 @@ class SubscriptionItem extends React.Component {
               {/* edit email */}
               {(editEmail || editRewards) && viewDetails ? (
                 <div
-                  className={`show_Div hidden-xs show asd${
+                  className={`show_Div hidden-xs show ${
                     viewDetails ? 'add__margin' : ''
                   }`}
                 >

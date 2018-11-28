@@ -85,7 +85,9 @@ class SubscriptionItemsContainer extends React.Component {
                                   [viewDetailsPropName]: !state.openDetailsInfo[
                                     viewDetailsPropName
                                   ]
-                                }
+                                },
+                                editEmail: false,
+                                editRewards: false
                               },
                               () => {
                                 document
