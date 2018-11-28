@@ -26,7 +26,8 @@ export const beautifyGetSubListResponse = (servicesList) => {
           contractLine.status === 'Pending signature' ||
           contractLine.status === 'Pending approval' ||
           contractLine.status === 'Sent for signature' ||
-          contractLine.status === 'Hold'
+          contractLine.status === 'Hold' ||
+          contractLine.status === 'Draft'
         )
       ) {
         let sortByFreq = 0;
@@ -311,12 +312,12 @@ export const getDefaultHeaders = () => {
 export const filterActiveCancel = (services) => {
   // filter all active
   const activeServices = services.filter(
-    (each) => !each.isItem && !each.closeDate
+    (each) => !each.isItem && each.closeDate.length === 0
   );
 
   // filter all cancelled
   const cancelledServices = services.filter(
-    (each) => !each.isItem && each.closeDate
+    (each) => !each.isItem && each.closeDate.length > 0
   );
 
   return [activeServices, cancelledServices];
@@ -515,7 +516,7 @@ export const getProductErrorMsg = (errCode = '') => {
   }
   if (
     errorMessage === '' &&
-    ([...errCode][0] === 'U' && [...errCode][0] === 'X')
+    ([...errCode][0] === 'U' || [...errCode][0] === 'X')
   ) {
     errorMessage = `We were unable to fulfill this subscription order. Please contact Customer Service and provide the error code:${errCode}`;
   }

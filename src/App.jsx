@@ -133,8 +133,7 @@ class App extends Component {
   sortItemsAndSubs = async (
     { responseObject },
     subscriptionsToShow,
-    itemUpdates = false,
-    loadMore = false
+    itemUpdates = false
   ) => {
     let itemSkus = [];
     let itemsAndServices = [];
@@ -147,7 +146,8 @@ class App extends Component {
     } = this.state;
     const { jsonObjectResponse } = responseObject;
     const { GetSubListDetail } = jsonObjectResponse;
-    const showLoadMoreButton = jsonObjectResponse.MoreFlag === '1';
+    // const showLoadMoreButton = jsonObjectResponse.MoreFlag === '1';
+    const showLoadMoreButton = true;
     const itemsList = GetSubListDetail || [];
 
     // filter out just item services from the response which has non-empty record key
@@ -198,31 +198,7 @@ class App extends Component {
       });
 
       // filter cancel/active subscriptions
-      if (subscriptionsToShow) {
-        if (loadMore) {
-          itemsAndServices = [
-            ...beautifiedItemsWithImages,
-            ...subscriptionsToShow,
-            ...products
-          ];
-        } else {
-          itemsAndServices = [
-            ...beautifiedItemsWithImages,
-            ...subscriptionsToShow
-          ];
-        }
-      } else if (loadMore) {
-        itemsAndServices = [
-          ...beautifiedItemsWithImages,
-          ...activeAndCancelledServices,
-          ...products
-        ];
-      } else {
-        itemsAndServices = [
-          ...beautifiedItemsWithImages,
-          ...activeAndCancelledServices
-        ];
-      }
+      itemsAndServices = [...beautifiedItemsWithImages, ...subscriptionsToShow];
 
       // when we want to show only products
       products = beautifiedItemsWithImages;
@@ -235,7 +211,7 @@ class App extends Component {
     }
 
     let sortedByDate = [];
-    if (sortBy === 'Delivery Frequency') {
+    if (sortBy === 'Delivery Frequency' || filterBy === 'All Subscriptions') {
       sortedByDate = itemsAndServices;
     } else {
       sortedByDate = itemsAndServices.sort(
@@ -331,7 +307,6 @@ class App extends Component {
         this.setState(
           {
             activeAndCancelledServices: services,
-            // subscriptionsToShow: services,
             activeServices,
             cancelledServices,
             itemsAndServices: null,
