@@ -17,7 +17,7 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
     url = '/orderhistory/subscriptionManager.do';
   }
 
-  if (statusCode === 'Products-Cancelled') {
+  if (statusCode === 'Products-Cancelled' || statusCode === 'Cancelled') {
     StsCode = 'C';
   }
 

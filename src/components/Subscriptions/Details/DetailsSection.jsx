@@ -44,9 +44,9 @@ class DetailsSection extends React.Component {
         cancelFees:
           cancelFeeResponse.responseObject.jsonObjectResponse
             .CancellationFee === undefined
-            ? cancelFeeResponse.responseObject.jsonObjectResponse
+            ? 'N/A'
+            : cancelFeeResponse.responseObject.jsonObjectResponse
                 .CancellationFee
-            : 'N/A'
       });
     }
   };
