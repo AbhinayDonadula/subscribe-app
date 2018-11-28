@@ -8,6 +8,8 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
   if (localAPI) {
     if (statusCode === 'Products-Cancelled') {
       url = 'http://localhost:3004/getCancelledItems';
+    } else if (statusCode === 'Products-Active') {
+      url = 'http://localhost:3004/getActiveItems';
     } else {
       url = 'http://localhost:3004/getItems';
     }

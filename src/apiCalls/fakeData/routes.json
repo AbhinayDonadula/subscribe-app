@@ -3,5 +3,7 @@
   "/getServices": "/data",
   "/getItems": "/items",
   "/getCancelledItems": "/cancelledItems",
+  "/getActiveItems": "/activeItems",
+  "/getMoreItems": "/loadMoreItems",
   "/getItemInfo": "/itemInfo"
 }

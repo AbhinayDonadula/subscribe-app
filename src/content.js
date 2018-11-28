@@ -1,15 +1,15 @@
 export default {
   icons: {
     dottedIcon:
-      'http://officedepot.scene7.com/is/content/officedepot/options_menu_3-blue-dots',
+      'https://officedepot.scene7.com/is/content/officedepot/options_menu_3-blue-dots',
     solidDownArrow:
-      'http://officedepot.scene7.com/is/content/officedepot/Down-arrow-solid',
+      'https://officedepot.scene7.com/is/content/officedepot/Down-arrow-solid',
     solidUpArrow:
-      'http://officedepot.scene7.com/is/content/officedepot/Up-arrow-solid',
+      'https://officedepot.scene7.com/is/content/officedepot/Up-arrow-solid',
     upArrow:
-      'http://officedepot.scene7.com/is/content/officedepot/Up-arrow-linear',
+      'https://officedepot.scene7.com/is/content/officedepot/Up-arrow-linear',
     downArrow:
-      'http://officedepot.scene7.com/is/content/officedepot/Down-arrow-linear'
+      'https://officedepot.scene7.com/is/content/officedepot/Down-arrow-linear'
   },
   apiUrls: {
     token:

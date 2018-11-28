@@ -331,7 +331,7 @@ class App extends Component {
         this.setState(
           {
             activeAndCancelledServices: services,
-            subscriptionsToShow: services,
+            // subscriptionsToShow: services,
             activeServices,
             cancelledServices,
             itemsAndServices: null,
