@@ -419,6 +419,7 @@ class SubscriptionItem extends React.Component {
           const showAlertBox =
             !subscription.isItem &&
             subscription.status === 'Under amendment' &&
+            subscription.userStatusCode &&
             subscription.userStatusCode.toLowerCase() === 'hold';
 
           let subscriptionDescription = '';
