@@ -9,7 +9,9 @@ export default {
     upArrow:
       'https://officedepot.scene7.com/is/content/officedepot/Up-arrow-linear',
     downArrow:
-      'https://officedepot.scene7.com/is/content/officedepot/Down-arrow-linear'
+      'https://officedepot.scene7.com/is/content/officedepot/Down-arrow-linear',
+    alertIcon:
+      'https://officedepot.scene7.com/is/content/officedepot/Alert-icon-solid-yellow-background'
   },
   apiUrls: {
     token:

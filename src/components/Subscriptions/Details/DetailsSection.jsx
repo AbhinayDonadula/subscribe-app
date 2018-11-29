@@ -66,6 +66,9 @@ class DetailsSection extends React.Component {
         {({ itemInfo = {}, subscriptionId, appData, subscription }) => {
           this.subscription = subscription;
           this.appData = appData;
+          if (subscription.ActionCode !== '') {
+            console.log(subscription);
+          }
           return (
             <div
               className={
@@ -90,7 +93,9 @@ class DetailsSection extends React.Component {
               </div>
               {(showSubDetailsMobile || !isMobile) && (
                 <React.Fragment>
-                  {subscription.ActionCode && subscription.ActionCode !== '' ? (
+                  {subscription.ActionCode &&
+                  subscription.ActionCode !== '' &&
+                  subscription.status === 'A' ? (
                     <AlertBox
                       error
                       errMsg="payment error"

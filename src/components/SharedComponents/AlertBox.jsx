@@ -17,7 +17,12 @@ class AlertBox extends React.Component {
       <React.Fragment>
         {error ? (
           <div className="alert__box">
-            <div className="alert__img" />
+            <div className="alert__img">
+              <img
+                src="https://officedepot.scene7.com/is/content/officedepot/Alert-icon-solid-yellow-background"
+                alt=""
+              />
+            </div>
             <span className="err__msg">
               <span>{errMsg}</span> - {errDesc}
             </span>

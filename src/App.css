@@ -1031,14 +1031,12 @@ li.btn_sv-container {
   background: url(https://officedepot.scene7.com/is/content/officedepot/Up-arrow-solid);
 }
 .org_bg {
-  background: #fab800;
+  background: #ffb600;
   width: 31px;
 }
 .org_bg img {
-  width: 26px;
-  margin: 0 6px;
-  display: block;
-  margin: 0 auto;
+  width: 20px;
+  margin: 0 5px;
 }
 .disp_block {
   display: none;
@@ -2186,11 +2184,15 @@ body h6,
 }
 
 div.Toastify__toast.Toastify__toast--success {
-  background: #1e5a99;
+  background: #273039;
   color: #fff;
   font-weight: 600;
-  font-size: 16px;
-  padding-left: 15px;
+  padding-left: 10px;
+  border-radius: 4px;
+  /* box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.25); */
+  font-size: 13px;
+  line-height: 1.54;
+  letter-spacing: 0.6px;
 }
 
 
@@ -2742,17 +2744,18 @@ div.alert__box > span.err__msg > span {
   line-height: 1.77;
   letter-spacing: 0.9px;
   color: #000000;
-  margin-right: 10px;
 }
 
 div.alert__img {
   display: inline-block;
-  background: red;
+  background: #ffb600;
   height: 100%;
   width: 45px;
   margin-right: 10px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+  display: flex;
+  justify-content: center;
 }
 
 .filters__mob {
@@ -2925,14 +2928,6 @@ div.alert__img {
     margin-top: 0;
   }
 
-  /* .animated__arrow {
-    width: 20px;
-    height: 11px;
-    display: inline-block;
-    position: relative;
-    margin: 1px 6px;
-  } */
-
   .img-responsive {
     width: inherit;
   }
@@ -3007,9 +3002,6 @@ div.alert__img {
     border: solid 1px #e3e3e3;
   }
 
-  /* span.animated__arrow {
-    width: 13px;
-  } */
   div.loadmore__container > button {
     width: 50%;
     left: 25%;
@@ -3019,7 +3011,11 @@ div.alert__img {
     line-height: inherit;
   }
   div.alert__box {
-    height: 75px;
+    height: 100px;
+  }
+
+  div.alert__img > img {
+    margin: 0 8px; 
   }
 
 }

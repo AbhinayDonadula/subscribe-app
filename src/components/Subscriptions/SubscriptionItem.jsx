@@ -555,9 +555,11 @@ class SubscriptionItem extends React.Component {
                       </span>
                     )}
                   </li>
-                  {isItem && subscription.ActionCode !== '' ? (
+                  {isItem &&
+                  subscription.ActionCode !== '' &&
+                  subscription.status === 'A' ? (
                     <li className="org_bg">
-                      <img src="" alt="" />
+                      <img src={appData.content.icons.alertIcon} alt="" />
                     </li>
                   ) : (
                     ''
