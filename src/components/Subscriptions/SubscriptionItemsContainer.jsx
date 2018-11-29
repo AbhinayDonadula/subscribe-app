@@ -7,7 +7,7 @@ import SpinnerPortal from '../SharedComponents/SpinnerPortal';
 import EmailCampaign from './EmailCampaign';
 
 class SubscriptionItemsContainer extends React.Component {
-  state = { email: '', openDetailsInfo: {} };
+  state = { email: '', openDetailsInfo: {}, search: '', searchResults: [] };
 
   handleEditEmailClick = (email, editEmail = true) => {
     this.setState({ editEmail, editRewards: false, email });
@@ -33,106 +33,137 @@ class SubscriptionItemsContainer extends React.Component {
     }
   };
 
+  handleSearch = (event, allServices) => {
+    this.setState({ search: event.target.value }, () => {
+      const { search } = this.state;
+      this.filterSearch(search, allServices);
+    });
+  };
+
+  filterSearch = (search, allSubscriptions) => {
+    const searchResults = allSubscriptions.filter(
+      (each) => each.contractId === search || each.SKU === search
+    );
+    this.setState({ searchResults });
+  };
+
   render() {
+    const { search, searchResults } = this.state;
     return (
       <AppContext.Consumer>
-        {(appData) => (
-          <div className="row">
-            {appData.subscriptionsToShow && !appData.initialAppLoading ? (
-              <div className="col-md-12">
-                <SubscriptionFilters />
-                <div className="space50" />
-                {appData.loadingServicesFailed ||
-                appData.loadingProductsFailed ? (
-                  <div className="partial__subs">
-                    {`Due to some technical issues, we couldn't show all of your
-                    subscriptions. Please try again later.`}
+        {(appData) => {
+          let subsToShow = [];
+          if (searchResults.length > 0) {
+            subsToShow = searchResults;
+          } else {
+            subsToShow = appData.subscriptionsToShow;
+          }
+          return (
+            <div className="row">
+              {appData.subscriptionsToShow && !appData.initialAppLoading ? (
+                <div className="col-md-12">
+                  <SubscriptionFilters />
+                  <div className="space50" />
+                  <div className="search__box">
+                    <input
+                      onChange={(event) => {
+                        this.handleSearch(event, appData.subscriptionsToShow);
+                      }}
+                      value={search}
+                    />
                   </div>
-                ) : null}
-                {appData.subscriptionsToShow.map((eachSubscription) => {
-                  const { state } = this;
-                  const viewDetailsPropName = `viewDetails${
-                    eachSubscription.reactKeyId
-                  }`;
+                  {appData.loadingServicesFailed ||
+                  appData.loadingProductsFailed ? (
+                    <div className="partial__subs">
+                      {`Due to some technical issues, we couldn't show all of your
+                      subscriptions. Please try again later.`}
+                    </div>
+                  ) : null}
+                  {/* {appData.subscriptionsToShow.map((eachSubscription) => { */}
+                  {subsToShow.map((eachSubscription) => {
+                    const { state } = this;
+                    const viewDetailsPropName = `viewDetails${
+                      eachSubscription.reactKeyId
+                    }`;
 
-                  return (
-                    <div
-                      className="sub_div"
-                      key={
-                        eachSubscription.reactKeyId +
-                        eachSubscription.lineNumber
-                      }
-                      id={eachSubscription.reactKeyId}
-                    >
-                      <SubscriptionContext.Provider
-                        value={{
-                          appData,
-                          ...eachSubscription,
-                          ...this.state,
-                          handleEditEmailClick: this.handleEditEmailClick,
-                          handleEditRewardsClick: this.handleEditRewardsClick,
-                          handleEditEmail: this.handleEditEmail,
-                          handleEditRewards: this.handleEditRewards
+                    return (
+                      <div
+                        className="sub_div"
+                        key={
+                          eachSubscription.reactKeyId +
+                          eachSubscription.lineNumber
+                        }
+                        id={eachSubscription.reactKeyId}
+                      >
+                        <SubscriptionContext.Provider
+                          value={{
+                            appData,
+                            ...eachSubscription,
+                            ...this.state,
+                            handleEditEmailClick: this.handleEditEmailClick,
+                            handleEditRewardsClick: this.handleEditRewardsClick,
+                            handleEditEmail: this.handleEditEmail,
+                            handleEditRewards: this.handleEditRewards
+                          }}
+                        >
+                          <SubscriptionItem
+                            viewDetails={
+                              state.openDetailsInfo[viewDetailsPropName]
+                            }
+                            handleViewDetails={() => {
+                              this.setState(
+                                {
+                                  openDetailsInfo: {
+                                    [viewDetailsPropName]: !state
+                                      .openDetailsInfo[viewDetailsPropName]
+                                  },
+                                  editEmail: false,
+                                  editRewards: false
+                                },
+                                () => {
+                                  document
+                                    .getElementById(eachSubscription.reactKeyId)
+                                    .scrollIntoView({
+                                      behavior: 'smooth',
+                                      block: 'start',
+                                      inline: 'center'
+                                    });
+                                }
+                              );
+                            }}
+                          />
+                        </SubscriptionContext.Provider>
+                      </div>
+                    );
+                  })}
+                  {appData.showLoadMoreButton ? (
+                    <div className="loadmore__container">
+                      <button type="button" onClick={appData.handleLoadMore}>
+                        Show More
+                      </button>
+                      <a
+                        href="/"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          window.scroll({
+                            behavior: 'smooth',
+                            left: 0,
+                            top: document.getElementById('scroll__to').offsetTop
+                          });
                         }}
                       >
-                        <SubscriptionItem
-                          viewDetails={
-                            state.openDetailsInfo[viewDetailsPropName]
-                          }
-                          handleViewDetails={() => {
-                            this.setState(
-                              {
-                                openDetailsInfo: {
-                                  [viewDetailsPropName]: !state.openDetailsInfo[
-                                    viewDetailsPropName
-                                  ]
-                                },
-                                editEmail: false,
-                                editRewards: false
-                              },
-                              () => {
-                                document
-                                  .getElementById(eachSubscription.reactKeyId)
-                                  .scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start',
-                                    inline: 'center'
-                                  });
-                              }
-                            );
-                          }}
-                        />
-                      </SubscriptionContext.Provider>
+                        Top
+                      </a>
                     </div>
-                  );
-                })}
-                {appData.showLoadMoreButton ? (
-                  <div className="loadmore__container">
-                    <button type="button" onClick={appData.handleLoadMore}>
-                      Show More
-                    </button>
-                    <a
-                      href="/"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        window.scroll({
-                          behavior: 'smooth',
-                          left: 0,
-                          top: document.getElementById('scroll__to').offsetTop
-                        });
-                      }}
-                    >
-                      Top
-                    </a>
-                  </div>
-                ) : null}
-                {appData.enableEmailCampaign ? <EmailCampaign /> : null}
-              </div>
-            ) : (
-              <SpinnerPortal />
-            )}
-          </div>
-        )}
+                  ) : null}
+                  {appData.enableEmailCampaign ? <EmailCampaign /> : null}
+                </div>
+              ) : (
+                <SpinnerPortal />
+              )}
+            </div>
+          );
+        }}
       </AppContext.Consumer>
     );
   }
