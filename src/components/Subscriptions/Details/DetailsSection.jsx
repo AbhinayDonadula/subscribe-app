@@ -66,9 +66,11 @@ class DetailsSection extends React.Component {
         {({ itemInfo = {}, subscriptionId, appData, subscription }) => {
           this.subscription = subscription;
           this.appData = appData;
-          if (subscription.ActionCode !== '') {
-            console.log(subscription);
-          }
+          const showAlertBox =
+            !subscription.isItem &&
+            subscription.status === 'Under amendment' &&
+            subscription.userStatusCode.toLowerCase() === 'hold';
+
           return (
             <div
               className={
@@ -93,13 +95,18 @@ class DetailsSection extends React.Component {
               </div>
               {(showSubDetailsMobile || !isMobile) && (
                 <React.Fragment>
-                  {subscription.ActionCode &&
-                  subscription.ActionCode !== '' &&
-                  subscription.status === 'A' ? (
+                  {(subscription.ActionCode &&
+                    subscription.ActionCode !== '' &&
+                    subscription.status === 'A') ||
+                  showAlertBox ? (
                     <AlertBox
                       error
                       errMsg="payment error"
-                      errDesc={getProductErrorMsg(subscription.ActionCode)}
+                      errDesc={
+                        showAlertBox
+                          ? 'There is an issue processing your payment.'
+                          : getProductErrorMsg(subscription.ActionCode)
+                      }
                     />
                   ) : null}
                   <ul

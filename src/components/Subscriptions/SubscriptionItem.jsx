@@ -416,6 +416,11 @@ class SubscriptionItem extends React.Component {
           const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
           const showQtyEdit = isItem && Status === 'A' && !isSteamSub;
 
+          const showAlertBox =
+            !subscription.isItem &&
+            subscription.status === 'Under amendment' &&
+            subscription.userStatusCode.toLowerCase() === 'hold';
+
           let subscriptionDescription = '';
           if (isItem && shortDescription) {
             subscriptionDescription = `${shortDescription
@@ -555,15 +560,14 @@ class SubscriptionItem extends React.Component {
                       </span>
                     )}
                   </li>
-                  {isItem &&
-                  subscription.ActionCode !== '' &&
-                  subscription.status === 'A' ? (
+                  {(isItem &&
+                    subscription.ActionCode !== '' &&
+                    subscription.status === 'A') ||
+                  showAlertBox ? (
                     <li className="org_bg">
                       <img src={appData.content.icons.alertIcon} alt="" />
                     </li>
-                  ) : (
-                    ''
-                  )}
+                  ) : null}
                   <li
                     className={`cursor__pointer ${
                       disableExtendedMenu ? 'disable' : ''

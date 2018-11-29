@@ -22,7 +22,6 @@ export const beautifyGetSubListResponse = (servicesList) => {
       if (
         contractLine.serviceType !== 'BS' &&
         !(
-          contractLine.status === 'Under amendment' ||
           contractLine.status === 'Pending signature' ||
           contractLine.status === 'Pending approval' ||
           contractLine.status === 'Sent for signature' ||

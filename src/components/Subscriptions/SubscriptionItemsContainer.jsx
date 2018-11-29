@@ -54,6 +54,7 @@ class SubscriptionItemsContainer extends React.Component {
                   const viewDetailsPropName = `viewDetails${
                     eachSubscription.reactKeyId
                   }`;
+
                   return (
                     <div
                       className="sub_div"
