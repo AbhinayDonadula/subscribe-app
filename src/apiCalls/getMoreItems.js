@@ -1,18 +1,12 @@
 import { getDefaultHeaders } from '../components/utils';
 
-const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
+const getMoreItems = (localAPI, statusCode, sortBy) => {
   let url = '';
   let StsCode = 'A';
   let SortBy = 'D';
 
   if (localAPI) {
-    if (statusCode === 'Products-Cancelled' || statusCode === 'Cancelled') {
-      url = 'http://localhost:3004/getCancelledItems';
-    } else if (statusCode === 'Products-Active' || statusCode === 'Products') {
-      url = 'http://localhost:3004/getActiveItems';
-    } else {
-      url = 'http://localhost:3004/getItems';
-    }
+    url = 'http://localhost:3004/getMoreItems';
   } else {
     url = '/orderhistory/subscriptionManager.do';
   }
@@ -32,7 +26,7 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
     },
     INPUT: {
       StsCode,
-      DirFlag: dirFlag,
+      DirFlag: 'F',
       PONo: '',
       SortBy,
       ItemNum: '',
@@ -59,4 +53,4 @@ const getItemSubscriptions = (localAPI, statusCode, sortBy, dirFlag = 'T') => {
     .catch(() => {});
 };
 
-export default getItemSubscriptions;
+export default getMoreItems;

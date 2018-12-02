@@ -521,3 +521,63 @@ export const getProductErrorMsg = (errCode = '') => {
   }
   return errorMessage;
 };
+
+export const filterServices = (state) => {
+  const {
+    activeAndCancelledServices,
+    sortBy,
+    activeServices,
+    cancelledServices,
+    filterBy
+  } = state;
+  let servicesToShow = [];
+  let toastMessage = '';
+  if (filterBy === 'Services') {
+    servicesToShow = activeAndCancelledServices;
+    toastMessage = 'Showing All Services';
+  }
+
+  if (filterBy === 'Services-Active') {
+    servicesToShow = activeServices;
+    toastMessage = 'Showing Active Services';
+  }
+
+  if (filterBy === 'Services-Cancelled') {
+    servicesToShow = cancelledServices;
+    toastMessage = 'Showing Cancelled Services';
+  }
+
+  if (sortBy === 'Purchase Date') {
+    if (filterBy === 'Services-Active') {
+      servicesToShow = activeServices.sort(
+        (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+      );
+    } else if (filterBy === 'Services-Cancelled') {
+      servicesToShow = cancelledServices.sort(
+        (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+      );
+    } else {
+      servicesToShow = activeAndCancelledServices.sort(
+        (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+      );
+    }
+    toastMessage = 'Showing Services sorted by purchase date';
+  }
+  if (sortBy === 'Billing Frequency') {
+    if (filterBy === 'Services-Active') {
+      servicesToShow = activeServices.sort(
+        (a, b) => a.sortByFreq - b.sortByFreq
+      );
+    } else if (filterBy === 'Services-Cancelled') {
+      servicesToShow = cancelledServices.sort(
+        (a, b) => a.sortByFreq - b.sortByFreq
+      );
+    } else {
+      servicesToShow = activeAndCancelledServices.sort(
+        (a, b) => a.sortByFreq - b.sortByFreq
+      );
+    }
+    toastMessage = 'Showing Services sorted by billing frequency';
+  }
+  return [servicesToShow, toastMessage];
+};

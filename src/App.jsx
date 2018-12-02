@@ -12,13 +12,15 @@ import {
   beautifyGetSubListResponse,
   filterActiveCancel,
   cleanUp,
-  getFilterSort
+  getFilterSort,
+  filterServices
 } from './components/utils';
 import getImageInfoBySku from './apiCalls/getImageInfoBySku';
 import SnackBar from './components/SharedComponents/SnackBar';
 import getItemSubscriptions from './apiCalls/getItemSubscriptions';
 import SpinnerPortal from './components/SharedComponents/SpinnerPortal';
 import getServiceSubscriptions from './apiCalls/getServiceSubscriptions';
+import getMoreItems from './apiCalls/getMoreItems';
 
 class App extends Component {
   state = {
@@ -51,68 +53,13 @@ class App extends Component {
     this.setState(
       { filterBy, sortBy: sort ? sort.trim() : '', filtering: true },
       () => {
-        const {
-          activeAndCancelledServices,
-          sortBy,
-          activeServices,
-          cancelledServices
-        } = this.state;
-
         // sort/filter services only
         if (
           filterBy === 'Services' ||
           filterBy === 'Services-Active' ||
           filterBy === 'Services-Cancelled'
         ) {
-          let servicesToShow = [];
-          let toastMessage = '';
-          if (filterBy === 'Services') {
-            servicesToShow = activeAndCancelledServices;
-            toastMessage = 'Showing All Services';
-          }
-
-          if (filterBy === 'Services-Active') {
-            servicesToShow = activeServices;
-            toastMessage = 'Showing Active Services';
-          }
-
-          if (filterBy === 'Services-Cancelled') {
-            servicesToShow = cancelledServices;
-            toastMessage = 'Showing Cancelled Services';
-          }
-
-          if (sortBy === 'Purchase Date') {
-            if (filterBy === 'Services-Active') {
-              servicesToShow = activeServices.sort(
-                (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-              );
-            } else if (filterBy === 'Services-Cancelled') {
-              servicesToShow = cancelledServices.sort(
-                (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-              );
-            } else {
-              servicesToShow = activeAndCancelledServices.sort(
-                (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
-              );
-            }
-            toastMessage = 'Showing Services sorted by purchase date';
-          }
-          if (sortBy === 'Billing Frequency') {
-            if (filterBy === 'Services-Active') {
-              servicesToShow = activeServices.sort(
-                (a, b) => a.sortByFreq - b.sortByFreq
-              );
-            } else if (filterBy === 'Services-Cancelled') {
-              servicesToShow = cancelledServices.sort(
-                (a, b) => a.sortByFreq - b.sortByFreq
-              );
-            } else {
-              servicesToShow = activeAndCancelledServices.sort(
-                (a, b) => a.sortByFreq - b.sortByFreq
-              );
-            }
-            toastMessage = 'Showing Services sorted by billing frequency';
-          }
+          const [servicesToShow, toastMessage] = filterServices(this.state);
           this.setState(
             {
               subscriptionsToShow: servicesToShow,
@@ -146,8 +93,8 @@ class App extends Component {
     } = this.state;
     const { jsonObjectResponse } = responseObject;
     const { GetSubListDetail } = jsonObjectResponse;
-    // const showLoadMoreButton = jsonObjectResponse.MoreFlag === '1';
-    const showLoadMoreButton = true;
+    const showLoadMoreButton = jsonObjectResponse.MoreFlag === '1';
+    // const showLoadMoreButton = true;
     const itemsList = GetSubListDetail || [];
 
     // filter out just item services from the response which has non-empty record key
@@ -196,12 +143,8 @@ class App extends Component {
         }
         return eachItem;
       });
-
-      // filter cancel/active subscriptions
-      itemsAndServices = [...beautifiedItemsWithImages, ...subscriptionsToShow];
-
-      // when we want to show only products
       products = beautifiedItemsWithImages;
+      itemsAndServices = [...beautifiedItemsWithImages, ...subscriptionsToShow];
     } catch (error) {
       if (subscriptionsToShow) {
         itemsAndServices = [...beautifiedItems, ...subscriptionsToShow];
@@ -238,7 +181,7 @@ class App extends Component {
     );
   };
 
-  getItems = (itemUpdates = false, loadMore = false) => {
+  getItems = (itemUpdates = false) => {
     this.setState({ filtering: true }, async () => {
       let subscriptionsToShow = null;
       const {
@@ -267,8 +210,7 @@ class App extends Component {
       const itemsSubs = await getItemSubscriptions(
         localAPI,
         filterStatus,
-        sortBy,
-        loadMore ? 'F' : 'T'
+        sortBy
       );
       if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
         this.setState({ envDown: true });
@@ -327,8 +269,118 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    const { filterBy, sortBy } = this.state;
-    this.filterSubscriptions(filterBy, sortBy, true);
+    const { filterBy, sortBy, localAPI } = this.state;
+    this.setState({ filtering: true }, async () => {
+      const moreItems = await getMoreItems(localAPI, filterBy, sortBy);
+      console.log(moreItems);
+      if (!moreItems || moreItems.hasErrorResponse === undefined) {
+        this.setState({ loadMoreFailed: true, filtering: false });
+      } else if (moreItems.hasErrorResponse === 'true') {
+        this.setState({
+          filtering: false,
+          loadMoreFailed: true,
+          initialAppLoading: false,
+          envDown: false,
+          loadingProductsFailed: false
+        });
+      } else {
+        // this.setState({ loadMoreFailed: false });
+        // this.sortItemsAndSubs(moreItems, subscriptionsToShow, itemUpdates);
+        this.getImgDescForMoreItems(moreItems);
+      }
+    });
+  };
+
+  getImgDescForMoreItems = async ({ responseObject }) => {
+    let itemSkus = [];
+    let moreProducts = [];
+    const {
+      localAPI,
+      products,
+      sortBy,
+      filterBy,
+      subscriptionsToShow
+    } = this.state;
+    const { jsonObjectResponse } = responseObject;
+    const { GetSubListDetail } = jsonObjectResponse;
+    const showLoadMoreButton = jsonObjectResponse.MoreFlag === '1';
+    const itemsList = GetSubListDetail || [];
+
+    // filter out just item services from the response which has non-empty record key
+    const itemsArray = Object.values(itemsList).filter(
+      (each) => each.RecordKey.length > 0
+    );
+
+    // add sortDate/isItem for sorting/filtering purposes
+    const beautifiedItems = itemsArray.map((item) => {
+      itemSkus.push(item.SKU.replace(/^0+/, ''));
+      return {
+        ...item,
+        isItem: true,
+        itemDescription: item.Desc,
+        billingFrequency: item.Freq,
+        quantity: item.QtyOrd,
+        status: item.Status,
+        sortDate: item.NextDlvDt,
+        reactKeyId: item.RecordKey
+      };
+    });
+
+    // remove duplicate skus
+    itemSkus = Array.from(new Set(itemSkus));
+    let beautifiedItemsWithImages = [];
+
+    try {
+      // below call will give image info for a given sku or array of skus
+      const response = await getImageInfoBySku(localAPI, itemSkus);
+
+      // go through each item and find the relevant sku from response above and merge obj
+      beautifiedItemsWithImages = beautifiedItems.map((eachItem) => {
+        // take the sku from response and find the same item inside items array
+        const itemWithSku = Object.values(response).find(
+          (el) =>
+            el.skuId.replace(/^0+/, '') === eachItem.SKU.replace(/^0+/, '')
+        );
+        // once we find the item, merge with all the needed properties with item as below
+        if (itemWithSku) {
+          return {
+            smallImageUrl: itemWithSku.imageUrl + itemWithSku.smallImageUrl,
+            mediumImageUrl: itemWithSku.imageUrl + itemWithSku.mediumImageUrl,
+            shortDescription: itemWithSku.shortDescription,
+            skuUrl: itemWithSku.skuUrl,
+            ...eachItem
+          };
+        }
+        return eachItem;
+      });
+      if (filterBy === 'Products') {
+        moreProducts = [...products, ...beautifiedItemsWithImages];
+      } else {
+        moreProducts = [...subscriptionsToShow, ...beautifiedItemsWithImages];
+      }
+    } catch (error) {
+      moreProducts = [...products];
+    }
+
+    let sortedByDate = [];
+    if (sortBy === 'Delivery Frequency' || filterBy === 'All Subscriptions') {
+      sortedByDate = moreProducts;
+    } else {
+      sortedByDate = moreProducts.sort(
+        (a, b) => new Date(b.sortDate) - new Date(a.sortDate)
+      );
+    }
+
+    this.setState({
+      initialAppLoading: false,
+      filtering: false,
+      envDown: false,
+      loadingProductsFailed: false,
+      itemsAndServices: sortedByDate,
+      subscriptionsToShow: sortedByDate,
+      showLoadMoreButton,
+      products: [...products, ...beautifiedItemsWithImages]
+    });
   };
 
   render() {

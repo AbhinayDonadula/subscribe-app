@@ -329,7 +329,7 @@ class FilterDropDown extends React.Component {
           ))}
           <div className="save__filter-sort">
             <button type="button" onClick={this.handleSave}>
-              Save/Update
+              Save
             </button>
           </div>
         </div>
