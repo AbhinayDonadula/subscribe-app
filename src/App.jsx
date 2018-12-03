@@ -272,7 +272,6 @@ class App extends Component {
     const { filterBy, sortBy, localAPI } = this.state;
     this.setState({ filtering: true }, async () => {
       const moreItems = await getMoreItems(localAPI, filterBy, sortBy);
-      console.log(moreItems);
       if (!moreItems || moreItems.hasErrorResponse === undefined) {
         this.setState({ loadMoreFailed: true, filtering: false });
       } else if (moreItems.hasErrorResponse === 'true') {
@@ -284,8 +283,6 @@ class App extends Component {
           loadingProductsFailed: false
         });
       } else {
-        // this.setState({ loadMoreFailed: false });
-        // this.sortItemsAndSubs(moreItems, subscriptionsToShow, itemUpdates);
         this.getImgDescForMoreItems(moreItems);
       }
     });
@@ -376,6 +373,7 @@ class App extends Component {
       filtering: false,
       envDown: false,
       loadingProductsFailed: false,
+      loadMoreFailed: false,
       itemsAndServices: sortedByDate,
       subscriptionsToShow: sortedByDate,
       showLoadMoreButton,
