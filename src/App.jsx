@@ -212,9 +212,18 @@ class App extends Component {
         filterStatus,
         sortBy
       );
-      if (!itemsSubs || itemsSubs.hasErrorResponse === undefined) {
+
+      console.log(itemsSubs);
+      if (
+        (!itemsSubs || itemsSubs.hasErrorResponse === undefined) &&
+        activeAndCancelledServices.length === 0
+      ) {
         this.setState({ envDown: true });
-      } else if (itemsSubs.hasErrorResponse === 'true') {
+      } else if (
+        itemsSubs.hasErrorResponse === 'true' ||
+        !itemsSubs ||
+        itemsSubs.hasErrorResponse === undefined
+      ) {
         this.setState({
           itemsAndServices: activeAndCancelledServices,
           subscriptionsToShow: activeAndCancelledServices,
