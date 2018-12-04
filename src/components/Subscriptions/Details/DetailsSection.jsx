@@ -34,7 +34,9 @@ class DetailsSection extends React.Component {
     if (
       !cancelFeeResponse ||
       cancelFeeResponse.hasErrorResponse === undefined ||
-      cancelFeeResponse.hasErrorResponse === 'true'
+      cancelFeeResponse.hasErrorResponse === 'true' ||
+      cancelFeeResponse.responseObject.jsonObjectResponse
+        .terminationFeeResponse === null
     ) {
       this.setState({ cancellationFeeFailed: true });
     } else {
@@ -43,10 +45,12 @@ class DetailsSection extends React.Component {
         response: cancelFeeResponse.responseObject.jsonObjectResponse,
         cancelFees:
           cancelFeeResponse.responseObject.jsonObjectResponse
-            .CancellationFee === undefined
+            .terminationFeeResponse &&
+          cancelFeeResponse.responseObject.jsonObjectResponse
+            .terminationFeeResponse.CancellationFee === undefined
             ? 'N/A'
             : cancelFeeResponse.responseObject.jsonObjectResponse
-                .CancellationFee
+                .terminationFeeResponse.CancellationFee
       });
     }
   };

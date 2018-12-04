@@ -2704,7 +2704,7 @@ div.alert__img {
 
   ul.sub__details--section-item.list-inline > li,
   ul.sub__details--section-sub.list-inline > li {
-    padding-right: 20px;
+    /* padding-right: 20px; */
     padding-left: 0;
   }
 

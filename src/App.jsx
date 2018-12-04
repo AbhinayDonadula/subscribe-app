@@ -213,7 +213,6 @@ class App extends Component {
         sortBy
       );
 
-      console.log(itemsSubs);
       if (
         (!itemsSubs || itemsSubs.hasErrorResponse === undefined) &&
         activeAndCancelledServices.length === 0
