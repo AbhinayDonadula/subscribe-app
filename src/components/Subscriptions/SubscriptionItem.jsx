@@ -694,7 +694,7 @@ class SubscriptionItem extends React.Component {
                         className="btn_cncl"
                         onClick={this.handleCancelSave}
                       >
-                        {cancelService ? 'I Changed My Mind' : 'Cancel'}
+                        Cancel
                       </a>
                     </li>
                   </ul>
@@ -761,7 +761,7 @@ class SubscriptionItem extends React.Component {
                         className="btn_cncl"
                         onClick={this.handleCancelSave}
                       >
-                        I Changed My Mind
+                        Cancel
                       </a>
                     </li>
                   </ul>
@@ -818,7 +818,7 @@ class SubscriptionItem extends React.Component {
                     </button>
                   </div>
                   <div>
-                    <a onClick={this.handleCancelSave}>I change my mind</a>
+                    <a onClick={this.handleCancelSave}>Cancel</a>
                   </div>
                 </div>
               ) : null}
