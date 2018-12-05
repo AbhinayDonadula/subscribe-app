@@ -148,23 +148,33 @@ class SubscriptionItem extends React.Component {
         if (
           !cancelFeeResponse ||
           cancelFeeResponse.hasErrorResponse === undefined ||
-          cancelFeeResponse.hasErrorResponse === 'true'
+          cancelFeeResponse.hasErrorResponse === 'true' ||
+          cancelFeeResponse.responseObject.jsonObjectResponse
+            .terminationFeeResponse === null
         ) {
-          this.setState({ cancellationFeeFailed: true });
+          this.setState({
+            cancellationFeeFailed: true,
+            saveAction: 'cancelService',
+            cancelService: true,
+            cancelStep: 1
+          });
         } else {
           this.setState({
             cancellationFeeFailed: false,
             response: cancelFeeResponse.responseObject.jsonObjectResponse,
             cancelFees:
               cancelFeeResponse.responseObject.jsonObjectResponse
-                .CancellationFee
+                .terminationFeeResponse &&
+              cancelFeeResponse.responseObject.jsonObjectResponse
+                .terminationFeeResponse.CancellationFee === undefined
+                ? 'N/A'
+                : cancelFeeResponse.responseObject.jsonObjectResponse
+                    .terminationFeeResponse.CancellationFee,
+            saveAction: 'cancelService',
+            cancelService: true,
+            cancelStep: 1
           });
         }
-        this.setState({
-          saveAction: 'cancelService',
-          cancelService: true,
-          cancelStep: 1
-        });
       } else if (selected === 'Skip Next Delivery') {
         this.setState({
           openSaveCancelMenu: true,
@@ -674,7 +684,7 @@ class SubscriptionItem extends React.Component {
                         onClick={this.handleSaveUpdate}
                       >
                         {cancelService
-                          ? 'Yes, Continue'
+                          ? 'Continue'
                           : appData.content.SaveUpdate}
                       </a>
                     </li>
@@ -741,7 +751,7 @@ class SubscriptionItem extends React.Component {
                         }`}
                         onClick={this.handleCancelSubmit}
                       >
-                        {cancelStep === 1 && 'Yes, Continue'}
+                        {cancelStep === 1 && 'Continue'}
                         {cancelStep === 2 && 'Submit'}
                       </a>
                     </li>
