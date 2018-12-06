@@ -133,6 +133,7 @@ class SubscriptionItem extends React.Component {
             ? getOrderNowMobileURL(SKU)
             : getOrderNowURL(SKU, IncPct, FreeSku, WlrPct, RecordKey);
       } else if (selected === 'Cancel Subscription') {
+        console.log('object');
         this.setState({
           openSaveCancelMenu: true,
           cancelService: false,
@@ -516,7 +517,7 @@ class SubscriptionItem extends React.Component {
                             closeDate.length > 0 ||
                             (!isActiveItemSubscription && isItem)
                               ? 'C'
-                              : 'Active'
+                              : showAlertBox
                           )
                         : null}
                     </label>
@@ -658,14 +659,6 @@ class SubscriptionItem extends React.Component {
                     </li>
                   </ul>
                 </div>
-              )}
-
-              {/* Subscription Details Section */}
-              {viewDetails && (
-                <SubscriptionDetails
-                  handleEditUserInfo={this.handleEditUserInfo}
-                  refresh={refreshDetailsSection}
-                />
               )}
 
               {/* Save/Update confirmation  */}
@@ -920,6 +913,14 @@ class SubscriptionItem extends React.Component {
                   </div>
                 </div>
               ) : null}
+
+              {/* Subscription Details Section */}
+              {viewDetails && (
+                <SubscriptionDetails
+                  handleEditUserInfo={this.handleEditUserInfo}
+                  refresh={refreshDetailsSection}
+                />
+              )}
             </React.Fragment>
           );
         }}

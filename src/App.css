@@ -2462,6 +2462,7 @@ li.update__save--cancel-conf + div.custom-select > .select-items {
 
 .show_Div.add__margin {
   margin-top: 0;
+  margin-bottom: 24px;
 }
 
 .show_Div.show.cancellation {

@@ -20,7 +20,7 @@ class BillingInfoSection extends React.Component {
   getBillingHistory = async () => {
     const billingHistory = await getBillingHistoryAPI(
       this.localAPI,
-      this.contractId
+      this.contractID
     );
     if (
       !billingHistory ||

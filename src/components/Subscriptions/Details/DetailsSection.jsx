@@ -48,7 +48,7 @@ class DetailsSection extends React.Component {
             .terminationFeeResponse &&
           cancelFeeResponse.responseObject.jsonObjectResponse
             .terminationFeeResponse.CancellationFee === undefined
-            ? 'N/A'
+            ? '0'
             : cancelFeeResponse.responseObject.jsonObjectResponse
                 .terminationFeeResponse.CancellationFee
       });
@@ -203,10 +203,8 @@ class DetailsSection extends React.Component {
                       <li className="list-inline-item">
                         <div className="total_box">
                           <h3>{appData.content.FeeToCancel}</h3>
-                          <p>
-                            {cancelFees === 'N/A'
-                              ? cancelFees
-                              : `$${cancelFees}`}
+                          <p style={{ color: '#b30000' }}>
+                            {cancelFees === '0' ? cancelFees : `$${cancelFees}`}
                           </p>
                         </div>
                       </li>

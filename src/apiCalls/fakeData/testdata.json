@@ -44,6 +44,263 @@
             "contract": [
               {
                 "contractHeader": {
+                  "closeDate": "2019-01-01",
+                  "orderNumber": "405949969-001",
+                  "endDate": "2019-12-03",
+                  "contractId": "64715",
+                  "loyaltyMember": "1931871808",
+                  "paymentDetails": {
+                    "paymentCard": {
+                      "cardType": "DISCOVER",
+                      "billingAddress": {
+                        "fullAddress": "7887 N FEDERAL HWY,PALM BEACH,BOCA RATON, FL 33487",
+                        "fullName": "ANI90 TEST9090"
+                      },
+                      "expirationDate": "2019-12-01"
+                    },
+                    "paymentType": "CreditCard"
+                  },
+                  "startDate": "2018-12-04",
+                  "versionNumber": "2",
+                  "status": "Active"
+                },
+                "contractLines": [
+                  {
+                    "billingFrequency": "YR",
+                    "unitPrice": "149.99",
+                    "serviceType": "SS",
+                    "itemNumber": "9990378",
+                    "nextBillingDate": "2019-12-04",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-12-03",
+                    "currentBillingEndDate": "2019-12-03",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "2019-01-01",
+                    "itemName": "9990378",
+                    "currentBillingStartDate": "2018-12-04",
+                    "itemDescription": "Platinum Setup & Protection",
+                    "lineNumber": "1",
+                    "vendorNumber": "01285689",
+                    "startDate": "2018-12-04",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "YR",
+                    "unitPrice": "0",
+                    "itemNumber": "4383814",
+                    "nextBillingDate": "2018-12-07",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2018-12-06",
+                    "currentBillingEndDate": "2018-12-06",
+                    "lineTypeName": "Termination Fee",
+                    "closeDate": "2018-12-06",
+                    "itemName": "4383814",
+                    "currentBillingStartDate": "2018-12-06",
+                    "itemDescription": "Unlimited On Demand Cancel",
+                    "lineNumber": "2",
+                    "startDate": "2018-12-06",
+                    "status": "Active"
+                  }
+                ]
+              },
+              {
+                "contractHeader": {
+                  "closeDate": "",
+                  "orderNumber": "405949958-001",
+                  "endDate": "2019-12-03",
+                  "contractId": "64714",
+                  "loyaltyMember": "1931871808",
+                  "paymentDetails": {
+                    "paymentCard": {
+                      "cardType": "DISCOVER",
+                      "billingAddress": {
+                        "fullAddress": "7887 N FEDERAL HWY,PALM BEACH,BOCA RATON, FL 33487",
+                        "fullName": "ANI90 TEST9090"
+                      },
+                      "expirationDate": "2019-12-01"
+                    },
+                    "paymentType": "CreditCard"
+                  },
+                  "startDate": "2018-12-04",
+                  "versionNumber": "1",
+                  "status": "Active"
+                },
+                "contractLines": [
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "15",
+                    "serviceType": "SS",
+                    "itemNumber": "9204711",
+                    "nextBillingDate": "2019-01-04",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-12-03",
+                    "currentBillingEndDate": "2019-01-03",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9204711",
+                    "currentBillingStartDate": "2018-12-04",
+                    "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
+                    "lineNumber": "1",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-12-04",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "15",
+                    "serviceType": "SS",
+                    "itemNumber": "9204711",
+                    "nextBillingDate": "2019-01-04",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-12-03",
+                    "currentBillingEndDate": "2019-01-03",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9204711",
+                    "currentBillingStartDate": "2018-12-04",
+                    "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
+                    "lineNumber": "2",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-12-04",
+                    "status": "Active"
+                  }
+                ]
+              },
+              {
+                "contractHeader": {
+                  "closeDate": "",
+                  "orderNumber": "405949932-001",
+                  "endDate": "2019-12-03",
+                  "contractId": "64712",
+                  "loyaltyMember": "1931871808",
+                  "paymentDetails": {
+                    "paymentCard": {
+                      "cardType": "DISCOVER",
+                      "billingAddress": {
+                        "fullAddress": "7887 N FEDERAL HWY,PALM BEACH,BOCA RATON, FL 33487",
+                        "fullName": "ANI90 TEST9090"
+                      },
+                      "expirationDate": "2019-12-01"
+                    },
+                    "paymentType": "CreditCard"
+                  },
+                  "startDate": "2018-12-04",
+                  "versionNumber": "1",
+                  "status": "Active"
+                },
+                "contractLines": [
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "15",
+                    "serviceType": "SS",
+                    "itemNumber": "9204711",
+                    "nextBillingDate": "2019-01-04",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-12-03",
+                    "currentBillingEndDate": "2019-01-03",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9204711",
+                    "currentBillingStartDate": "2018-12-04",
+                    "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
+                    "lineNumber": "1",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-12-04",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "15",
+                    "serviceType": "SS",
+                    "itemNumber": "9204711",
+                    "nextBillingDate": "2019-01-04",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-12-03",
+                    "currentBillingEndDate": "2019-01-03",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9204711",
+                    "currentBillingStartDate": "2018-12-04",
+                    "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
+                    "lineNumber": "2",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-12-04",
+                    "status": "Active"
+                  }
+                ]
+              },
+              {
+                "contractHeader": {
+                  "closeDate": "",
+                  "orderNumber": "405887007-001",
+                  "endDate": "2019-11-29",
+                  "contractId": "64645",
+                  "loyaltyMember": "1931871808",
+                  "paymentDetails": {
+                    "paymentCard": {
+                      "cardType": "",
+                      "billingAddress": {
+                        "fullAddress": "7887 N FEDERAL HWY,PALM BEACH,BOCA RATON, FL 33487",
+                        "fullName": "ANI90 TEST9090"
+                      },
+                      "expirationDate": ""
+                    }
+                  },
+                  "startDate": "2018-11-30",
+                  "versionNumber": "1",
+                  "status": "Draft"
+                },
+                "contractLines": [
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "15",
+                    "serviceType": "SS",
+                    "itemNumber": "9204711",
+                    "nextBillingDate": "2018-12-31",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-11-29",
+                    "currentBillingEndDate": "2018-12-30",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9204711",
+                    "currentBillingStartDate": "2018-11-30",
+                    "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
+                    "lineNumber": "1",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-11-30",
+                    "status": "Draft"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "15",
+                    "serviceType": "SS",
+                    "itemNumber": "9204711",
+                    "nextBillingDate": "2018-12-31",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2019-11-29",
+                    "currentBillingEndDate": "2018-12-30",
+                    "lineTypeName": "Subscription",
+                    "closeDate": "",
+                    "itemName": "9204711",
+                    "currentBillingStartDate": "2018-11-30",
+                    "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
+                    "lineNumber": "2",
+                    "vendorNumber": "01132448",
+                    "startDate": "2018-11-30",
+                    "status": "Draft"
+                  }
+                ]
+              },
+              {
+                "contractHeader": {
                   "closeDate": "",
                   "orderNumber": "405637572-001",
                   "endDate": "2019-11-15",
@@ -1558,7 +1815,7 @@
                     "paymentType": "CreditCard"
                   },
                   "startDate": "2018-07-13",
-                  "versionNumber": "2",
+                  "versionNumber": "3",
                   "status": "Active"
                 },
                 "contractLines": [
@@ -1603,7 +1860,7 @@
                     "paymentType": "CreditCard"
                   },
                   "startDate": "2018-09-13",
-                  "versionNumber": "2",
+                  "versionNumber": "3",
                   "status": "Active"
                 },
                 "contractLines": [
@@ -1722,15 +1979,15 @@
                     "unitPrice": "89",
                     "serviceType": "SS",
                     "itemNumber": "267807",
-                    "nextBillingDate": "2018-12-02",
+                    "nextBillingDate": "2019-01-02",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2019-10-01",
-                    "currentBillingEndDate": "2018-12-01",
+                    "currentBillingEndDate": "2019-01-01",
                     "lineTypeName": "Subscription",
                     "closeDate": "",
                     "itemName": "267807",
-                    "currentBillingStartDate": "2018-11-02",
+                    "currentBillingStartDate": "2018-12-02",
                     "itemDescription": "BASIC WEB SERVICES",
                     "lineNumber": "1",
                     "vendorNumber": "01242135",
@@ -1767,15 +2024,15 @@
                     "unitPrice": "68",
                     "serviceType": "SS",
                     "itemNumber": "5140191",
-                    "nextBillingDate": "2018-12-02",
+                    "nextBillingDate": "2019-01-02",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2019-10-01",
-                    "currentBillingEndDate": "2018-12-01",
+                    "currentBillingEndDate": "2019-01-01",
                     "lineTypeName": "Subscription",
                     "closeDate": "",
                     "itemName": "5140191",
-                    "currentBillingStartDate": "2018-11-02",
+                    "currentBillingStartDate": "2018-12-02",
                     "itemDescription": "SHRDZ1 RECUR, 2CONTAIN, MTHLY",
                     "lineNumber": "1",
                     "vendorNumber": "01306234",
@@ -1812,15 +2069,15 @@
                     "unitPrice": "23",
                     "serviceType": "SS",
                     "itemNumber": "9760701",
-                    "nextBillingDate": "2018-12-02",
+                    "nextBillingDate": "2019-01-02",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2020-10-01",
-                    "currentBillingEndDate": "2018-12-01",
+                    "currentBillingEndDate": "2019-01-01",
                     "lineTypeName": "Subscription",
                     "closeDate": "",
                     "itemName": "9760701",
-                    "currentBillingStartDate": "2018-11-02",
+                    "currentBillingStartDate": "2018-12-02",
                     "itemDescription": "Proactive PC Monitoring & Security Support ",
                     "lineNumber": "1",
                     "vendorNumber": "01132448",
@@ -1857,15 +2114,15 @@
                     "unitPrice": "89",
                     "serviceType": "SS",
                     "itemNumber": "267807",
-                    "nextBillingDate": "2018-12-02",
+                    "nextBillingDate": "2019-01-02",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2019-10-01",
-                    "currentBillingEndDate": "2018-12-01",
+                    "currentBillingEndDate": "2019-01-01",
                     "lineTypeName": "Subscription",
                     "closeDate": "",
                     "itemName": "267807",
-                    "currentBillingStartDate": "2018-11-02",
+                    "currentBillingStartDate": "2018-12-02",
                     "itemDescription": "BASIC WEB SERVICES",
                     "lineNumber": "1",
                     "vendorNumber": "01242135",
@@ -1876,7 +2133,7 @@
               },
               {
                 "contractHeader": {
-                  "closeDate": "",
+                  "closeDate": "2019-01-01",
                   "orderNumber": "404533810-001",
                   "endDate": "2019-10-01",
                   "contractId": "42323",
@@ -1893,7 +2150,7 @@
                     "paymentType": "CreditCard"
                   },
                   "startDate": "2018-10-02",
-                  "versionNumber": "2",
+                  "versionNumber": "3",
                   "status": "Active"
                 },
                 "contractLines": [
@@ -1902,19 +2159,34 @@
                     "unitPrice": "15",
                     "serviceType": "SS",
                     "itemNumber": "9204711",
-                    "nextBillingDate": "2018-12-02",
+                    "nextBillingDate": "2019-01-02",
                     "quantity": "1",
                     "unitOfMeasure": "EA",
                     "endDate": "2019-10-01",
-                    "currentBillingEndDate": "2018-12-01",
+                    "currentBillingEndDate": "2019-01-01",
                     "lineTypeName": "Subscription",
-                    "closeDate": "",
+                    "closeDate": "2019-01-01",
                     "itemName": "9204711",
-                    "currentBillingStartDate": "2018-11-02",
+                    "currentBillingStartDate": "2018-12-02",
                     "itemDescription": "Unlimited On Demand Technical Support & Tune Ups",
                     "lineNumber": "1",
                     "vendorNumber": "01132448",
                     "startDate": "2018-10-02",
+                    "status": "Active"
+                  },
+                  {
+                    "billingFrequency": "MON",
+                    "unitPrice": "0",
+                    "itemNumber": "4383814",
+                    "quantity": "1",
+                    "unitOfMeasure": "EA",
+                    "endDate": "2018-12-04",
+                    "lineTypeName": "Termination Fee",
+                    "closeDate": "2018-12-04",
+                    "itemName": "4383814",
+                    "itemDescription": "Unlimited On Demand Cancel",
+                    "lineNumber": "2",
+                    "startDate": "2018-12-04",
                     "status": "Active"
                   }
                 ]

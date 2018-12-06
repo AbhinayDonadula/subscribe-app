@@ -6,9 +6,9 @@ const getBillingHistory = (localAPI, contractId) => {
   const data = {
     REQUEST: {
       NAME: 'SUBSCRIPTION',
-      TYPE: 'SERVICE_CONTRACT'
+      TYPE: 'SERVICE_BILLING'
     },
-    INPUT: { contractId }
+    INPUT: { contractNumber: contractId }
   };
 
   if (localAPI) {

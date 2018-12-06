@@ -196,6 +196,9 @@ export const formatStatus = (status) => {
   if (status === 'C') {
     return 'Cancelled';
   }
+  if (status) {
+    return 'On Hold';
+  }
   return 'Active';
 };
 
