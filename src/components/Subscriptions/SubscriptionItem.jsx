@@ -133,7 +133,6 @@ class SubscriptionItem extends React.Component {
             ? getOrderNowMobileURL(SKU)
             : getOrderNowURL(SKU, IncPct, FreeSku, WlrPct, RecordKey);
       } else if (selected === 'Cancel Subscription') {
-        console.log('object');
         this.setState({
           openSaveCancelMenu: true,
           cancelService: false,
