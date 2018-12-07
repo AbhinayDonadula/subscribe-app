@@ -204,7 +204,8 @@ class App extends Component {
       ) {
         subscriptionsToShow = [];
       } else {
-        subscriptionsToShow = activeAndCancelledServices;
+        // subscriptionsToShow = activeAndCancelledServices;
+        subscriptionsToShow = activeServices;
       }
 
       const itemsSubs = await getItemSubscriptions(
@@ -225,7 +226,7 @@ class App extends Component {
       ) {
         this.setState({
           itemsAndServices: activeAndCancelledServices,
-          subscriptionsToShow: activeAndCancelledServices,
+          subscriptionsToShow: activeServices,
           filtering: false,
           initialAppLoading: false,
           envDown: false,

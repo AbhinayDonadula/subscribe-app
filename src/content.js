@@ -192,6 +192,7 @@ export default {
     }
   ],
   ExtendedMenuOptions: [
+    { id: 4, label: 'Edit Payment' },
     { id: 2, label: 'Cancel Subscription' },
     { id: 3, label: 'Order Now' }
   ]

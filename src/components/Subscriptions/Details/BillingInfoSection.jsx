@@ -42,7 +42,10 @@ class BillingInfoSection extends React.Component {
           data.billingHistoryResponse.billingHistoryRecord &&
           data.billingHistoryResponse.billingHistoryRecord.length > 0
         ) {
-          newBillingHistory = beautifyBillingHistoryResponse(data);
+          newBillingHistory = beautifyBillingHistoryResponse(
+            data,
+            this.lineNumber
+          );
         }
         if (
           data.billingHistoryResponse &&
@@ -86,6 +89,8 @@ class BillingInfoSection extends React.Component {
                 subscription.contractId;
               this.localAPI = appData.localAPI;
               this.contractID = subscription.contractId;
+              this.lineNumber = subscription.lineNumber;
+              console.log(this.lineNumber);
               return (
                 <div className="full__width-mob">
                   <div

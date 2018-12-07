@@ -448,9 +448,6 @@ div.total_box p {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #fbfbfd;
 }
-.table2 tr:nth-child(2) td {
-  color: #ad2f2f;
-}
 .visa_img {
   margin-right: 10px;
 }

@@ -21,9 +21,9 @@ const cancelServiceSubscription = (
         transactionHeader: {
           consumer: {
             consumerName: 'WWW',
-            consumerTransactionID: datefns.format(new Date(), 'MM/DD/YYYY')
+            consumerTransactionID: datefns.format(new Date())
           },
-          timeReceived: datefns.format(new Date(), 'MM/DD/YYYY')
+          timeReceived: datefns.format(new Date())
         },
         contract: {
           customerId,
