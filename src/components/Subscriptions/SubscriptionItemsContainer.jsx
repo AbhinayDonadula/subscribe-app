@@ -5,12 +5,18 @@ import SubscriptionContext from '../Context/SubscriptionContext';
 import SubscriptionFilters from './SubscriptionFilters';
 import SpinnerPortal from '../SharedComponents/SpinnerPortal';
 import EmailCampaign from './EmailCampaign';
+import paymentCalls from './Payment';
 
 class SubscriptionItemsContainer extends React.Component {
-  state = { email: '', openDetailsInfo: {}, search: '', searchResults: [] };
+  state = {
+    email: '',
+    openDetailsInfo: {},
+    search: '',
+    searchResults: []
+  };
 
   handleEditEmailClick = (email, editEmail = true) => {
-    this.setState({ editEmail, editRewards: false, email });
+    this.setState({ editEmail, editRewards: false, email, editPayment: false });
   };
 
   handleEditEmail = (event) => {
@@ -24,7 +30,34 @@ class SubscriptionItemsContainer extends React.Component {
   };
 
   handleEditRewardsClick = (rewards, editRewards = true) => {
-    this.setState({ editRewards, editEmail: false, rewards });
+    this.setState({
+      editRewards,
+      editEmail: false,
+      rewards,
+      editPayment: false
+    });
+  };
+
+  handleEditPaymentClick = () => {
+    this.setState(
+      { editRewards: false, editEmail: false, editPayment: true },
+      () => {
+        const paymentNode = document.getElementById('service-Subscription-Pay');
+        const editPaymentSection = document.getElementById(
+          'edit-payment-section'
+        );
+        if (paymentNode) {
+          document
+            .getElementById('service-Subscription-Pay')
+            .removeAttribute('style');
+          editPaymentSection.appendChild(paymentNode);
+        }
+        if (!this.localAPI) {
+          window.$('#ssPaySave').unbind('click');
+          paymentCalls.init();
+        }
+      }
+    );
   };
 
   handleEditRewards = ({ target: { value } }) => {
@@ -58,6 +91,7 @@ class SubscriptionItemsContainer extends React.Component {
           } else {
             subsToShow = appData.subscriptionsToShow;
           }
+          this.localAPI = appData.localAPI;
           return (
             <div className="row">
               {appData.subscriptionsToShow && !appData.initialAppLoading ? (
@@ -79,7 +113,6 @@ class SubscriptionItemsContainer extends React.Component {
                       subscriptions. Please try again later.`}
                     </div>
                   ) : null}
-                  {/* {appData.subscriptionsToShow.map((eachSubscription) => { */}
                   {subsToShow.map((eachSubscription) => {
                     const { state } = this;
                     const viewDetailsPropName = `viewDetails${
@@ -102,6 +135,7 @@ class SubscriptionItemsContainer extends React.Component {
                             ...this.state,
                             handleEditEmailClick: this.handleEditEmailClick,
                             handleEditRewardsClick: this.handleEditRewardsClick,
+                            handleEditPaymentClick: this.handleEditPaymentClick,
                             handleEditEmail: this.handleEditEmail,
                             handleEditRewards: this.handleEditRewards
                           }}

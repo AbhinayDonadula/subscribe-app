@@ -448,6 +448,7 @@ div.total_box p {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #fbfbfd;
 }
+
 .visa_img {
   margin-right: 10px;
 }
@@ -2221,6 +2222,11 @@ div.select-selected.select-arrow-active {
   text-align: center;
   font-size: 16px;
   margin-top: 20px;
+}
+
+#service-Subscription-Pay {
+  margin: auto;
+  width: 75%;
 }
 
 /* filter-mobile */

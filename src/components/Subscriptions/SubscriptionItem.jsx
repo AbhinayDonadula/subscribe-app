@@ -399,7 +399,8 @@ class SubscriptionItem extends React.Component {
             SubType,
             Status,
             editEmail,
-            editRewards
+            editRewards,
+            editPayment
           } = subscription;
 
           const { handleViewDetails } = this.props;
@@ -693,6 +694,40 @@ class SubscriptionItem extends React.Component {
                 </div>
               ) : null}
 
+              {openSaveCancelMenu && !cancelService ? (
+                <div
+                  className="visible-xs-block save__update-mob"
+                  style={{ margin: '-15px 0' }}
+                >
+                  <div className="title">Save changes?</div>
+                  <div>
+                    <button type="button" onClick={this.handleSaveUpdate}>
+                      Save/Update
+                    </button>
+                  </div>
+                  <div>
+                    <a onClick={this.handleCancelSave}>cancel</a>
+                  </div>
+                </div>
+              ) : null}
+
+              {editPayment ? (
+                <div
+                  className={`show_Div hidden-xs show ${
+                    viewDetails ? 'add__margin' : ''
+                  }`}
+                  id="edit-payment-section"
+                />
+              ) : null}
+
+              {/* Subscription Details Section */}
+              {viewDetails && (
+                <SubscriptionDetails
+                  handleEditUserInfo={this.handleEditUserInfo}
+                  refresh={refreshDetailsSection}
+                />
+              )}
+
               {/* cancel service */}
               {!openSaveCancelMenu && cancelService ? (
                 <div
@@ -815,23 +850,6 @@ class SubscriptionItem extends React.Component {
                 </div>
               ) : null}
 
-              {openSaveCancelMenu && !cancelService ? (
-                <div
-                  className="visible-xs-block save__update-mob"
-                  style={{ margin: '-15px 0' }}
-                >
-                  <div className="title">Save changes?</div>
-                  <div>
-                    <button type="button" onClick={this.handleSaveUpdate}>
-                      Save/Update
-                    </button>
-                  </div>
-                  <div>
-                    <a onClick={this.handleCancelSave}>cancel</a>
-                  </div>
-                </div>
-              ) : null}
-
               {/* edit email */}
               {(editEmail || editRewards) && viewDetails ? (
                 <div
@@ -912,14 +930,6 @@ class SubscriptionItem extends React.Component {
                   </div>
                 </div>
               ) : null}
-
-              {/* Subscription Details Section */}
-              {viewDetails && (
-                <SubscriptionDetails
-                  handleEditUserInfo={this.handleEditUserInfo}
-                  refresh={refreshDetailsSection}
-                />
-              )}
             </React.Fragment>
           );
         }}

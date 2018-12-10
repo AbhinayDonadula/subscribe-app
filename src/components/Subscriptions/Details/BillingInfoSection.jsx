@@ -90,7 +90,6 @@ class BillingInfoSection extends React.Component {
               this.localAPI = appData.localAPI;
               this.contractID = subscription.contractId;
               this.lineNumber = subscription.lineNumber;
-              console.log(this.lineNumber);
               return (
                 <div className="full__width-mob">
                   <div

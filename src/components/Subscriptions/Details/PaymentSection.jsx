@@ -79,7 +79,10 @@ class PaymentSection extends React.Component {
                                   {!isCancelledSub ? (
                                     <a
                                       href="/"
-                                      onClick={this.editPayment}
+                                      onClick={(event) => {
+                                        event.preventDefault();
+                                        subscription.handleEditPaymentClick();
+                                      }}
                                       className="edit_txt"
                                     >
                                       {
@@ -187,19 +190,22 @@ class PaymentSection extends React.Component {
                             className="img-resp visa_img"
                             alt=""
                           /> */}
-                              VISA - xxxx
+                              {cardType} - xxxx
                             </li>
                             <li>
-                              <a
+                              {/* <a
                                 href="/"
-                                onClick={this.editPayment}
+                                onClick={(event) => {
+                                  event.preventDefault();
+                                  subscription.handleEditPaymentClick();
+                                }}
                                 className="edit_txt"
                               >
                                 {
                                   appData.content.PaymentSection
                                     .EditPaymentMethod
                                 }
-                              </a>
+                              </a> */}
                             </li>
                           </ul>
                           {isItem ? <h3>CONTACT EMAIL:</h3> : null}
@@ -256,23 +262,25 @@ class PaymentSection extends React.Component {
                                 </span>
                               )}
                             </li>
-                            <li>
-                              <a
-                                href="/"
-                                onClick={(event) => {
-                                  event.preventDefault();
-                                  subscription.handleEditRewardsClick(
-                                    itemInfo.AdvantageNum
-                                  );
-                                }}
-                                className="edit_txt"
-                              >
-                                {
-                                  appData.content.PaymentSection
-                                    .EditMemberNumber
-                                }
-                              </a>
-                            </li>
+                            {isItem ? (
+                              <li>
+                                <a
+                                  href="/"
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    subscription.handleEditRewardsClick(
+                                      itemInfo.AdvantageNum
+                                    );
+                                  }}
+                                  className="edit_txt"
+                                >
+                                  {
+                                    appData.content.PaymentSection
+                                      .EditMemberNumber
+                                  }
+                                </a>
+                              </li>
+                            ) : null}
                           </ul>
                         </div>
                       </React.Fragment>

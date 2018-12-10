@@ -21,6 +21,7 @@ export const beautifyGetSubListResponse = (servicesList) => {
       // skip BS(Bussiness-Select) contracts
       if (
         contractLine.serviceType !== 'BS' &&
+        contractLine.lineTypeName !== 'Termination Fee' &&
         !(
           contractLine.status === 'Pending signature' ||
           contractLine.status === 'Pending approval' ||
