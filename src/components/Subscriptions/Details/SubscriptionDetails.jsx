@@ -7,7 +7,7 @@ import DownloadServiceSection from './DownloadServiceSection';
 import BillingInfoSection from './BillingInfoSection';
 import PaymentSection from './PaymentSection';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { getFrequencyForAPI, getFrequency, formatStatus } from '../../utils';
+import { getFrequencyForAPI, getFrequency, formatDate } from '../../utils';
 import Img from '../../SharedComponents/Img';
 import getItemDetails from '../../../apiCalls/getItemDetails';
 import updateItemSubscription from '../../../apiCalls/updateItemSubscription';
@@ -82,7 +82,7 @@ class SubscriptionDetails extends React.Component {
       prevFrequencySelected: frequencySelected,
       frequencySelected: selected,
       openSaveCancelMenu: true,
-      saveChangesTxt: 'Save/Update frequency changes?',
+      saveChangesTxt: 'Save frequency changes?',
       saveAction: 'frequency',
       itemQuantity: prevItemQuantity
     }));
@@ -94,7 +94,7 @@ class SubscriptionDetails extends React.Component {
       this.setState(() => ({
         itemQuantity: value,
         openSaveCancelMenu: value !== '' && value !== prevItemQuantity,
-        saveChangesTxt: 'Save/Update quantity changes?',
+        saveChangesTxt: 'Save quantity changes?',
         saveAction: 'quantity',
         frequencySelected: prevFrequencySelected
       }));
@@ -244,9 +244,7 @@ class SubscriptionDetails extends React.Component {
             billingFrequency,
             vendorNumber,
             isItem,
-            SubType,
-            Status,
-            closeDate = ''
+            SubType
           } = subscription;
 
           const {
@@ -269,32 +267,21 @@ class SubscriptionDetails extends React.Component {
             vendorNumber !== '01242135' &&
             (serviceType === 'SS' && vendorNumber !== '01306234');
 
-          const isActiveItemSubscription = isItem && Status === 'A';
-
-          const showAlertBox =
-            !subscription.isItem &&
-            subscription.status === 'Under amendment' &&
-            subscription.userStatusCode &&
-            subscription.userStatusCode.toLowerCase() === 'hold';
-
           return (
             <div className="expand_box" style={{ display: 'block' }}>
               <div className="d-block d-md-none d-lg-none status_box full__width-mob">
                 <ul className="list-unstyled details__mobile">
                   <li className="status__item-mob">
-                    <span className="status mobile">
-                      {isItem ? 'Delivery by' : 'status'}
+                    <span className={`status mobile ${isItem ? 'item' : ''}`}>
+                      {isItem ? 'DELIVERY BY' : 'NEXT BILL'}
                     </span>
                     <span className="status__date-mobile">
-                      {isActiveItemSubscription ? subscription.NextDlvDt : null}
-                      {!isActiveItemSubscription
-                        ? formatStatus(
-                            closeDate.length > 0 ||
-                            (!isActiveItemSubscription && isItem)
-                              ? 'C'
-                              : showAlertBox
-                          )
-                        : null}
+                      {isItem
+                        ? subscription.NextDlvDt
+                        : formatDate(
+                            subscription.nextBillingDate,
+                            'MM/DD/YYYY'
+                          )}
                     </span>
                   </li>
                   <li className="quantity__item-mob">
@@ -336,7 +323,7 @@ class SubscriptionDetails extends React.Component {
                   {isItem ? (
                     <li className="status__item-mob">
                       <span className="status mobile sub__id">
-                        SUBSCRIPTION ID:
+                        SUBSCRIPTION ID
                       </span>
                       <span className="status__date-mobile">
                         {subscriptionId}
@@ -349,7 +336,7 @@ class SubscriptionDetails extends React.Component {
                     <div className="title">{saveChangesTxt}</div>
                     <div>
                       <button type="button" onClick={this.handleSaveUpdate}>
-                        Save/Update
+                        Save
                       </button>
                     </div>
                     <div>

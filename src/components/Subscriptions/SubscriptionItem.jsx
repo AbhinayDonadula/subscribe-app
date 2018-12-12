@@ -8,12 +8,12 @@ import {
   getSubscriptionImg,
   getFrequency,
   getImageBySKU,
-  formatStatus,
   getOrderNowURL,
   getFrequencyForAPI,
   getCancelReasonServerVal,
   getOrderNowMobileURL,
-  formatPrice
+  formatPrice,
+  formatDate
 } from '../utils';
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
@@ -484,7 +484,7 @@ class SubscriptionItem extends React.Component {
                   </li>
                   <li className="d-mob">
                     <label className="item__label">
-                      {isItem ? 'DELIVERY BY' : 'status'}
+                      {isItem ? 'DELIVERY BY' : 'NEXT BILL'}
                     </label>{' '}
                     <br />
                     <label
@@ -492,15 +492,12 @@ class SubscriptionItem extends React.Component {
                         isActiveItemSubscription ? 'mgb0' : ''
                       }`}
                     >
-                      {isActiveItemSubscription ? subscription.NextDlvDt : null}
-                      {!isActiveItemSubscription
-                        ? formatStatus(
-                            closeDate.length > 0 ||
-                            (!isActiveItemSubscription && isItem)
-                              ? 'C'
-                              : showAlertBox
-                          )
-                        : null}
+                      {isItem
+                        ? subscription.NextDlvDt
+                        : formatDate(
+                            subscription.nextBillingDate,
+                            'MM/DD/YYYY'
+                          )}
                     </label>
                   </li>
                   <li
@@ -567,7 +564,7 @@ class SubscriptionItem extends React.Component {
                   >
                     <a className="view_txt opn_box">
                       <span className="view-txt">
-                        Action
+                        Actions
                         <span className="animated__arrow " />
                       </span>
                     </a>
@@ -699,11 +696,11 @@ class SubscriptionItem extends React.Component {
                   <div className="title">Save changes?</div>
                   <div>
                     <button type="button" onClick={this.handleSaveUpdate}>
-                      Save/Update
+                      Save
                     </button>
                   </div>
                   <div>
-                    <a onClick={this.handleCancelSave}>cancel</a>
+                    <a onClick={this.handleCancelSave}>Cancel</a>
                   </div>
                 </div>
               ) : null}
@@ -919,11 +916,11 @@ class SubscriptionItem extends React.Component {
                         );
                       }}
                     >
-                      Save/Update
+                      Save
                     </button>
                   </div>
                   <div>
-                    <a onClick={this.handleCancelSave}>cancel</a>
+                    <a onClick={this.handleCancelSave}>Cancel</a>
                   </div>
                 </div>
               ) : null}

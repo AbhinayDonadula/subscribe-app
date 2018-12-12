@@ -184,7 +184,7 @@ class PaymentSection extends React.Component {
                             {appData.content.PaymentSection.PaymentMethod}
                           </h3>
                           <ul className="list-unstyled">
-                            <li>
+                            <li className="payment__card-mobile">
                               {/* <img
                             src="img/visa.jpg"
                             className="img-resp visa_img"
@@ -208,7 +208,7 @@ class PaymentSection extends React.Component {
                               </a> */}
                             </li>
                           </ul>
-                          {isItem ? <h3>CONTACT EMAIL:</h3> : null}
+                          {isItem ? <h3>CONTACT EMAIL</h3> : null}
                           {isItem ? (
                             <ul className="list-unstyled">
                               <li>
@@ -245,7 +245,7 @@ class PaymentSection extends React.Component {
                               ) : null}
                             </ul>
                           ) : null}
-                          <h3>REWARDS MEMBER NUMBER:</h3>
+                          <h3>REWARDS MEMBER NUMBER</h3>
                           <ul className="list-unstyled">
                             <li>
                               {subscription.editRewards ? (

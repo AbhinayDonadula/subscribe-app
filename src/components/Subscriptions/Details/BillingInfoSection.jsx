@@ -71,13 +71,12 @@ class BillingInfoSection extends React.Component {
 
   render() {
     const { billingHistory, billingHistoryError } = this.state;
-    const showBillingTable =
-      (billingHistory && billingHistory.length === 0) ||
-      billingHistory === null;
+    const showBillingTable = billingHistory && billingHistory.items.length > 0;
     const { isMobile, show } = this.state;
 
     const isLoading = billingHistory === null;
-    const noBillingHistory = billingHistory && billingHistory.length === 0;
+    const noBillingHistory =
+      billingHistory && billingHistory.items.length === 0;
 
     return (
       <AppContext.Consumer>
@@ -91,7 +90,13 @@ class BillingInfoSection extends React.Component {
               this.contractID = subscription.contractId;
               this.lineNumber = subscription.lineNumber;
               return (
-                <div className="full__width-mob">
+                <div
+                  className={
+                    isMobile
+                      ? 'sub__details--container-mob full__width-mob'
+                      : ''
+                  }
+                >
                   <div
                     className="head_txt sub_txt"
                     onClick={this.toggleShowHide}
@@ -100,7 +105,7 @@ class BillingInfoSection extends React.Component {
                       {appData.content.BillingSection.BillingInfoSectionHeader}
                     </span>
                     {isMobile ? (
-                      <span>
+                      <span onClick={this.toggleShowHide}>
                         <AnimatedArrow
                           clicked={show}
                           handleClick={this.toggleShowHide}
@@ -110,7 +115,7 @@ class BillingInfoSection extends React.Component {
                   </div>
                   {(show || !isMobile) && (
                     <div className="bill_Div show">
-                      {!showBillingTable ? (
+                      {showBillingTable ? (
                         <p className="pay_txt nxt__billing-mob">
                           <label>
                             {
@@ -127,129 +132,141 @@ class BillingInfoSection extends React.Component {
                           </span>
                         </p>
                       ) : null}
-                      {/* <a
-                        href="/"
-                        className="view_txt d-block d-md-none d-lg-none"
-                      >
-                        {appData.content.BillingSection.ViewAllBillingHistory}
-                        <i className="fa fa-angle-right" aria-hidden="true" />
-                      </a> */}
-                      <div
-                        className="pos_rel"
-                        style={{ height: !showBillingTable ? '100%' : 'auto' }}
-                      >
-                        <div className="clearfix" />
-                        <div className="table-responsive zui-scroller">
-                          <table
-                            className="table table2 table-striped zui-table"
-                            id="invoice_table"
-                          >
-                            <thead>
-                              <tr>
-                                <th>
-                                  {appData.content.BillingSection.InvoiceDate}
-                                </th>
-                                <th>
-                                  {appData.content.BillingSection.InvoiceNumber}
-                                </th>
-                                <th>
-                                  {appData.content.BillingSection.PaymentMethod}
-                                </th>
-                                <th>
-                                  {appData.content.BillingSection.ServicePeriod}
-                                </th>
-                                <th className="zui-sticky-col mob">
-                                  {appData.content.BillingSection.TaxAndTotal}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {isLoading && (
-                                <tr>
-                                  <td />
-                                  <td />
-                                  <td>
-                                    <Img
-                                      spinner
-                                      styles={{ width: '15%' }}
-                                      src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
-                                    />
-                                  </td>
-                                  <td />
-                                  <td className="zui-sticky-col mob" />
-                                </tr>
-                              )}
-                              {showBillingTable && !isLoading ? (
-                                <tr>
-                                  <td className="billing__err" colSpan="5">
-                                    {noBillingHistory && billingHistoryError
-                                      ? 'Billing History unavailable'
-                                      : 'Your first recurring bill has not been generated'}
-                                  </td>
-                                </tr>
-                              ) : (
-                                <React.Fragment>
-                                  {billingHistory &&
-                                    billingHistory.items.map((each) => {
-                                      const { invoiceNumber, date } = each;
-                                      return (
-                                        <tr key={invoiceNumber}>
-                                          <td>{date}</td>
-                                          <td>{invoiceNumber}</td>
-                                          <td>
-                                            {each.paymentCardType}{' '}
-                                            {each.paymentCardNumber.slice(-4)}
-                                          </td>
-                                          <td>
-                                            {each.servicePeriodStart} -{' '}
-                                            {each.servicePeriodEnd}
-                                          </td>
-                                          <td className="zui-sticky-col mob">
-                                            ${each.total}
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                </React.Fragment>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-
+                      {showBillingTable ? (
                         <div
-                          className="fix d-mob1"
+                          className="pos_rel"
                           style={{
                             height: !showBillingTable ? '100%' : 'auto'
                           }}
                         >
-                          <table
-                            className="table table2 table-striped zui-table"
-                            id="invoice_table"
+                          <div className="clearfix" />
+                          <div className="table-responsive zui-scroller">
+                            <table
+                              className="table table2 table-striped zui-table"
+                              id="invoice_table"
+                            >
+                              <thead>
+                                <tr>
+                                  <th>
+                                    {appData.content.BillingSection.InvoiceDate}
+                                  </th>
+                                  <th>
+                                    {
+                                      appData.content.BillingSection
+                                        .InvoiceNumber
+                                    }
+                                  </th>
+                                  <th>
+                                    {
+                                      appData.content.BillingSection
+                                        .PaymentMethod
+                                    }
+                                  </th>
+                                  <th>
+                                    {
+                                      appData.content.BillingSection
+                                        .ServicePeriod
+                                    }
+                                  </th>
+                                  <th className="zui-sticky-col mob">
+                                    {appData.content.BillingSection.TaxAndTotal}
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {isLoading && (
+                                  <tr>
+                                    <td />
+                                    <td />
+                                    <td>
+                                      <Img
+                                        spinner
+                                        styles={{ width: '15%' }}
+                                        src="https://wwwsqm.officedepot.com/images/od/v2/loading.gif"
+                                      />
+                                    </td>
+                                    <td />
+                                    <td className="zui-sticky-col mob" />
+                                  </tr>
+                                )}
+                                {!showBillingTable && !isLoading ? (
+                                  <tr>
+                                    <td className="billing__err" colSpan="5">
+                                      {noBillingHistory && billingHistoryError
+                                        ? 'Billing History unavailable'
+                                        : 'Your first recurring bill has not been generated'}
+                                    </td>
+                                  </tr>
+                                ) : (
+                                  <React.Fragment>
+                                    {billingHistory &&
+                                      billingHistory.items.map((each) => {
+                                        const { invoiceNumber, date } = each;
+                                        return (
+                                          <tr key={invoiceNumber}>
+                                            <td>{date}</td>
+                                            <td>{invoiceNumber}</td>
+                                            <td>
+                                              {each.paymentCardType}{' '}
+                                              {each.paymentCardNumber.slice(-4)}
+                                            </td>
+                                            <td>
+                                              {each.servicePeriodStart} -{' '}
+                                              {each.servicePeriodEnd}
+                                            </td>
+                                            <td className="zui-sticky-col mob">
+                                              ${each.total}
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                  </React.Fragment>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+
+                          <div
+                            className="fix d-mob1"
+                            style={{
+                              height: !showBillingTable ? '100%' : 'auto'
+                            }}
                           >
-                            <thead>
-                              <tr>
-                                <th>
-                                  {appData.content.BillingSection.TaxAndTotal}
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {!showBillingTable ? (
-                                <React.Fragment>
-                                  {billingHistory &&
-                                    billingHistory.items.map((each) => {
-                                      return (
-                                        <tr key={each.invoiceNumber}>
-                                          <td>{each.total}</td>
-                                        </tr>
-                                      );
-                                    })}
-                                </React.Fragment>
-                              ) : null}
-                            </tbody>
-                          </table>
+                            <table
+                              className="table table2 table-striped zui-table"
+                              id="invoice_table"
+                            >
+                              <thead>
+                                <tr>
+                                  <th>
+                                    {appData.content.BillingSection.TaxAndTotal}
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {!showBillingTable ? (
+                                  <React.Fragment>
+                                    {billingHistory &&
+                                      billingHistory.items.map((each) => {
+                                        return (
+                                          <tr key={each.invoiceNumber}>
+                                            <td>{each.total}</td>
+                                          </tr>
+                                        );
+                                      })}
+                                  </React.Fragment>
+                                ) : null}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <ul className="list-unstyled">
+                          <li className="noBilling_msg-mobile">
+                            Your first recurring bill has not been generated
+                          </li>
+                        </ul>
+                      )}
                     </div>
                   )}
                   <hr />

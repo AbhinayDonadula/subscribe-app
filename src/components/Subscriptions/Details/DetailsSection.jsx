@@ -141,9 +141,9 @@ class DetailsSection extends React.Component {
                     {/* discount, item service only */}
                     {itemInfo &&
                     Number(itemInfo.IncPercent) > 0 &&
-                    subscription.fixedPriceFlag === '' ? (
+                    subscription.fixedPriceFlag === 'N' ? (
                       <li className="list-inline-item">
-                        <div className="total_box">
+                        <div className="total_box sub__discount-container">
                           <h3>{appData.content.SubscriptionDiscount}</h3>
                           <p className="sub__discount">
                             <span className="subscribing__txt">
@@ -152,7 +152,7 @@ class DetailsSection extends React.Component {
                             {isMobile ? null : <br />}
                             <span>
                               {' '}
-                              Discount Expires: {itemInfo.IncEndDate}
+                              Discount Expires, {itemInfo.IncEndDate}
                             </span>
                           </p>
                         </div>
@@ -162,7 +162,7 @@ class DetailsSection extends React.Component {
                     {/* Subscription start date, sub service and item service */}
                     <li className="list-inline-item">
                       <div className="total_box">
-                        <h3>{appData.content.SubscriptionStart}:</h3>
+                        <h3>{appData.content.SubscriptionStart}</h3>
                         <p>
                           {itemInfo &&
                             itemInfo.CreateDt &&
@@ -178,7 +178,7 @@ class DetailsSection extends React.Component {
                     {!itemInfo ? (
                       <li className="list-inline-item">
                         <div className="total_box">
-                          <h3>{appData.content.SubscriptionEnd}:</h3>
+                          <h3>{appData.content.SubscriptionEnd}</h3>
                           <p>
                             {subscription && subscription.endDate
                               ? formatDate(subscription.endDate)
@@ -192,7 +192,7 @@ class DetailsSection extends React.Component {
                     {itemInfo ? (
                       <li className="list-inline-item">
                         <div className="total_box">
-                          <h3>{appData.content.LastShipmentDate}:</h3>
+                          <h3>{appData.content.LastShipmentDate}</h3>
                           <p>{formatDate(itemInfo.LastDlvDt)}</p>
                         </div>
                       </li>
@@ -256,7 +256,7 @@ class DetailsSection extends React.Component {
                     {itemInfo ? (
                       <li className="list-inline-item">
                         <div className="total_box">
-                          <h3>Subscription ID:</h3>
+                          <h3>Subscription ID</h3>
                           <p>{subscriptionId}</p>
                         </div>
                       </li>

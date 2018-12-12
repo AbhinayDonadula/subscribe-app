@@ -40,7 +40,7 @@ export default {
   SubscriptionEnd: 'Subscription End',
   FeeToCancel: 'Fee To Cancel',
   LastShipmentDate: 'Last Shipment Date',
-  SubscriptionDiscount: 'Subscription Discount:',
+  SubscriptionDiscount: 'Subscription Discount',
   OrderNumber: 'Order #',
   ItemNumber: 'Item #',
   ContractNumber: 'Contract #',

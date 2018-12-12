@@ -783,8 +783,7 @@ li.btn_sv-container {
   color: #fff;
 }
 .drophead {
-  background: #1e5a99;
-  color: #fff;
+  color: #3379C2;
   font-size: 18px;
   text-transform: capitalize;
   padding: 11px 10px;
@@ -800,6 +799,8 @@ li.btn_sv-container {
   color: #1e5a99;
   text-transform: capitalize;
   background: #fff;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 .dropbody ul li {
   border-bottom: 1px solid #ccc;
@@ -822,6 +823,7 @@ li.btn_sv-container {
 }
 .dropdown_div > ul {
   text-align: right;
+  border-radius: 5px;
 }
 .data-table.overlay {
   position: relative;
@@ -959,6 +961,26 @@ li.btn_sv-container {
 .select_Box .select-items {
   left: 0;
 }
+
+.dropbox:before {
+  border-bottom: 12px solid #F5F8FC;
+}
+  
+.drophead {
+  background-color: #F5F8FC;
+}
+
+.sub__discount-container {
+  display: flex;
+  align-items: center;
+}
+
+.noBilling_msg-mobile {
+  font-weight: 400;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
 /*======================================media-query=================================*/
 @media (max-width: 1440px) {
   .subscrip_box p {
@@ -1246,10 +1268,6 @@ li.btn_sv-container {
   .main_txt br {
     display: none;
   }
-  .data-table ul li:nth-child(2) {
-    width: 22%;
-    padding-right: 15px;
-  }
   .final_img {
     width: 78%;
     float: right;
@@ -1281,6 +1299,17 @@ li.btn_sv-container {
 }
 
 @media (max-width: 767px) {
+  .main_txt {
+    font-size: 13px;
+    font-weight: 500;}
+    
+    .view_txt .view-txt {
+      font-weight: 400;
+    }
+    
+    .data-table .list-inline {
+      height: 100px;
+    }
   .d-none {
     display: none;
   }
@@ -1742,10 +1771,11 @@ li.btn_sv-container {
     display: none;
   }
   .data-table ul li:first-child {
-    width: 76px;
+    width: 100px;
   }
   .data-table ul li:nth-child(2) {
     width: 153px;
+    padding-right: 0;
   }
   .data-table ul li:last-child {
     width: 80px;
@@ -2088,7 +2118,8 @@ div.drophead {
   font-size: 14px;
   font-weight: 600;
   text-align: center;
-  color: #ffffff;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 div.dropbody ul.subscription__extended-menu {
@@ -2243,7 +2274,11 @@ div.select-selected.select-arrow-active {
 }
 
 .status__item-mob > .status{
-  margin: 0 50px 0 25px;
+  margin: 0 40px 0 25px;
+}
+
+.status__item-mob > .status.item{
+  margin: 0 18px 0 25px;
 }
 
 .quantity__item-mob > .quantity {
@@ -2297,9 +2332,6 @@ hr {
 }
 
 .status__date-mobile {
-  font-size: 14px;
-  font-stretch: normal;
-  line-height: 2.79;
   color: #4e555d;
 }
 
@@ -2312,11 +2344,15 @@ hr {
   text-align: center
 }
 
-.save__update-mob > .title {
+.save__update-mob > .title{
   font-size: 13px;
   text-align: center;
   color: #4e555d;
   margin-bottom: 15px;
+}
+
+li.payment__card-mobile {
+  font-size: 13px;;
 }
 
 .save__update-mob > div > button {
@@ -2790,8 +2826,8 @@ div.alert__img {
     z-index: 99999;
     width: 60%;
     bottom: auto;
-    top: 110px;
-    right: -4px;
+    top: 70px;
+    right: -7px;
     display: none;
   }
   .select_Box .select-selected {
