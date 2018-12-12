@@ -64,11 +64,9 @@ body {
   color: #b30000;
   font-weight: 300;
   margin-bottom: 0;
-  letter-spacing: 0.6px;
 }
 .sub_head {
   font-size: 30px;
-  letter-spacing: 1px;
   color: #000000;
 }
 .greeting__msg {
@@ -78,7 +76,6 @@ body {
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.6px;
   color: #b30000;
 }
 .list_sub {
@@ -129,7 +126,6 @@ body {
   text-align: center;
   font-weight: 300;
   margin-bottom: 0;
-  letter-spacing: 1px;
   margin-top: 26px;
   color: #4a4a4a;
 }
@@ -287,9 +283,9 @@ body {
   position: relative;
 }
 .data-table ul li:last-child {
-  background-color: #f5f8fc;
+  /* background-color: #f5f8fc; */
   text-align: center;
-  padding: 17px;
+  /* padding: 17px; */
   color: #1e5a99;
   font-size: 23px;
 }
@@ -336,11 +332,9 @@ body {
   margin-bottom: 24px;
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.9px;
 }
 .table2 td.billing__err {
   font-size: 14px;
-  letter-spacing: 0.5px;
   color: #4e555d;
   text-align: center;
 }
@@ -378,7 +372,6 @@ div.total_box p {
   color: #273039;
   font-weight: 600;
   margin-bottom: 0;
-  letter-spacing: 0.9px;
   text-align: center;
 }
 
@@ -395,7 +388,6 @@ div.total_box p {
   outline: none;
   border: none;
   border-radius: 4px;
-  letter-spacing: 0.8px;
   width: 235px;
   height: 45px;
 }
@@ -409,7 +401,6 @@ div.total_box p {
   margin: 20px 0;
   font-size: 13px;
   line-height: 1.62;
-  letter-spacing: 0.9px;
   color: #273039;
 }
 .pay_txt {
@@ -434,7 +425,6 @@ div.total_box p {
   padding: 15px 27px !important;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.9px;
   color: #4e555d;
 }
 .table2 td {
@@ -555,7 +545,6 @@ div.app__loader {
   position: relative;
   padding-bottom: 45px !important;
   font-size: 13px;
-  letter-spacing: 0.9px;
   color: #4e555d;
 }
 .edit_txt {
@@ -608,14 +597,14 @@ div.app__loader {
   width: 15%;
 }
 .data-table ul li:nth-child(5) {
-  width: 20%;
+  width: 16%;
 }
 .data-table1 ul li:nth-child(4) {
   width: auto;
 }
 
 .data-table ul li:last-child {
-  width: 6%;
+  width: 10%;
   position: relative;
 }
 .open_drop.hover {
@@ -701,7 +690,6 @@ div.app__loader {
   font-weight: bold;
   color: #273039;
   background-color: #f1f3f4;
-  letter-spacing: 0.5px;
   font-size: 13px;
 }
 .select-arrow-active {
@@ -751,7 +739,6 @@ li.btn_sv-container {
   color: #fff;
   font-size: 14px;
   padding: 10px 26px;
-  letter-spacing: 1px;
 }
  li.btn_cncl-container {
   margin-right: 5%;
@@ -764,7 +751,6 @@ li.btn_sv-container {
 .btn_cncl {
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.7px;
   color: #1e5a99;
 }
 .succ_Div {
@@ -830,8 +816,8 @@ li.btn_sv-container {
   z-index: 99999;
   width: 100%;
   bottom: auto;
-  top: 110px;
-  right: -4px;
+  top: 125px;
+  right: 15px;
   display: none;
 }
 .dropdown_div > ul {
@@ -846,13 +832,13 @@ li.btn_sv-container {
   left: 0;
   right: 0;
   width: 100%;
-  background: #64696e;
+  /* background: #64696e; */
   z-index: 999;
   height: 100%;
   top: 0;
-  opacity: 0.8;
-  background-image: linear-gradient(to bottom, #64696e, #64696e);
-  background-blend-mode: multiply;
+  /* opacity: 0.8; */
+  /* background-image: linear-gradient(to bottom, #64696e, #64696e); */
+  /* background-blend-mode: multiply; */
 }
 
 .open_drop {
@@ -891,7 +877,6 @@ li.btn_sv-container {
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.7px;
   color: #1e5a99;
 }
 .view_txt .close-txt {
@@ -912,7 +897,6 @@ li.btn_sv-container {
   overflow: hidden;
   text-overflow: ellipsis;
   height: 44px;
-  letter-spacing: 0.5px;
   color: #273039;
 }
 .select_Box .select-selected:hover {
@@ -979,7 +963,6 @@ li.btn_sv-container {
 @media (max-width: 1440px) {
   .subscrip_box p {
     font-size: 14px;
-    letter-spacing: 0px;
     margin-top: 17px;
   }
   .subscrip_box {
@@ -1340,7 +1323,6 @@ li.btn_sv-container {
     font-size: 14px;
     font-weight: 600;
     line-height: 1.38;
-    letter-spacing: 0.7px;
     color: #273039;
   }
   .table .view_txt {
@@ -1662,7 +1644,6 @@ li.btn_sv-container {
     position: relative;
     bottom: 16px;
     font-size: 13px;
-    letter-spacing: 0.9px;
     color: #1e5a99;
   }
   .test_txt {
@@ -1767,7 +1748,7 @@ li.btn_sv-container {
     width: 153px;
   }
   .data-table ul li:last-child {
-    width: 32px;
+    width: 80px;
   }
   .org_bg {
     width: 20px;
@@ -2080,7 +2061,6 @@ body h6,
   font-size: 13px;
   font-weight: 700;
   height: auto;
-  letter-spacing: 1.5px;
   line-height: 25px;
   padding: 4px 8px;
   width: 256px;
@@ -2096,7 +2076,6 @@ div.Toastify__toast.Toastify__toast--success {
   border-radius: 4px;
   font-size: 13px;
   line-height: 1.54;
-  letter-spacing: 0.6px;
 }
 
 
@@ -2108,34 +2087,29 @@ a.open_drop.disable,
 div.drophead {
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.5px;
   text-align: center;
   color: #ffffff;
 }
 
 div.dropbody ul.subscription__extended-menu {
   font-size: 14px;
-  letter-spacing: 0.5px;
   text-align: center;
   color: #1e5a99;
 }
 
 div.data-table label.pad_span {
   font-size: 13px;
-  letter-spacing: 0.5px;
   color: #273039;
 }
 
 div.data-table label.item__label {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 1px;
   color: #b3bdc1;
 }
 
 label.item__label.pad_span.margin__left-25 {
   font-size: 14px;
-  letter-spacing: 0.5px;
   color: #273039;
   font-weight: 500;
 }
@@ -2151,7 +2125,6 @@ div.total_box h3 {
 .table.table2.table-striped tr th.payment__header {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.9px;
   color: #4e555d;
   text-transform: uppercase;
 }
@@ -2171,7 +2144,6 @@ div.dnload_div.show {
 
 span.subscribing__txt {
   font-weight: 600;
-  letter-spacing: 0.5px;
   text-align: center;
   color: #b30000;
 }
@@ -2254,7 +2226,6 @@ div.select-selected.select-arrow-active {
 .filter__mob > .filter__label, .sort__mob > .sort__label {
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.5px;
   color: #273039;
   margin-bottom: 5px;
 }
@@ -2304,7 +2275,6 @@ input.item__qty-mob#item--qty {
   font-size: 14px;
   font-weight: 500;
   line-height: normal;
-  letter-spacing: normal;
   color: #4e555d;
   padding: 0;
   display: inline-block;
@@ -2319,7 +2289,6 @@ hr {
   font-size: 10px;
   font-weight: 600;
   line-height: 4;
-  letter-spacing: 0.8px;
   color: #b3bdc1;
 }
 
@@ -2331,7 +2300,6 @@ hr {
   font-size: 14px;
   font-stretch: normal;
   line-height: 2.79;
-  letter-spacing: 1px;
   color: #4e555d;
 }
 
@@ -2346,7 +2314,6 @@ hr {
 
 .save__update-mob > .title {
   font-size: 13px;
-  letter-spacing: 1px;
   text-align: center;
   color: #4e555d;
   margin-bottom: 15px;
@@ -2362,7 +2329,6 @@ hr {
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
-    letter-spacing: 0.5px;
     text-align: center;
     color: #ffffff;
     width: 138px;
@@ -2372,7 +2338,6 @@ hr {
 .save__update-mob > div > a {
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.7px;
   color: #1e5a99;
 }
 
@@ -2380,7 +2345,6 @@ hr {
   height: 100%;
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.9px;
   color: #000000;
 }
 
@@ -2398,7 +2362,6 @@ hr {
 .nxt__billing-mob {
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 1px;
   color: #b3bdc1;
   margin-left: 15px;
 }
@@ -2408,7 +2371,6 @@ hr {
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: 0.9px;
   color: #273039;
 }
 
@@ -2519,7 +2481,6 @@ div.loadmore__container > button{
   background-color: #1e5a99;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.5px;
   text-align: center;
   color: #ffffff;
   height: 40px;
@@ -2553,7 +2514,6 @@ div.save__filter-sort > button {
     background-color: #1e5a99;
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.5px;
     text-align: center;
     color: #ffffff;
     height: 40px;
@@ -2639,7 +2599,6 @@ div.alert__box {
 div.alert__box > span.err__msg {
   font-size: 13px;
   line-height: 1.77;
-  letter-spacing: 0.9px;
   color: #000000;
   margin-right: 10px;
 }
@@ -2649,7 +2608,6 @@ div.alert__box > span.err__msg > span {
   font-size: 13px;
   font-weight: 600;
   line-height: 1.77;
-  letter-spacing: 0.9px;
   color: #000000;
 }
 
@@ -2675,6 +2633,10 @@ div.alert__img {
 
 .sub__details--section-sub > li.list-inline-item {
   width: 14.2%;
+}
+
+.main_txt.desc {
+  min-height: 80px;
 }
 
 
@@ -2724,7 +2686,6 @@ div.alert__img {
     font-size: 11px;
     font-weight: 600;
     line-height: normal;
-    letter-spacing: 1px;
     color: #273039;
   }
   .main_txt.desc {
@@ -2735,7 +2696,6 @@ div.alert__img {
   li.update__save--cancel-conf {
     font-size: 13px;
     line-height: 1.53;
-    letter-spacing: 0.5px;
     color: #64696e;
     margin-left: 15px;
   }
@@ -2758,7 +2718,6 @@ div.alert__img {
   .select-items {
     width: 100%;
     font-size: 14px;
-    letter-spacing: 0.5px;
     color: #273039;
   }
 
@@ -2820,13 +2779,16 @@ div.alert__img {
   span.main_txt.desc {
     word-break: break-all;
   }
+  div.main_txt.desc {
+    min-height: 30px;
+  }
   div.data-table {
     margin: 15px 0;
   }
   .dropdown_div {
     position: absolute;
     z-index: 99999;
-    width: 50%;
+    width: 60%;
     bottom: auto;
     top: 110px;
     right: -4px;

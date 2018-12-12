@@ -204,7 +204,9 @@ class DetailsSection extends React.Component {
                         <div className="total_box">
                           <h3>{appData.content.FeeToCancel}</h3>
                           <p style={{ color: '#b30000' }}>
-                            {cancelFees === '0' ? cancelFees : `$${cancelFees}`}
+                            {cancelFees === '0'
+                              ? cancelFees
+                              : `${formatPrice(cancelFees)}`}
                           </p>
                         </div>
                       </li>

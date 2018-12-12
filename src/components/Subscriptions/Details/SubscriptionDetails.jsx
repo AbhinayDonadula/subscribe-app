@@ -7,7 +7,7 @@ import DownloadServiceSection from './DownloadServiceSection';
 import BillingInfoSection from './BillingInfoSection';
 import PaymentSection from './PaymentSection';
 import SubscriptionContext from '../../Context/SubscriptionContext';
-import { formatDate, getFrequencyForAPI, getFrequency } from '../../utils';
+import { getFrequencyForAPI, getFrequency, formatStatus } from '../../utils';
 import Img from '../../SharedComponents/Img';
 import getItemDetails from '../../../apiCalls/getItemDetails';
 import updateItemSubscription from '../../../apiCalls/updateItemSubscription';
@@ -244,7 +244,9 @@ class SubscriptionDetails extends React.Component {
             billingFrequency,
             vendorNumber,
             isItem,
-            SubType
+            SubType,
+            Status,
+            closeDate = ''
           } = subscription;
 
           const {
@@ -261,27 +263,38 @@ class SubscriptionDetails extends React.Component {
 
           // show/hide download section
           const showDownloadSection =
+            window.innerWidth > 750 &&
             !isItem &&
             status.toLowerCase() !== 'closed' &&
             vendorNumber !== '01242135' &&
             (serviceType === 'SS' && vendorNumber !== '01306234');
+
+          const isActiveItemSubscription = isItem && Status === 'A';
+
+          const showAlertBox =
+            !subscription.isItem &&
+            subscription.status === 'Under amendment' &&
+            subscription.userStatusCode &&
+            subscription.userStatusCode.toLowerCase() === 'hold';
 
           return (
             <div className="expand_box" style={{ display: 'block' }}>
               <div className="d-block d-md-none d-lg-none status_box full__width-mob">
                 <ul className="list-unstyled details__mobile">
                   <li className="status__item-mob">
-                    <span className="status mobile">STATUS</span>
+                    <span className="status mobile">
+                      {isItem ? 'Delivery by' : 'status'}
+                    </span>
                     <span className="status__date-mobile">
-                      {isItem
-                        ? `Delivery by: ${formatDate(
-                            subscription.NextDlvDt,
-                            'MM/DD/YY'
-                          )}`
-                        : `Subscribed until: ${formatDate(
-                            subscription.endDate,
-                            'MM/DD/YY'
-                          )}`}
+                      {isActiveItemSubscription ? subscription.NextDlvDt : null}
+                      {!isActiveItemSubscription
+                        ? formatStatus(
+                            closeDate.length > 0 ||
+                            (!isActiveItemSubscription && isItem)
+                              ? 'C'
+                              : showAlertBox
+                          )
+                        : null}
                     </span>
                   </li>
                   <li className="quantity__item-mob">

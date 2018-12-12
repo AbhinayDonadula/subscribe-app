@@ -192,7 +192,8 @@ export default {
     }
   ],
   ExtendedMenuOptions: [
-    { id: 2, label: 'Cancel Subscription' },
-    { id: 3, label: 'Order Now' }
+    { id: 3, label: 'Order Now' },
+    { id: 1, label: 'Skip Next Delivery' },
+    { id: 2, label: 'Cancel Subscription' }
   ]
 };

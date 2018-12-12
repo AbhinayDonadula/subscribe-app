@@ -67,18 +67,23 @@ class CancelDropdown extends React.Component {
           {selected && selected.length ? selected : options[0].value}
         </div>
         <div className={`select-items ${!listOpen ? 'select-hide' : ''}`}>
-          {options.map((each) => (
-            <div
-              key={each.id}
-              data-value={each.value}
-              onKeyPress={this.handleSelected}
-              onClick={this.handleSelected}
-              role="button"
-              tabIndex={0}
-            >
-              {each.title}
-            </div>
-          ))}
+          {options.map((each, index) => {
+            if (index > 0) {
+              return (
+                <div
+                  key={each.id}
+                  data-value={each.value}
+                  onKeyPress={this.handleSelected}
+                  onClick={this.handleSelected}
+                  role="button"
+                  tabIndex={0}
+                >
+                  {each.title}
+                </div>
+              );
+            }
+            return undefined;
+          })}
         </div>
       </div>
     );

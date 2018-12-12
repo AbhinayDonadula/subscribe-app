@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import TextLink from '../SharedComponents/TextLink';
 import Dropdown from '../SharedComponents/Dropdown';
 import SubscriptionDetails from './Details/SubscriptionDetails';
 import SubscriptionContext from '../Context/SubscriptionContext';
@@ -13,7 +12,8 @@ import {
   getOrderNowURL,
   getFrequencyForAPI,
   getCancelReasonServerVal,
-  getOrderNowMobileURL
+  getOrderNowMobileURL,
+  formatPrice
 } from '../utils';
 import Img from '../SharedComponents/Img';
 import updateItemSubscription from '../../apiCalls/updateItemSubscription';
@@ -109,14 +109,7 @@ class SubscriptionItem extends React.Component {
     }
   };
 
-  handleExtendedMenu = (subscription) => {
-    if (
-      subscription.Status === 'C' ||
-      subscription.status === 'Closed' ||
-      (subscription.closeDate && subscription.closeDate.length > 0)
-    ) {
-      return;
-    }
+  handleExtendedMenu = () => {
     this.setState(({ openExtendedMenu }) => ({
       openExtendedMenu: !openExtendedMenu
     }));
@@ -125,9 +118,12 @@ class SubscriptionItem extends React.Component {
   handleExtendedMenuSelection = (event, subscription) => {
     event.preventDefault();
     const { SKU, IncPct, FreeSku, WlrPct, RecordKey } = subscription;
+    const { handleViewDetails } = this.props;
     const selected = event.target.getAttribute('data-value');
     this.setState({ openExtendedMenu: false }, async () => {
-      if (selected === 'Order Now') {
+      if (selected === 'View Details') {
+        handleViewDetails();
+      } else if (selected === 'Order Now') {
         window.location.href =
           window.innerWidth <= 750
             ? getOrderNowMobileURL(SKU)
@@ -403,8 +399,6 @@ class SubscriptionItem extends React.Component {
             editPayment
           } = subscription;
 
-          const { handleViewDetails } = this.props;
-
           let subscriptionImage = '';
           if (isItem) {
             subscriptionImage =
@@ -418,10 +412,6 @@ class SubscriptionItem extends React.Component {
             );
           }
 
-          const disableExtendedMenu =
-            Status === 'C' ||
-            subscription.status === 'Closed' ||
-            (closeDate && closeDate.length > 0);
           const isSteamSub = isItem && SubType === 'S';
           const isActiveItemSubscription = isItem && Status === 'A';
           const showFreqDropDown = isItem && Status === 'A' && !isSteamSub;
@@ -485,33 +475,24 @@ class SubscriptionItem extends React.Component {
                     </a>
                   </li>
                   <li>
-                    <span
+                    <div
                       className="main_txt desc"
                       dangerouslySetInnerHTML={{
                         __html: subscriptionDescription
                       }}
                     />
-                    <br />
-                    <TextLink
-                      label={`${
-                        viewDetails ? 'Close details' : 'View details'
-                      }`}
-                      handleClick={() => {
-                        handleViewDetails();
-                      }}
-                      active={viewDetails}
-                    />
                   </li>
                   <li className="d-mob">
-                    <label className="item__label">STATUS</label> <br />
+                    <label className="item__label">
+                      {isItem ? 'DELIVERY BY' : 'status'}
+                    </label>{' '}
+                    <br />
                     <label
                       className={`pad_span ${
                         isActiveItemSubscription ? 'mgb0' : ''
                       }`}
                     >
-                      {isActiveItemSubscription
-                        ? `Delivery by: ${subscription.NextDlvDt}`
-                        : null}
+                      {isActiveItemSubscription ? subscription.NextDlvDt : null}
                       {!isActiveItemSubscription
                         ? formatStatus(
                             closeDate.length > 0 ||
@@ -581,19 +562,14 @@ class SubscriptionItem extends React.Component {
                     </li>
                   ) : null}
                   <li
-                    className={`cursor__pointer ${
-                      disableExtendedMenu ? 'disable' : ''
-                    }`}
-                    onClick={() => {
-                      this.handleExtendedMenu(subscription);
-                    }}
+                    className="cursor__pointer"
+                    onClick={this.handleExtendedMenu}
                   >
-                    <a
-                      className={`open_drop ${
-                        disableExtendedMenu ? 'disable' : ''
-                      }`}
-                    >
-                      <img src={appData.content.icons.dottedIcon} alt="" />
+                    <a className="view_txt opn_box">
+                      <span className="view-txt">
+                        Action
+                        <span className="animated__arrow " />
+                      </span>
                     </a>
                   </li>
                 </ul>
@@ -607,11 +583,7 @@ class SubscriptionItem extends React.Component {
                       <div className="dropbox">
                         <div className="drophead">
                           <p
-                            data-value={
-                              subscription.isItem
-                                ? appData.content.SkipNextDelivery
-                                : 'Cancel Service Subscription'
-                            }
+                            data-value="View Details"
                             className="extended__menu-click"
                             onClick={(event) => {
                               this.handleExtendedMenuSelection(
@@ -620,41 +592,66 @@ class SubscriptionItem extends React.Component {
                               );
                             }}
                           >
-                            {subscription.isItem
-                              ? appData.content.SkipNextDelivery
-                              : 'Cancel Subscription'}
+                            {viewDetails ? 'Close Details' : 'View Details'}
                           </p>
                         </div>
                         {subscription.isItem ? (
-                          <div className="dropbody">
+                          <div
+                            className="dropbody"
+                            style={{
+                              display: isActiveItemSubscription ? '' : 'none'
+                            }}
+                          >
                             <ul className="list-unstyled subscription__extended-menu">
-                              {appData.content.ExtendedMenuOptions.map(
-                                (each) => {
-                                  if (each.id === 3 && isSteamSub) {
-                                    return undefined;
-                                  }
-                                  return (
-                                    <li key={each.id}>
-                                      <a
-                                        href="/"
-                                        data-value={each.label}
-                                        className="extended__menu-click"
-                                        onClick={(event) => {
-                                          this.handleExtendedMenuSelection(
-                                            event,
-                                            subscription
-                                          );
-                                        }}
-                                      >
-                                        {each.label}
-                                      </a>
-                                    </li>
-                                  );
-                                }
-                              )}
+                              {isActiveItemSubscription
+                                ? appData.content.ExtendedMenuOptions.map(
+                                    (each) => {
+                                      if (each.id === 3 && isSteamSub) {
+                                        return undefined;
+                                      }
+                                      return (
+                                        <li key={each.id}>
+                                          <a
+                                            href="/"
+                                            data-value={each.label}
+                                            className="extended__menu-click"
+                                            onClick={(event) => {
+                                              this.handleExtendedMenuSelection(
+                                                event,
+                                                subscription
+                                              );
+                                            }}
+                                          >
+                                            {each.label}
+                                          </a>
+                                        </li>
+                                      );
+                                    }
+                                  )
+                                : null}
                             </ul>
                           </div>
-                        ) : null}
+                        ) : (
+                          <div className="dropbody">
+                            <ul className="list-unstyled subscription__extended-menu">
+                              <li>
+                                <a
+                                  href="/"
+                                  data-value="Cancel Service Subscription"
+                                  className="extended__menu-click"
+                                  onClick={(event) => {
+                                    this.handleExtendedMenuSelection(
+                                      event,
+                                      subscription
+                                    );
+                                  }}
+                                >
+                                  Cancel Subscription
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     </li>
                   </ul>
@@ -744,7 +741,7 @@ class SubscriptionItem extends React.Component {
                         </span>
                         <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
                           {' '}
-                          ${cancelFees}
+                          {formatPrice(cancelFees)}
                         </span>
                       </li>
                     ) : null}
@@ -806,7 +803,7 @@ class SubscriptionItem extends React.Component {
                       'Are you sure you want to cancel? if you cancel now, your fee to cancel will be: '}
                     {cancelStep === 1 && (
                       <span style={{ color: '#ad2f2f', fontWeight: 600 }}>
-                        ${cancelFees}
+                        {formatPrice(cancelFees)}
                       </span>
                     )}
                     {cancelStep === 2 ? (

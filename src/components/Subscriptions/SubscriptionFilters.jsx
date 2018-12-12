@@ -23,7 +23,7 @@ class SubscriptionFilters extends React.Component {
                     </div>
                   </div>
                   {/*  mobile only */}
-                  <div className="row visible-xs-block select_Box filters__mob">
+                  {/* <div className="row visible-xs-block select_Box filters__mob">
                     <div className="filters__container" id="scroll__to">
                       <div className="filter__mob">
                         <div className="filter__label col-xs-12">
@@ -37,7 +37,7 @@ class SubscriptionFilters extends React.Component {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

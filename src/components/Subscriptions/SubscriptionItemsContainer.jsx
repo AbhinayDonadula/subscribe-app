@@ -81,7 +81,7 @@ class SubscriptionItemsContainer extends React.Component {
   };
 
   render() {
-    const { search, searchResults } = this.state;
+    const { searchResults } = this.state;
     return (
       <AppContext.Consumer>
         {(appData) => {
@@ -98,14 +98,14 @@ class SubscriptionItemsContainer extends React.Component {
                 <div className="col-md-12">
                   <SubscriptionFilters />
                   <div className="space50" />
-                  <div className="search__box">
+                  {/* <div className="search__box">
                     <input
                       onChange={(event) => {
                         this.handleSearch(event, appData.subscriptionsToShow);
                       }}
                       value={search}
                     />
-                  </div>
+                  </div> */}
                   {appData.loadingServicesFailed ||
                   appData.loadingProductsFailed ? (
                     <div className="partial__subs">
