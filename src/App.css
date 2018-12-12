@@ -972,11 +972,6 @@ li.btn_sv-container {
   background-color: #F5F8FC;
 }
 
-.sub__discount-container {
-  display: flex;
-  align-items: center;
-}
-
 .noBilling_msg-mobile {
   font-weight: 400;
   padding-left: 18px;
@@ -1794,6 +1789,10 @@ li.btn_sv-container {
   }
   .data-table ul li {
     padding: 0
+  }
+  .sub__discount-container {
+    display: flex;
+    align-items: center;
   }
 }
 @media (max-width: 414px) {

@@ -545,7 +545,7 @@ class SubscriptionItem extends React.Component {
                         selected={frequencySelected}
                       />
                     ) : (
-                      <span className="pad_span margin__left-10">
+                      <span className="pad_span">
                         {getFrequency(subscription.billingFrequency)}
                       </span>
                     )}

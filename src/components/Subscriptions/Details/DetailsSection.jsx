@@ -150,10 +150,13 @@ class DetailsSection extends React.Component {
                               Subscribing saves you {itemInfo.IncPercent}%
                             </span>
                             {isMobile ? null : <br />}
-                            <span>
-                              {' '}
-                              Discount Expires, {itemInfo.IncEndDate}
-                            </span>
+                            {itemInfo.IncEndDate &&
+                            itemInfo.IncEndDate.length > 0 ? (
+                              <span>
+                                {' '}
+                                Discount Expires, {itemInfo.IncEndDate}
+                              </span>
+                            ) : null}
                           </p>
                         </div>
                       </li>
