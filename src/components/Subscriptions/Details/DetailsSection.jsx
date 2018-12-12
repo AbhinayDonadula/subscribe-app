@@ -14,7 +14,7 @@ class DetailsSection extends React.Component {
   state = {
     showSubDetailsMobile: false,
     isMobile: window.innerWidth <= 750,
-    cancelFees: 'N/A'
+    cancelFees: '0'
   };
 
   componentDidMount() {

@@ -26,18 +26,16 @@ class PaymentSection extends React.Component {
                       Status
                     } = subscription;
                     let cardType = '';
-                    if (isItem) {
+                    if (isItem && itemInfo) {
                       cardType =
-                        itemInfo &&
-                        itemInfo.AccountType &&
-                        itemInfo.AccountType.length > 0
+                        itemInfo.AccountType && itemInfo.AccountType.length > 0
                           ? itemInfo.AccountType
-                          : 'N/A';
+                          : '';
                     } else {
                       cardType =
                         paymentDetails && paymentDetails.paymentCard
                           ? paymentDetails.paymentCard.cardType
-                          : 'N/A';
+                          : '';
                     }
                     const isCancelledSub =
                       (closeDate && closeDate.length) ||

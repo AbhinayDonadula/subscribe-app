@@ -2924,7 +2924,7 @@ div.alert__img {
     line-height: inherit;
   }
   div.alert__box {
-    height: 100px;
+    height: 60px;
   }
 
   div.alert__img > img {
