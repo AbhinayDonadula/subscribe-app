@@ -817,8 +817,10 @@ li.btn_sv-container {
   z-index: 99999;
   width: 100%;
   bottom: auto;
-  top: 125px;
-  right: 15px;
+  /* top: 125px;
+  right: 15px; */
+  top: 110px;
+  right: 0px;
   display: none;
 }
 .dropdown_div > ul {
