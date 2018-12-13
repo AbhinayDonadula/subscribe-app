@@ -14,7 +14,8 @@ class BillingInfoSection extends React.Component {
   state = {
     show: false,
     isMobile: window.innerWidth <= 750,
-    billingHistory: null
+    billingHistory: {},
+    billingHistoryError: false
   };
 
   componentDidMount() {
@@ -31,7 +32,11 @@ class BillingInfoSection extends React.Component {
       billingHistory.hasErrorResponse === undefined ||
       billingHistory.hasErrorResponse === 'true'
     ) {
-      this.setState({ billingHistoryFailed: true, billingHistory: [] });
+      this.setState({
+        billingHistoryFailed: true,
+        billingHistory: [],
+        billingHistoryError: true
+      });
     } else {
       let newBillingHistory = [];
       if (
@@ -61,6 +66,7 @@ class BillingInfoSection extends React.Component {
       }
       this.setState({
         billingHistoryFailed: false,
+        billingHistoryError: false,
         billingHistory: newBillingHistory
       });
     }
@@ -74,19 +80,16 @@ class BillingInfoSection extends React.Component {
   };
 
   render() {
-    const {
-      billingHistory = {},
-      billingHistoryError,
-      isMobile,
-      show
-    } = this.state;
-    const { items } = billingHistory;
-    const showBillingTable =
-      billingHistory && billingHistory.items && items.length > 0;
+    const { billingHistory, billingHistoryError, isMobile, show } = this.state;
+    let items = [];
+    if (billingHistory && billingHistory.items) {
+      const { items: itemsArray } = billingHistory;
+      items = itemsArray;
+    }
+    const showBillingTable = billingHistory && items && items.length > 0;
 
     const isLoading = billingHistory === null;
-    const noBillingHistory =
-      billingHistory && billingHistory.items && items.length === 0;
+    const noBillingHistory = billingHistory && items && items.length === 0;
 
     return (
       <AppContext.Consumer>
