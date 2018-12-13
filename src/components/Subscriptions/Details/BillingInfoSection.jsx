@@ -74,25 +74,27 @@ class BillingInfoSection extends React.Component {
   };
 
   render() {
-    const { billingHistory = {}, billingHistoryError } = this.state;
+    const {
+      billingHistory = {},
+      billingHistoryError,
+      isMobile,
+      show
+    } = this.state;
+    const { items } = billingHistory;
     const showBillingTable =
-      billingHistory && billingHistory.items && billingHistory.items.length > 0;
-    const { isMobile, show } = this.state;
+      billingHistory && billingHistory.items && items.length > 0;
 
     const isLoading = billingHistory === null;
     const noBillingHistory =
-      billingHistory &&
-      billingHistory.items &&
-      billingHistory.items.length === 0;
+      billingHistory && billingHistory.items && items.length === 0;
 
     return (
       <AppContext.Consumer>
         {(appData) => (
           <SubscriptionContext.Consumer>
             {(subscription) => {
-              this.billingHistoryUrl =
-                appData.content.apiUrls.getBillingHistory +
-                subscription.contractId;
+              const url = appData.content.apiUrls.getBillingHistory;
+              this.billingHistoryUrl = url + subscription.contractId;
               this.localAPI = appData.localAPI;
               this.contractID = subscription.contractId;
               this.lineNumber = subscription.lineNumber;
@@ -131,7 +133,10 @@ class BillingInfoSection extends React.Component {
                             }
                           </label>{' '}
                           <span className="nxt__billing-date">
-                            {billingHistory.items[0]
+                            {billingHistory &&
+                            billingHistory.items &&
+                            billingHistory.items[0] &&
+                            billingHistory.items[0].nextBillingDate
                               ? formatDate(
                                   billingHistory.items[0].nextBillingDate
                                 )
@@ -207,6 +212,7 @@ class BillingInfoSection extends React.Component {
                                 ) : (
                                   <React.Fragment>
                                     {billingHistory &&
+                                      billingHistory.items &&
                                       billingHistory.items.map((each) => {
                                         const { invoiceNumber, date } = each;
                                         return (
@@ -254,6 +260,7 @@ class BillingInfoSection extends React.Component {
                                 {showBillingTable ? (
                                   <React.Fragment>
                                     {billingHistory &&
+                                      billingHistory.items &&
                                       billingHistory.items.map((each) => {
                                         return (
                                           <tr key={each.invoiceNumber}>
