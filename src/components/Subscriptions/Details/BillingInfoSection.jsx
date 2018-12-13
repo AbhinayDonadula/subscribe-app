@@ -74,7 +74,7 @@ class BillingInfoSection extends React.Component {
   };
 
   render() {
-    const { billingHistory, billingHistoryError } = this.state;
+    const { billingHistory = {}, billingHistoryError } = this.state;
     const showBillingTable =
       billingHistory && billingHistory.items && billingHistory.items.length > 0;
     const { isMobile, show } = this.state;
