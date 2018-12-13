@@ -190,6 +190,7 @@ class PaymentSection extends React.Component {
                           /> */}
                               {cardType} - xxxx
                             </li>
+                            <br />
                             <li>
                               {/* <a
                                 href="/"

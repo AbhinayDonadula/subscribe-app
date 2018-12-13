@@ -1,7 +1,11 @@
 import React from 'react';
 import SubscriptionContext from '../../Context/SubscriptionContext';
 import Img from '../../SharedComponents/Img';
-import { formatDate, beautifyBillingHistoryResponse } from '../../utils';
+import {
+  formatDate,
+  beautifyBillingHistoryResponse,
+  formatPrice
+} from '../../utils';
 import AppContext from '../../Context/AppContext';
 import getBillingHistoryAPI from '../../../apiCalls/getBillingHistory';
 import AnimatedArrow from '../../SharedComponents/AnimatedArrow';
@@ -71,12 +75,15 @@ class BillingInfoSection extends React.Component {
 
   render() {
     const { billingHistory, billingHistoryError } = this.state;
-    const showBillingTable = billingHistory && billingHistory.items.length > 0;
+    const showBillingTable =
+      billingHistory && billingHistory.items && billingHistory.items.length > 0;
     const { isMobile, show } = this.state;
 
     const isLoading = billingHistory === null;
     const noBillingHistory =
-      billingHistory && billingHistory.items.length === 0;
+      billingHistory &&
+      billingHistory.items &&
+      billingHistory.items.length === 0;
 
     return (
       <AppContext.Consumer>
@@ -244,13 +251,13 @@ class BillingInfoSection extends React.Component {
                                 </tr>
                               </thead>
                               <tbody>
-                                {!showBillingTable ? (
+                                {showBillingTable ? (
                                   <React.Fragment>
                                     {billingHistory &&
                                       billingHistory.items.map((each) => {
                                         return (
                                           <tr key={each.invoiceNumber}>
-                                            <td>{each.total}</td>
+                                            <td>{formatPrice(each.total)}</td>
                                           </tr>
                                         );
                                       })}
