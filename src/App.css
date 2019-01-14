@@ -378,7 +378,6 @@ div.total_box p {
 .total_box {
   padding: 2px;
   text-align: center;
-  max-width: 270px;
 }
 .btn_dnload {
   background: #1e5a99;
@@ -1518,6 +1517,7 @@ li.btn_sv-container {
   }
   .list_price.show {
     display: block;
+    margin-left: 0;
   }
   .dnload_div {
     display: none;

@@ -229,11 +229,12 @@ class DetailsSection extends React.Component {
                       </li>
                     ) : null}
 
-                    {/* Order Number, sub service only */}
-                    {!itemInfo ? (
+                    {/* POS Order Number, sub service only */}
+                    {!itemInfo &&
+                    subscription.orderNumber !== subscription.contractName ? (
                       <li className="list-inline-item">
                         <div className="total_box">
-                          <h3>POS ORDER#</h3>
+                          <h3>POS ORDER #</h3>
                           <p>
                             {subscription && subscription.orderNumber
                               ? subscription.orderNumber
