@@ -428,9 +428,12 @@ div.total_box p {
   color: #4e555d;
 }
 .table2 td {
-  color: #273039;
+  border: none !important;
+  color: #5e5c5c;
+  font-weight: 500;
   padding: 15px 27px !important;
-  font-size: 13px;
+  font-size: 16px;
+  border: 0;
 }
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #fbfbfd;
@@ -540,7 +543,7 @@ div.app__loader {
 }
 #table_pay td {
   position: relative;
-  padding-bottom: 45px !important;
+  padding-bottom: 15px !important;
   font-size: 13px;
   color: #4e555d;
 }
@@ -995,6 +998,10 @@ li.btn_sv-container {
   .total_box {
     padding: 5px;
   }
+  .table2 td {
+    padding: 15px 14px;
+    font-size: 14px;
+  }
 }
 @media (max-width: 1280px) {
   .notif_box ul .list-inline-item:not(:last-child) {
@@ -1409,7 +1416,7 @@ li.btn_sv-container {
     display: block;
     position: relative;
     border-bottom: 1px solid #ddd;
-    margin: 0 22px;
+    /* margin: 0 22px; */
   }
   .list_price > .list-inline-item:not(:last-child) {
     margin-right: 22px;
@@ -2405,7 +2412,7 @@ li.payment__card-mobile {
   color: #273039;
 }
 
-.btn:hover, .btn:focus, .btn.focus {
+.btn.primary:hover {
   color: #fff;
 }
 a.btn {
@@ -2856,7 +2863,7 @@ div.alert__img {
   }
 
   .total_box h3 {
-    width: 150px;
+    width: 138px;
   }
 
   .list_price li {

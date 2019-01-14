@@ -221,6 +221,20 @@ class DetailsSection extends React.Component {
                         <div className="total_box">
                           <h3>{appData.content.OrderNumber}</h3>
                           <p>
+                            {subscription && subscription.contractName
+                              ? subscription.contractName
+                              : 'N/A'}
+                          </p>
+                        </div>
+                      </li>
+                    ) : null}
+
+                    {/* Order Number, sub service only */}
+                    {!itemInfo ? (
+                      <li className="list-inline-item">
+                        <div className="total_box">
+                          <h3>POS ORDER#</h3>
+                          <p>
                             {subscription && subscription.orderNumber
                               ? subscription.orderNumber
                               : 'N/A'}
