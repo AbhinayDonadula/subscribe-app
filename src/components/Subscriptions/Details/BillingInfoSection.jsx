@@ -217,9 +217,20 @@ class BillingInfoSection extends React.Component {
                                     {billingHistory &&
                                       billingHistory.items &&
                                       billingHistory.items.map((each) => {
-                                        const { invoiceNumber, date } = each;
+                                        const {
+                                          invoiceNumber,
+                                          date,
+                                          status
+                                        } = each;
                                         return (
-                                          <tr key={invoiceNumber}>
+                                          <tr
+                                            key={invoiceNumber}
+                                            className={`${
+                                              status.toLowerCase() === 'fail'
+                                                ? 'billing__failure'
+                                                : ''
+                                            }`}
+                                          >
                                             <td>{date}</td>
                                             <td>{invoiceNumber}</td>
                                             <td>

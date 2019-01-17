@@ -2234,6 +2234,10 @@ div.select-selected.select-arrow-active {
   width: 75%;
 }
 
+tr.billing__failure > td {
+  color: #b30000;
+}
+
 /* filter-mobile */
 .filters__container {
   display: flex !important;
