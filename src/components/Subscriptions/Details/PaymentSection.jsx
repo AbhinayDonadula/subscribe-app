@@ -25,6 +25,8 @@ class PaymentSection extends React.Component {
                       isItem,
                       Status
                     } = subscription;
+                    const isABBilling =
+                      paymentDetails && paymentDetails.paymentType === 'AB';
                     let cardType = '';
                     if (isItem && itemInfo) {
                       cardType =
@@ -72,7 +74,9 @@ class PaymentSection extends React.Component {
                             <tbody>
                               <tr>
                                 <td>
-                                  {cardType} - xxxx
+                                  {isABBilling
+                                    ? 'Account Billing'
+                                    : `${cardType} - xxxx`}
                                   <br />
                                   {!isCancelledSub ? (
                                     <a

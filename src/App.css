@@ -546,10 +546,10 @@ div.app__loader {
   font-size: 13px;
   color: #4e555d;
 }
-.edit_txt {
+/* .edit_txt {
   position: absolute;
   bottom: 10px;
-}
+} */
 .notif_box .media1 .media_img {
   background: #aac5e0;
 }
@@ -2053,8 +2053,6 @@ body h6,
 .h6 {
   margin-top: inherit;
   margin-bottom: inherit;
-  font-weight: inherit;
-  line-height: inherit;
 }
 
 .btn:hover,
@@ -2818,6 +2816,9 @@ div.alert__img {
 
 /* phone*/
 @media (min-width: 320px) and (max-width: 760px) {
+  .sub_head {
+    font-size: 24px;
+  }
   span.main_txt.desc {
     word-break: break-all;
   }
@@ -2945,4 +2946,20 @@ div.alert__img {
     width: 100%;
   }
 
+}
+
+#footerWrapper .v5Footer .media_footer, #footerWrapper .v5Footer .media_footer.sm_pad {
+    height: 85px;
+}
+
+.w20 h3 {
+  font-style: 14px;
+}
+
+h3.sub_head {
+  font-weight: 400;
+}
+
+.my_store.separator.clearfix {
+  height: 30px;
 }
