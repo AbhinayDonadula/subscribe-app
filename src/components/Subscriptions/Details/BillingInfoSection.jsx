@@ -226,6 +226,7 @@ class BillingInfoSection extends React.Component {
                                           <tr
                                             key={invoiceNumber}
                                             className={`${
+                                              status &&
                                               status.toLowerCase() === 'fail'
                                                 ? 'billing__failure'
                                                 : ''
@@ -280,8 +281,9 @@ class BillingInfoSection extends React.Component {
                                           <tr
                                             key={each.invoiceNumber}
                                             className={`${
+                                              each.status &&
                                               each.status.toLowerCase() ===
-                                              'fail'
+                                                'fail'
                                                 ? 'billing__failure'
                                                 : ''
                                             }`}

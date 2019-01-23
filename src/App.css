@@ -2818,6 +2818,8 @@ div.alert__img {
 @media (min-width: 320px) and (max-width: 760px) {
   .sub_head {
     font-size: 24px;
+    color: #111;
+    font-weight: 700 !important;
   }
   span.main_txt.desc {
     word-break: break-all;
