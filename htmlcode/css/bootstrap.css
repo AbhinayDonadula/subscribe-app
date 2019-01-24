@@ -1077,8 +1077,7 @@ th {
           box-sizing: border-box;
 }
 html {
-  font-size: 10px;
-
+  font-size: 16px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
@@ -1185,7 +1184,7 @@ h6,
 .h5,
 .h6 {
   font-family: inherit;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.1;
   color: inherit;
 }
