@@ -192,11 +192,11 @@ const paymentCalls =
           $('.creditCardExpYear').val('');
         };
 
-        var resetPayment = function() {
-          resetIframe();
-          $('#checkoutPLCCNumberField').val('');
-          showCCTab();
-        };
+        // var resetPayment = function() {
+        //   resetIframe();
+        //   $('#checkoutPLCCNumberField').val('');
+        //   showCCTab();
+        // };
 
         var handleSaveCc = function() {
           $('#ssPaySave').on('click', function(e) {
@@ -211,16 +211,16 @@ const paymentCalls =
             }
           });
 
-          $('#ssPayCancel').on('click', function(e) {
-            e.preventDefault();
-            cmCreateManualLinkClickTag(
-              '?cm_sp=myaccount-_-subscription-manager-_-services_subscription-details_payment-cancel'
-            );
-            resetPayment();
-            document
-              .getElementById('service-Subscription-Pay')
-              .classList.add('hide');
-          });
+          // $('#ssPayCancel').on('click', function(e) {
+          //   e.preventDefault();
+          //   cmCreateManualLinkClickTag(
+          //     '?cm_sp=myaccount-_-subscription-manager-_-services_subscription-details_payment-cancel'
+          //   );
+          //   resetPayment();
+          //   document
+          //     .getElementById('service-Subscription-Pay')
+          //     .classList.add('hide');
+          // });
         };
 
         var handleTabsToggle = function() {

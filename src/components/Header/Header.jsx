@@ -17,7 +17,9 @@ class Header extends React.Component {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-sm-12">
-                  <h3 className="sub_head">{appData.content.AppTitle}</h3>
+                  <h3 className="sub_head" id="scroll__to-top">
+                    {appData.content.AppTitle}
+                  </h3>
                 </div>
               </div>
             </div>

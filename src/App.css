@@ -1,4 +1,7 @@
 /* =========== SPACE CLASSES=========== */
+html {
+  font-size: 16px;
+}
 body {
   overflow-x: hidden;
 }
