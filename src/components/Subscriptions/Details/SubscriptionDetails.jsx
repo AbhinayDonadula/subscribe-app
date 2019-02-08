@@ -12,6 +12,7 @@ import Img from '../../SharedComponents/Img';
 import getItemDetails from '../../../apiCalls/getItemDetails';
 import updateItemSubscription from '../../../apiCalls/updateItemSubscription';
 import SubDetailsContext from '../../Context/SubDetailsContext';
+import AutoRenewalPortal from '../../SharedComponents/AutoRenewalPortal';
 
 class SubscriptionDetails extends React.Component {
   state = {
@@ -23,7 +24,10 @@ class SubscriptionDetails extends React.Component {
     editingRewardsNum: false,
     editPayment: false,
     editEmail: false,
-    email: ''
+    email: '',
+    autoRenewalSelected: true,
+    disableAutoRenewal: false,
+    showAutoRenewalModal: false
   };
 
   componentDidMount() {
@@ -244,13 +248,18 @@ class SubscriptionDetails extends React.Component {
             billingFrequency,
             vendorNumber,
             isItem,
-            SubType
+            SubType,
+            contractId,
+            lineNumber
           } = subscription;
 
           const {
             itemQuantity,
             saveChangesTxt,
-            openSaveCancelMenu
+            openSaveCancelMenu,
+            autoRenewalSelected,
+            showAutoRenewalModal,
+            disableAutoRenewal
           } = this.state;
 
           // show billing section only only for SS type and Monthly frequency
@@ -269,7 +278,47 @@ class SubscriptionDetails extends React.Component {
 
           return (
             <div className="expand_box" style={{ display: 'block' }}>
+              {showAutoRenewalModal ? (
+                <AutoRenewalPortal
+                  closeModal={() => {
+                    this.setState({
+                      showAutoRenewalModal: false,
+                      autoRenewalSelected: true
+                    });
+                  }}
+                  handleSubmit={() => {
+                    this.setState({
+                      disableAutoRenewal: true,
+                      showAutoRenewalModal: false
+                    });
+                  }}
+                  contractId={contractId}
+                  lineNumber={lineNumber}
+                />
+              ) : null}
               <div className="d-block d-md-none d-lg-none status_box full__width-mob">
+                <div className="auto__renewal-container">
+                  <input
+                    type="checkbox"
+                    className={`filter__sort-checkbox ${
+                      disableAutoRenewal ? 'disable' : ''
+                    }`}
+                    id="auto__renewal"
+                    checked={autoRenewalSelected}
+                    onChange={(event) => {
+                      this.setState({
+                        autoRenewalSelected: event.target.checked,
+                        showAutoRenewalModal: autoRenewalSelected
+                      });
+                    }}
+                    disabled={disableAutoRenewal}
+                  />
+                  <label htmlFor="auto__renewal">Auto-Renew</label>
+                  <img
+                    src="http://s7d1.scene7.com/is/image/officedepot/Info-small"
+                    alt=""
+                  />
+                </div>
                 <ul className="list-unstyled details__mobile">
                   <li className="status__item-mob">
                     <span className={`status mobile ${isItem ? 'item' : ''}`}>
