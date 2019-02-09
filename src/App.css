@@ -3054,3 +3054,8 @@ h3.sub_head {
   background: #eee;
 }
 
+.ingram__link {
+  display: flex;
+  justify-content: flex-end;
+  font-weight: 600;
+}

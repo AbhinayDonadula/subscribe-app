@@ -230,6 +230,7 @@ export const beautifyBillingHistoryResponse = (response, lineNumber) => {
 
         list.push({
           id: `${invoice.itemNumber}-${invoice.orderLineNumber}`,
+          isABBilling: record.customer.paymentDetails.paymentType === 'AB',
           invoiceNumber: invoice.invoiceNumber,
           date: datefns.format(invoice.invoiceDate, 'MM/DD/YYYY'),
           servicePeriodStart: datefns.format(
@@ -240,6 +241,7 @@ export const beautifyBillingHistoryResponse = (response, lineNumber) => {
             invoice.servicePeriodEndDate,
             'MM/DD/YYYY'
           ),
+          status: invoice.invoiceStatus,
           paymentCardType: invoice.cardType,
           paymentCardNumber: invoice.cardnumber,
           total: invoice.unitTotal,
@@ -584,4 +586,42 @@ export const filterServices = (state) => {
     toastMessage = 'Showing Services sorted by billing frequency';
   }
   return [servicesToShow, toastMessage];
+};
+
+export const handleCancelEditPaymentFrame = () => {
+  window.cmCreateManualLinkClickTag(
+    '?cm_sp=myaccount-_-subscription-manager-_-services_subscription-details_payment-cancel'
+  );
+
+  // reset iframe
+  const $iFrame = window.$('#vantiv-payframe');
+  if ($iFrame.length > 0) {
+    $iFrame.attr('src', $iFrame.attr('src'));
+  }
+  window.$('.creditCardExpMonth').val(' ');
+  window.$('.creditCardExpYear').val('');
+  window.$('#checkoutPLCCNumberField').val('');
+
+  // show cc tab
+  window.$('#payWithPLCCModal, #plccPaymentTab').removeClass('active_tab');
+  window
+    .$('#payWithCreditCardModal, #creditCardPaymentTab')
+    .addClass('active_tab');
+  // tabCCActive = true;
+
+  // remove error messages
+  window.$('.creditCardExpMonth').removeClass('error');
+  window.$('.creditCardExpYear').removeClass('error');
+  document.getElementById('cardValidationError').innerHTML = '';
+  document.getElementById('odCardValidationError').innerHTML = '';
+
+  // hide iframe
+  document.getElementById('service-Subscription-Pay').classList.add('hide');
+
+  const paymentNode = document.getElementById('service-Subscription-Pay');
+  const retainPaymentContainer = document.getElementById('container');
+  if (paymentNode) {
+    // document.getElementById('service-Subscription-Pay').classList = '';
+    retainPaymentContainer.appendChild(paymentNode);
+  }
 };

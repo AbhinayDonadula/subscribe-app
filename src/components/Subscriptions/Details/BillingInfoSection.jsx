@@ -234,10 +234,16 @@ class BillingInfoSection extends React.Component {
                                           >
                                             <td>{date}</td>
                                             <td>{invoiceNumber}</td>
-                                            <td>
-                                              {each.paymentCardType}{' '}
-                                              {each.paymentCardNumber.slice(-4)}
-                                            </td>
+                                            {each.isABBilling ? (
+                                              <td>Account Billing</td>
+                                            ) : (
+                                              <td>
+                                                {each.paymentCardType}{' '}
+                                                {each.paymentCardNumber.slice(
+                                                  -4
+                                                )}
+                                              </td>
+                                            )}
                                             <td>
                                               {each.servicePeriodStart} -{' '}
                                               {each.servicePeriodEnd}

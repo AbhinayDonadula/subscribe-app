@@ -221,9 +221,15 @@ class DetailsSection extends React.Component {
                         <div className="total_box">
                           <h3>{appData.content.OrderNumber}</h3>
                           <p>
-                            {subscription && subscription.contractName
-                              ? subscription.contractName
-                              : 'N/A'}
+                            <a
+                              href={`/orderhistory/orderHistoryDetail.do?id=${
+                                subscription.contractName
+                              }`}
+                            >
+                              {subscription && subscription.contractName
+                                ? subscription.contractName
+                                : 'N/A'}
+                            </a>
                           </p>
                         </div>
                       </li>
