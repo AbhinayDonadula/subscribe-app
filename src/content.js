@@ -194,6 +194,7 @@ export default {
   ExtendedMenuOptions: [
     { id: 3, label: 'Order Now' },
     { id: 1, label: 'Skip Next Delivery' },
+    { id: 4, label: 'Edit Payment' },
     { id: 2, label: 'Cancel Subscription' }
   ]
 };

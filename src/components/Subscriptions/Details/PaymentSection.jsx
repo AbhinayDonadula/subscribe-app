@@ -192,7 +192,9 @@ class PaymentSection extends React.Component {
                             className="img-resp visa_img"
                             alt=""
                           /> */}
-                              {cardType} - xxxx
+                              {isABBilling
+                                ? 'Account Billing'
+                                : `${cardType} - xxxx`}
                             </li>
                             <br />
                             <li>

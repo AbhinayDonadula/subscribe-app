@@ -27,7 +27,8 @@ class SubscriptionDetails extends React.Component {
     email: '',
     autoRenewalSelected: true,
     disableAutoRenewal: false,
-    showAutoRenewalModal: false
+    showAutoRenewalModal: false,
+    enableAutoRenewFlag: false
   };
 
   componentDidMount() {
@@ -233,7 +234,8 @@ class SubscriptionDetails extends React.Component {
       editingRewardsNum,
       editPayment,
       subscriptionId,
-      email
+      email,
+      enableAutoRenewFlag
     } = this.state;
 
     return (
@@ -297,28 +299,30 @@ class SubscriptionDetails extends React.Component {
                 />
               ) : null}
               <div className="d-block d-md-none d-lg-none status_box full__width-mob">
-                <div className="auto__renewal-container">
-                  <input
-                    type="checkbox"
-                    className={`filter__sort-checkbox ${
-                      disableAutoRenewal ? 'disable' : ''
-                    }`}
-                    id="auto__renewal"
-                    checked={autoRenewalSelected}
-                    onChange={(event) => {
-                      this.setState({
-                        autoRenewalSelected: event.target.checked,
-                        showAutoRenewalModal: autoRenewalSelected
-                      });
-                    }}
-                    disabled={disableAutoRenewal}
-                  />
-                  <label htmlFor="auto__renewal">Auto-Renew</label>
-                  <img
-                    src="http://s7d1.scene7.com/is/image/officedepot/Info-small"
-                    alt=""
-                  />
-                </div>
+                {enableAutoRenewFlag ? (
+                  <div className="auto__renewal-container">
+                    <input
+                      type="checkbox"
+                      className={`filter__sort-checkbox ${
+                        disableAutoRenewal ? 'disable' : ''
+                      }`}
+                      id="auto__renewal"
+                      checked={autoRenewalSelected}
+                      onChange={(event) => {
+                        this.setState({
+                          autoRenewalSelected: event.target.checked,
+                          showAutoRenewalModal: autoRenewalSelected
+                        });
+                      }}
+                      disabled={disableAutoRenewal}
+                    />
+                    <label htmlFor="auto__renewal">Auto-Renew</label>
+                    <img
+                      src="http://s7d1.scene7.com/is/image/officedepot/Info-small"
+                      alt=""
+                    />
+                  </div>
+                ) : null}
                 <ul className="list-unstyled details__mobile">
                   <li className="status__item-mob">
                     <span className={`status mobile ${isItem ? 'item' : ''}`}>

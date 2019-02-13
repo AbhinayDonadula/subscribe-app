@@ -222,9 +222,15 @@ class DetailsSection extends React.Component {
                           <h3>{appData.content.OrderNumber}</h3>
                           <p>
                             <a
-                              href={`/orderhistory/orderHistoryDetail.do?id=${
-                                subscription.contractName
-                              }`}
+                              href={
+                                isMobile
+                                  ? `/mb/tracking/orderdetail.do?id=${
+                                      subscription.contractName
+                                    }&orderType=A`
+                                  : `/orderhistory/orderHistoryDetail.do?id=${
+                                      subscription.contractName
+                                    }`
+                              }
                             >
                               {subscription && subscription.contractName
                                 ? subscription.contractName

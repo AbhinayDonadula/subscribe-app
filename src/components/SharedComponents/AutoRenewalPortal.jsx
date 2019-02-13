@@ -78,7 +78,9 @@ class AutoRenewalPortal extends React.Component {
 
 AutoRenewalPortal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  lineNumber: PropTypes.string.isRequired,
+  contractId: PropTypes.string.isRequired
 };
 
 export default AutoRenewalPortal;

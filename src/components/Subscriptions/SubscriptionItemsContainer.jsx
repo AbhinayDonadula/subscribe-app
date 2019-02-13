@@ -1,4 +1,5 @@
 import React from 'react';
+// import { handleCancelEditPaymentFrame } from 'components/utils';
 import AppContext from '../Context/AppContext';
 import SubscriptionItem from './SubscriptionItem';
 import SubscriptionContext from '../Context/SubscriptionContext';
@@ -15,8 +16,20 @@ class SubscriptionItemsContainer extends React.Component {
     searchResults: []
   };
 
+  // componentDidMount() {
+  //   window.$('#ssPayCancel').on('click', (e) => {
+  //     e.preventDefault();
+  //     handleCancelEditPaymentFrame();
+  //   });
+  // }
+
   handleEditEmailClick = (email, editEmail = true) => {
-    this.setState({ editEmail, editRewards: false, email, editPayment: false });
+    this.setState({
+      editEmail,
+      editRewards: false,
+      email,
+      editPayment: false
+    });
   };
 
   handleEditEmail = (event) => {
@@ -47,9 +60,7 @@ class SubscriptionItemsContainer extends React.Component {
           'edit-payment-section'
         );
         if (paymentNode) {
-          document
-            .getElementById('service-Subscription-Pay')
-            .removeAttribute('style');
+          document.getElementById('service-Subscription-Pay').classList = '';
           editPaymentSection.appendChild(paymentNode);
         }
         if (!this.localAPI) {
@@ -98,6 +109,14 @@ class SubscriptionItemsContainer extends React.Component {
                 <div className="col-md-12">
                   <SubscriptionFilters />
                   <div className="space50" />
+                  <div>
+                    <a
+                      href="/vendor/ingramRedirector.do"
+                      className="ingram__link"
+                    >
+                      Manage Cloud Services
+                    </a>
+                  </div>
                   {/* <div className="search__box">
                     <input
                       onChange={(event) => {
@@ -182,7 +201,8 @@ class SubscriptionItemsContainer extends React.Component {
                           window.scroll({
                             behavior: 'smooth',
                             left: 0,
-                            top: document.getElementById('scroll__to').offsetTop
+                            top: document.getElementById('scroll__to-top')
+                              .offsetTop
                           });
                         }}
                       >
