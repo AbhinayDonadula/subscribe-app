@@ -28,7 +28,7 @@ class SubscriptionDetails extends React.Component {
     autoRenewalSelected: true,
     disableAutoRenewal: false,
     showAutoRenewalModal: false,
-    enableAutoRenewFlag: false
+    enableAutoRenewFlag: true
   };
 
   componentDidMount() {
@@ -254,6 +254,7 @@ class SubscriptionDetails extends React.Component {
             contractId,
             lineNumber
           } = subscription;
+          console.log(subscription.renewalType);
 
           const {
             itemQuantity,
@@ -304,7 +305,9 @@ class SubscriptionDetails extends React.Component {
                     <input
                       type="checkbox"
                       className={`filter__sort-checkbox ${
-                        disableAutoRenewal ? 'disable' : ''
+                        disableAutoRenewal || subscription.renewalType === 'DNR'
+                          ? 'disable'
+                          : ''
                       }`}
                       id="auto__renewal"
                       checked={autoRenewalSelected}
@@ -314,7 +317,9 @@ class SubscriptionDetails extends React.Component {
                           showAutoRenewalModal: autoRenewalSelected
                         });
                       }}
-                      disabled={disableAutoRenewal}
+                      disabled={
+                        disableAutoRenewal || subscription.renewalType === 'DNR'
+                      }
                     />
                     <label htmlFor="auto__renewal">Auto-Renew</label>
                     <img

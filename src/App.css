@@ -2600,6 +2600,10 @@ input.filter__sort-checkbox:checked:after {
 	color: #1e5a99;
 }
 
+input.filter__sort-checkbox.disable:checked:after {
+  content: ''
+}
+
 div.filter__sort-option  {
   display: flex;
   align-items: center;

@@ -274,7 +274,7 @@ class DetailsSection extends React.Component {
                           <h3>{appData.content.ContractNumber}</h3>
                           <p>
                             {getContractNumber(
-                              subscription.contractId,
+                              subscription.contractNumber,
                               subscription.lineNumber
                             )}
                           </p>
